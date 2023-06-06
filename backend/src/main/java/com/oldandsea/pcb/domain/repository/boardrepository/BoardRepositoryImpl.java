@@ -1,0 +1,62 @@
+package com.oldandsea.pcb.domain.repository.boardrepository;
+
+import com.oldandsea.pcb.domain.entity.QBoard;
+import com.oldandsea.pcb.domain.entity.QBoardTag;
+import com.oldandsea.pcb.domain.entity.QTag;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+
+import com.oldandsea.pcb.domain.entity.Board;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
+import org.springframework.stereotype.Repository;
+
+import javax.persistence.EntityManager;
+import java.util.List;
+
+@Repository
+public class BoardRepositoryImpl implements BoardRepositoryCustom {
+    private final EntityManager em;
+    private final JPAQueryFactory query;
+
+
+    public BoardRepositoryImpl(EntityManager em) {
+        this.em = em;
+        this.query = new JPAQueryFactory(em);
+    }
+
+    @Override
+    public Slice<Board> searchByTagAndSlice(Long lastBoardId, String tag, Pageable pageable) {
+        List<Board> results = query
+                .select(QBoard.board)
+                .from(QBoard.board)
+                .join(QBoardTag.boardTag).on(QBoard.board.boardId.eq(QBoardTag.boardTag.board.boardId)) //공통필드 BoardId
+                .join(QTag.tag).on(QBoardTag.boardTag.tag.tagId.eq(QTag.tag.tagId)) //공통필드 TagId
+                .where(QTag.tag.name.like("%"+tag+"%"), ltBoardId(lastBoardId))
+                .orderBy(QBoard.board.boardId.desc()) //최신글부터 보여지기
+                .limit(pageable.getPageSize() + 1)
+                .fetch();
+
+
+        boolean hasNext = results.size() > pageable.getPageSize();
+        if (hasNext) {
+            results.remove(pageable.getPageSize());
+
+        }
+
+        return new SliceImpl<>(results, pageable, hasNext);
+    }
+
+
+    private BooleanExpression ltBoardId(Long boardId) {
+        if (boardId == null) {
+            return null;
+        }
+        return QBoard.board.boardId.lt(boardId);
+    }
+}
+
