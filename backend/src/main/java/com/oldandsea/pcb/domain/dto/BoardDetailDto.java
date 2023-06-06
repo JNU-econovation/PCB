@@ -30,36 +30,28 @@ public class BoardDetailDto {
     @Builder
     public BoardDetailDto(BardDetailQuery query) {
         this.boardId = query.getBoardId();
-        this.title = title;
-        this.content = content;
-        this.attendance = attendance;
-        this.createdAt = createdAt;
-        this.tag = tag;
-        this.memberId = memberId;
+        this.title = query.getTitle();
+        this.content = query.getContent();
+        this.attendance = query.getAttendance();
+        this.createdAt = query.getCreatedAt();
+        this.tag = query.getTag();
+        this.memberId = query.getMemberId();
     }
 
-    public static void main(String[] args) {
-        Board board = new Board();
-        BoardDetailDto.builder().board(board).build();
 
-        BoardDetailDto boardDetailDto = new BoardDetailDto(board);
-
-        BoardDetailDto.builder().boardId(board.getBoardId()).tag(boardDetailDto.getTag())
-
-    }
     @Data
-    static class BardDetailQuery() {
-        Long boardId:
+    static class BardDetailQuery {
+        Long boardId;
 
-        String title:
+        String title;
 
-        String content:
+        String content;
 
-        Long attendance:
+        Long attendance;
 
-        Long createdAt:
+        Long createdAt;
 
-        String tag;:
+        String tag;;
         Long memberId;
     }
 }
