@@ -13,21 +13,21 @@ import lombok.NoArgsConstructor;
 public class MemberResponseDto {
     private Long memberId;
 
-    private String identification;
+    private String uid;
 
     private String pwd;
 
     private String nickname;
     @Builder
-    public MemberResponseDto(Long memberId, String identification, String pwd, String nickname) {
+    public MemberResponseDto(Long memberId, String uid, String pwd, String nickname) {
         this.memberId = memberId;
-        this.identification = identification;
+        this.uid = uid;
         this.pwd = pwd;
         this.nickname = nickname;
     }
     public Member toEntity() {
         return Member.builder()
-                .identification(identification)
+                .uid(uid)
                 .pwd(pwd)
                 .nickname(nickname)
                 .build();

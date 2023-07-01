@@ -21,7 +21,7 @@ public class BoardTag {
     @JoinColumn(nullable = false, name = "tag_id")
     private Tag tag;
 
-     // 게시글 - 태그 관계 생성
+    // 게시글 - 태그 관계 생성
     @Builder
     public BoardTag(Board board, Tag tag) {
         this.board = board;

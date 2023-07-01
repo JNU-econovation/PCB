@@ -19,18 +19,18 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
-    @Column(nullable = false, name = "_identification" )
-    private String identification;
+    @Column(nullable = false, name = "uid" )
+    private String uid;
 
-    @Column(nullable = false, name = "_pwd")
+    @Column(nullable = false, name = "pwd")
     private String pwd;
 
-    @Column(nullable = false, unique = true, name = "_nickname")
+    @Column(nullable = false, unique = true, name = "nickname")
     private String nickname;
-    
+
     @Builder
-    public Member(String identification, String pwd, String nickname) {
-        this.identification = identification;
+    public Member(String uid, String pwd, String nickname) {
+        this.uid = uid;
         this.pwd = pwd;
         this.nickname = nickname;
     }
@@ -39,23 +39,23 @@ public class Member {
         this.nickname = nickname;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Member))
-            return false;
-        Member member = (Member) o;
-        return member.identification == identification && member.nickname == nickname;
-    }
-
-    @Override
-    public int hashCode() {
-        int c = 31;
-        int result = identification == null ? 0 : identification.hashCode();
-        result = c * result + nickname == null ? 0 : nickname.hashCode();
-        return result;
-
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (!(o instanceof Member))
+//            return false;
+//        Member member = (Member) o;
+//        return member.uid == uid && member.nickname == nickname;
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        int c = 31;
+//        int result = uid == null ? 0 : uid.hashCode();
+//        result = c * result + nickname == null ? 0 : nickname.hashCode();
+//        return result;
+//
+//    }
 }
 
 
