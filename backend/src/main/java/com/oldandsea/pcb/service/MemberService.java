@@ -3,6 +3,7 @@ package com.oldandsea.pcb.service;
 
 import com.oldandsea.pcb.domain.dto.request.MemberRequestDto;
 
+import com.oldandsea.pcb.domain.dto.response.MemberResponseDto;
 import com.oldandsea.pcb.domain.entity.Member;
 import com.oldandsea.pcb.domain.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +41,27 @@ public class MemberService {
         }
     }
 
+    @Transactional
+    public MemberResponseDto login(MemberRequestDto memberRequestDto) {
+        Optional<Member> byMemberUid = memberRepository.findByUid(memberRequestDto.getUid());
+        if (byMemberUid.isPresent()) {
+            Member member = byMemberUid.get();
 
+            if (member.getPwd().equals(memberRequestDto.getPwd())) {
+                return MemberResponseDto.builder()
+                        .memberId(member.getMemberId())
+                        .uid(member.getUid())
+                        .pwd(member.getPwd())
+                        .nickname(member.getNickname())
+                        .build();
+
+            } else 
+                return null;
+            
+        }else 
+            return null;
+        
+    }
 }
 
 
