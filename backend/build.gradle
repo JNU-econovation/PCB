@@ -14,11 +14,13 @@ plugins {
 group = 'com.oldandsea'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-}
+
+//def querydslVersion = '5.0.0'
+//configurations {
+//	compileOnly {
+//		extendsFrom annotationProcessor
+//	}
+//}
 
 
 repositories {
@@ -26,18 +28,17 @@ repositories {
 }
 
 dependencies {
-	testImplementation 'com.h2database:h2'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.session:spring-session-core'
+	implementation 'mysql:mysql-connector-java:8.0.33'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
-	annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
-
+	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
 
 tasks.named('test') {
@@ -45,18 +46,29 @@ tasks.named('test') {
 }
 
 // queryDSL 추가 : QueryDSL 빌드 옵션
-def querydslDir = "$buildDir/generated/querydsl"
+def querydslDir = "$buildDir/generated/'querydsl'"
 
+// JPA 사용여부 및 사용 경로 설정
 querydsl {
 	jpa = true
 	querydslSourcesDir = querydslDir
 }
+
+// build시 사용할 sourceSet 추가 설정
 sourceSets {
 	main.java.srcDir querydslDir
 }
-configurations {
-	querydsl.extendsFrom compileClasspath
-}
+
+
+// querydsl 컴파일 시 사용할 옵션 설정
 compileQuerydsl {
 	options.annotationProcessorPath = configurations.querydsl
+}
+
+// querydsl이 compileClassPath를 상속하도록 설정
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+	querydsl.extendsFrom compileClasspath
 }

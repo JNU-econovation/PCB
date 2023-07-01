@@ -2,7 +2,6 @@ package com.oldandsea.pcb.domain.entity;
 
 import javax.persistence.*;
 
-import com.oldandsea.pcb.domain.dto.BoardDetailDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
