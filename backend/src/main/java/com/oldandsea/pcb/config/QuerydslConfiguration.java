@@ -1,4 +1,4 @@
-package com.oldandsea.pcb.util;
+package com.oldandsea.pcb.config;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

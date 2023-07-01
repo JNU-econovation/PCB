@@ -15,6 +15,9 @@ public class MainApiController {
 
     private final MainPageListService mainPageListService;
 
+    /*
+    무한 스크롤, Response의 last가 true 가 될 때 까지 요청 받음
+     */
     @GetMapping("/api/main")
     public Slice<BoardListResponseDto> getBoardList(
             @RequestParam(value = "lastBoardId", required = false) Long lastBoardId,

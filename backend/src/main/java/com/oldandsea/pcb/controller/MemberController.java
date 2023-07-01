@@ -6,7 +6,7 @@ import com.oldandsea.pcb.domain.dto.request.MemberRequestDto;
 
 import com.oldandsea.pcb.domain.dto.response.MemberResponseDto;
 import com.oldandsea.pcb.service.MemberService;
-import com.oldandsea.pcb.util.SessionConst;
+import com.oldandsea.pcb.config.SessionConst;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
