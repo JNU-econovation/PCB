@@ -7,36 +7,31 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
+import java.util.List;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardCreateRequestDto {
-
+    @NotNull(message = "Please  write title")
     private String title;
+    @NotNull(message = "Please write content")
     private String content;
+    @NotNull(message = "Pease write tags")
+    private List<String> boardTagList;
+    @Builder
+    public BoardCreateRequestDto (Long boardId,String title, String content, List<String> boardTagList) {
 
-
+        this.title = title;
+        this.content = content;
+        this.boardTagList = boardTagList;
+    }
     public Board toEntity(Member member) {
         return Board.builder()
                 .title(title)
                 .content(content)
                 .member(member)
                 .build();
-    }
-//    private List<BoardTag> conversion(List<String> boardTagList){
-//        return boardTagList.stream()
-//                .map(tag -> BoardTag.builder()
-//                        .board()
-//                        .tag()
-//                        .build())
-//                .collect(Collectors.toList());
-//                }
-
-    @Builder
-    public BoardCreateRequestDto (Long boardId,String title, String content) {
-
-        this.title = title;
-        this.content = content;
-
     }
 }
 

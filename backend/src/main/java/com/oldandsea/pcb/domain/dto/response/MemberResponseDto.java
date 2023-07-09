@@ -1,13 +1,10 @@
 package com.oldandsea.pcb.domain.dto.response;
 
-
 import com.oldandsea.pcb.domain.entity.Member;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberResponseDto {

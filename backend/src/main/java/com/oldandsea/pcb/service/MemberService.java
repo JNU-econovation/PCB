@@ -1,8 +1,10 @@
 package com.oldandsea.pcb.service;
 
 
-import com.oldandsea.pcb.domain.dto.request.MemberRequestDto;
+import com.oldandsea.pcb.domain.dto.request.MemberCreateRequestDto;
 
+import com.oldandsea.pcb.domain.dto.request.MemberLoginOutRequestDto;
+import com.oldandsea.pcb.domain.dto.request.MemberUidCheckRequestDto;
 import com.oldandsea.pcb.domain.dto.response.MemberResponseDto;
 import com.oldandsea.pcb.domain.entity.Member;
 import com.oldandsea.pcb.domain.repository.MemberRepository;
@@ -17,37 +19,34 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberService {
     public final MemberRepository memberRepository;
-
-    public boolean memberCheck(MemberRequestDto memberDto) {
-        Optional<Member> findMember = memberRepository.findByUid(memberDto.getUid());
-
-        if (findMember.isEmpty())
-            return true;
-        else
-            return false;
-
-    }
-
     @Transactional
-    public String createMember(MemberRequestDto memberRequestDto) {
+    public boolean uidCheck(MemberUidCheckRequestDto memberUidCheckRequestDto) {
+        Optional<Member> member = memberRepository.findByUid(memberUidCheckRequestDto.getUid());
+       return member.isPresent();
+    }
+    @Transactional
+    public String createMember(MemberCreateRequestDto memberCreateRequestDto) {
 
-        Member memeber = memberRequestDto.toEntity();
+        Member memeber = memberCreateRequestDto.toEntity();
         Optional<Member> findMember = memberRepository.findByUid(memeber.getUid());
-        if (findMember.isEmpty()) {
+        if (findMember.isPresent()) {
+            throw new IllegalArgumentException("Duplicate uid");
+        }
+        else {
             memberRepository.save(memeber);
             return memeber.getUid();
-        } else {
-            return null;
         }
     }
 
     @Transactional
-    public MemberResponseDto login(MemberRequestDto memberRequestDto) {
-        Optional<Member> byMemberUid = memberRepository.findByUid(memberRequestDto.getUid());
-        if (byMemberUid.isPresent()) {
+    public MemberResponseDto login(MemberLoginOutRequestDto memberLoginOutRequestDto) {
+        Optional<Member> byMemberUid = memberRepository.findByUid(memberLoginOutRequestDto.getUid());
+        if (byMemberUid.isEmpty()) {
+            throw new NullPointerException("Please check uid or pwd");
+        } else {
             Member member = byMemberUid.get();
 
-            if (member.getPwd().equals(memberRequestDto.getPwd())) {
+            if (member.getPwd().equals(memberLoginOutRequestDto.getPwd())) {
                 return MemberResponseDto.builder()
                         .memberId(member.getMemberId())
                         .uid(member.getUid())
@@ -55,14 +54,11 @@ public class MemberService {
                         .nickname(member.getNickname())
                         .build();
 
-            } else 
+            } else
                 return null;
-            
-        }else 
-            return null;
-        
+
+        }
     }
 }
-
 
 

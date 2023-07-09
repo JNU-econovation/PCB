@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "member")
+@Table(name = "members")
 public class Member {
     @Id
     @Column(name = "id")
@@ -38,24 +38,6 @@ public class Member {
         this.pwd = pwd;
         this.nickname = nickname;
     }
-
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (!(o instanceof Member))
-//            return false;
-//        Member member = (Member) o;
-//        return member.uid == uid && member.nickname == nickname;
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        int c = 31;
-//        int result = uid == null ? 0 : uid.hashCode();
-//        result = c * result + nickname == null ? 0 : nickname.hashCode();
-//        return result;
-//
-//    }
 }
 
 

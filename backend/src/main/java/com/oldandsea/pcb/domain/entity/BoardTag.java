@@ -6,20 +6,21 @@ import lombok.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "boardTag")
+@Table(name = "board_tags")
 public class BoardTag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long boardTagId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false ,name = "board_id")
     private Board board;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @JoinColumn(nullable = false, name = "tag_id")
     private Tag tag;
+
 
     // 게시글 - 태그 관계 생성
     @Builder

@@ -21,9 +21,9 @@ import java.util.List;
 @Repository
 @Primary
 public class BoardRepositoryImpl implements BoardRepositoryCustom {
-    private final EntityManager em;
-    private final JPAQueryFactory query;
 
+    private final JPAQueryFactory query;
+    private final EntityManager em;
 
     public BoardRepositoryImpl(EntityManager em) {
         this.em = em;

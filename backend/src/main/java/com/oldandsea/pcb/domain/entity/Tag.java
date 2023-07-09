@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "tag")
+@Table(name = "tags")
 public class Tag {
 
     @Id
@@ -19,7 +19,7 @@ public class Tag {
     @Column(name = "id")
     private Long tagId;
 
-    @Column(nullable = false, name = "name")
+    @Column(nullable = false, unique = true, name = "name")
     private String name;
 
     @Builder //tag 생성

@@ -1,10 +1,7 @@
 package com.oldandsea.pcb.domain.dto.response;
 
 import lombok.*;
-
 import java.util.List;
-
-
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardDetailResponseDto {

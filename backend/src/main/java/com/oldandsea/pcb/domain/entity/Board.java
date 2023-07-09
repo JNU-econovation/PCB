@@ -18,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "board")
+@Table(name = "boards")
 public class Board {
     @Id
     @Column(name = "id")
@@ -42,10 +42,11 @@ public class Board {
     @LastModifiedDate
     private LocalDateTime modifiedAt;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "board", cascade = {CascadeType.ALL}, orphanRemoval = true)
     private List<BoardTag> boardTagList = new ArrayList<>();
 
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 

@@ -14,8 +14,6 @@ import javax.servlet.http.HttpSession;
 @Slf4j
 public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
-
-
     public boolean supportsParameter(MethodParameter parameter) {
         // @Login 어노테이션이 붙어있어야 하고
         boolean hasLoginAnnotation = parameter.hasParameterAnnotation(Login.class);
@@ -23,7 +21,6 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
         boolean hasMemberType = Member.class.isAssignableFrom(parameter.getParameterType());
         return hasLoginAnnotation && hasMemberType;
     }
-
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
