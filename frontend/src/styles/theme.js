@@ -7,7 +7,9 @@ const fontSize = {
     xl: calcRem(20),
     xxl: calcRem(22),
     xxxl: calcRem(24),
-    titleSize: calcRem(50),
+
+    heading: calcRem(40),
+    title: calcRem(32),
 };
 
 const padding = {
@@ -46,11 +48,30 @@ const color = {
     dark_blue: '#146C94',
     red: '#DC3434',
 
-    softWhite: '#F6F1F1',
-    softBlack: '#212529',
-    softYellow: '#FFF3CE',
-    softGreen: '#DDFFDD',
-    softBlue: '#BAEAFF',
+    soft_white: '#F6F1F1',
+    soft_black: '#212529',
+    soft_yellow: '#FFF3CE',
+    soft_green: '#DDFFDD',
+    soft_blue: '#BAEAFF',
+};
+
+const location = {
+    flex: (direction = 'row', align = 'center', justify = 'center') => `
+        display: flex;
+        flex-direction: ${direction};
+        align-items: ${align};
+        justify-content: ${justify};
+    `,
+
+    form: `
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: center;
+        gap: 1rem;
+
+        padding: ${padding.lg}
+    `,
 };
 
 const theme = {
@@ -59,6 +80,7 @@ const theme = {
     margin,
     color,
     border,
+    location,
 };
 
 export default theme;
