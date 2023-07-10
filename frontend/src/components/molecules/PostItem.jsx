@@ -6,10 +6,10 @@ import { useNavigate } from 'react-router-dom';
 
 const PostItem = ({ data }) => {
     const navigate = useNavigate();
-    const { boardId, title, content, boardTagList, createdAt } = data;
+    const { title, content, boardTagList, createdAt } = data;
 
     return (
-        <StyledPostItem id={boardId} onClick={() => navigate(`/post/:${boardId}`)}>
+        <StyledPostItem onClick={() => navigate(`/post/:${boardId}`)}>
             <Text className="smallTitle">{title}</Text>
             <Text className="gray">
                 {content.length < 200 ? content : `${content.substr(0, 200)} ...`}

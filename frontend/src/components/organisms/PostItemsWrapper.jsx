@@ -1,14 +1,15 @@
 import { mainPostListAtom } from '../../store/post';
 import PostItem from '../molecules/PostItem';
-import { useAtom } from 'jotai';
+import { useAtomValue } from 'jotai';
 import { styled } from 'styled-components';
 
 const PostItemsWrapper = () => {
-    const [mainPostList, setMainPostList] = useAtom(mainPostListAtom);
+    const mainPostList = useAtomValue(mainPostListAtom);
+
     return (
         <StyledWrapper>
             {mainPostList.map((data) => (
-                <PostItem key={data.id} data={data} />
+                <PostItem key={data.boardId} data={data} />
             ))}
         </StyledWrapper>
     );
