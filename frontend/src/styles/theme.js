@@ -31,9 +31,15 @@ const margin = {
 };
 
 const border = {
+    width_sm: calcRem(1),
+    width_base: calcRem(1.5),
+    width_lg: calcRem(2),
+    width_xl: calcRem(2.5),
     rad_sm: calcRem(4),
     rad_base: calcRem(8),
     rad_lg: calcRem(12),
+    rad_xl: calcRem(16),
+    rad_xxl: calcRem(20),
 };
 
 const color = {

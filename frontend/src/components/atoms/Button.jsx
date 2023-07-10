@@ -29,20 +29,21 @@ const StyledButton = styled.button`
     }
 
     &.white {
-        border-color: ${({ theme }) => theme.color.green};
+        border-color: ${({ theme }) => theme.color.blue};
         background-color: ${({ theme }) => theme.color.white};
-        color: ${({ theme }) => theme.color.green};
+        color: ${({ theme }) => theme.color.blue};
     }
 
     &.white:hover {
-        border-color: ${({ theme }) => theme.color.blue};
-        background-color: ${({ theme }) => theme.color.blue};
+        border-color: ${({ theme }) => theme.color.light_blue};
+        background-color: ${({ theme }) => theme.color.light_blue};
         color: ${({ theme }) => theme.color.white};
     }
 
     &.small {
+        margin: 0;
         padding: ${({ theme }) => theme.padding.small};
-        min-width: 8rem;
+        min-width: 6rem;
         font-size: ${({ theme }) => theme.fontSize.small};
     }
 
