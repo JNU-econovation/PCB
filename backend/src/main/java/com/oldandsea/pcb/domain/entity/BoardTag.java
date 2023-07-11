@@ -2,11 +2,13 @@ package com.oldandsea.pcb.domain.entity;
 
 import javax.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "board_tags")
+@DynamicUpdate
 public class BoardTag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +19,7 @@ public class BoardTag {
     @JoinColumn(nullable = false ,name = "board_id")
     private Board board;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(nullable = false, name = "tag_id")
     private Tag tag;
 

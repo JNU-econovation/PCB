@@ -1,6 +1,7 @@
 package com.oldandsea.pcb.service;
 
 
+import com.oldandsea.pcb.domain.dto.request.BoardUpdateRequestDto;
 import com.oldandsea.pcb.domain.dto.request.MemberCreateRequestDto;
 
 import com.oldandsea.pcb.domain.dto.request.MemberLoginOutRequestDto;
@@ -18,7 +19,8 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class MemberService {
-    public final MemberRepository memberRepository;
+   private final MemberRepository memberRepository;
+
     @Transactional
     public boolean uidCheck(MemberUidCheckRequestDto memberUidCheckRequestDto) {
         Optional<Member> member = memberRepository.findByUid(memberUidCheckRequestDto.getUid());
@@ -58,6 +60,33 @@ public class MemberService {
                 return null;
 
         }
+    }
+    @Transactional
+    public void update(Long memberId, BoardUpdateRequestDto boardUpdateRequestDto) {
+        Optional<Member> member = memberRepository.findByMemberId(memberId);
+        if(member.isEmpty()) {
+            throw new NullPointerException("Member doesn't exist");
+        }
+        Member member1 = member.get();
+        String pwd = boardUpdateRequestDto.getPwd();
+        String nickname = boardUpdateRequestDto.getNickname();
+
+        if (!boardUpdateRequestDto.getPwd().isEmpty() && !boardUpdateRequestDto.getNickname().isEmpty()) {
+            member1.updateMember(pwd, nickname);
+        } else if (!boardUpdateRequestDto.getPwd().isEmpty()) {
+            member1.updateMember(pwd, member1.getNickname());
+        } else if (!boardUpdateRequestDto.getNickname().isEmpty()) {
+            member1.updateMember(member1.getPwd(), nickname);
+        }
+    }
+
+    @Transactional
+    public void delete(Long memberId) {
+        Optional<Member> member = memberRepository.findByMemberId1(memberId);
+        if(member.isEmpty()) {
+            throw new NullPointerException("Member doesn't exsist");
+        }
+        memberRepository.delete(member.get());
     }
 }
 

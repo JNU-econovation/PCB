@@ -18,7 +18,7 @@ public class WebConfig implements WebMvcConfigurer {
                 인터셉터에서 제외할 패턴 지정, 로그인할 때는 로그인 인증과정 제외
                 (안그러면 로그인하기전에는 세션이 없으니 로그인 요청이 계속 실패됨)
                  */
-                .excludePathPatterns("/css/**", "/*.ico", "/error","/users/login","/users/create");
+                .excludePathPatterns("/css/**", "/*.ico", "/error","/users/login","/users/create","/api/main");
     }
 
     @Override

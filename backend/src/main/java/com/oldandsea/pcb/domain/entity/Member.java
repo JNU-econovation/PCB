@@ -6,13 +6,17 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "members")
+@DynamicUpdate
 public class Member {
     @Id
     @Column(name = "id")
@@ -27,6 +31,9 @@ public class Member {
 
     @Column(nullable = false, unique = true, name = "nickname")
     private String nickname;
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Board> boards = new ArrayList<>();
+
 
     @Builder
     public Member(String uid, String pwd, String nickname) {

@@ -18,10 +18,10 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class BoardCreateService {
-    public final BoardRepository boardRepository;
-    public final MemberRepository memberRepository;
-    public final TagService tagService;
-    public final BoardTagRepository boardTagRepository;
+   private final BoardRepository boardRepository;
+    private final MemberRepository memberRepository;
+    private final TagService tagService;
+    private final BoardTagRepository boardTagRepository;
 
     @Transactional
     public BoardCreateResponseDto createBoard(BoardCreateRequestDto boardCreateDto, Long memberId) {
