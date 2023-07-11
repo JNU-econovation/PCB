@@ -15,7 +15,9 @@ const HomePage = () => {
     const [isLast, setIsLast] = useState(false);
     const { ref, inView, entry } = useInView();
 
-    useEffect(() => fetchInitPostList(), []);
+    useEffect(() => {
+        fetchInitPostList();
+    }, []);
 
     useEffect(() => {
         if (inView) {
@@ -24,12 +26,16 @@ const HomePage = () => {
     }, [inView]);
 
     const fetchInitPostList = async () => {
-        await home({ lastBoardId: null, limit: 9 })
-            .then((response) => {
-                setMainPostList((prev) => [...prev, response.content]);
-                setIsLast(response.last);
-            })
-            .catch((error) => console.error(error));
+        try {
+            await home({ lastBoardId: '', limit: 9 })
+                .then((response) => {
+                    setMainPostList((prev) => [...prev, response.content]);
+                    setIsLast(response.last);
+                })
+                .catch((error) => console.error(error));
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     const fetchPostList = async () => {

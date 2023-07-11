@@ -21,5 +21,5 @@ instance.interceptors.response.use(
 
 export const home = (data) => {
     const { lastBoardId, limit } = data;
-    return instance.get('./api/main', { lastBoardId, limit });
+    return instance.get('./api/main', { params: { lastBoardId: lastBoardId, limit: limit } });
 };
