@@ -7,20 +7,16 @@ import { useNavigate } from 'react-router-dom';
 const PostItem = ({ data }) => {
     const navigate = useNavigate();
     const { boardId, title, content, boardTagList, createdAt } = data;
-
     return (
-        <StyledPostItem id={boardId} onClick={() => navigate(`/post/:${boardId}`)}>
+        <StyledPostItem onClick={() => navigate(`/post/:${boardId}`)}>
             <Text className="smallTitle">{title}</Text>
             <Text className="gray">
                 {content.length < 200 ? content : `${content.substr(0, 200)} ...`}
             </Text>
-            <Box className="start">
-                {boardTagList.map((t) => (
-                    <Tag>#{t}</Tag>
-                ))}
-            </Box>
+            <Box className="start">{boardTagList && boardTagList.map((t) => <Tag>#{t}</Tag>)}</Box>
             <Text>
-                {createdAt.getFullYear()}년 {createdAt.getMonth() + 1}월 {createdAt.getDate()}일
+                {new Date(createdAt).getFullYear()}년 {new Date(createdAt).getMonth() + 1}월{' '}
+                {new Date(createdAt).getDate()}일
             </Text>
         </StyledPostItem>
     );

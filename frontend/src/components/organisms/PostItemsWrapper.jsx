@@ -5,12 +5,12 @@ import { styled } from 'styled-components';
 
 const PostItemsWrapper = () => {
     const mainPostList = useAtomValue(mainPostListAtom);
-
     return (
         <StyledWrapper>
-            {mainPostList.map((data) => (
-                <PostItem key={data.boardId} data={data} />
-            ))}
+            {mainPostList.length !== 0 &&
+                mainPostList.map((data) => {
+                    return <PostItem key={data.boardId} data={data} />;
+                })}
         </StyledWrapper>
     );
 };
