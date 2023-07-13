@@ -4,15 +4,17 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
+import javax.validation.constraints.NotNull;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BoardUpdateRequestDto {
-    private String nickname;
+public class MemberLoginRequestDto {
+    @NotNull(message = "Please write uid")
+    private String uid;
+    @NotNull(message = "Please write pwd")
     private String pwd;
     @Builder
-    public BoardUpdateRequestDto(String nickname, String pwd) {
-        this.nickname = nickname;
+    public MemberLoginRequestDto(String uid, String pwd) {
+        this.uid = uid;
         this.pwd = pwd;
     }
 }

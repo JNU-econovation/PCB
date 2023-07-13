@@ -10,4 +10,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("select m from Member m left join fetch m.boards where m.memberId = :memberId")
     Optional<Member> findByMemberId1(@Param("memberId") Long memberId);
     Optional<Member> findByMemberId(Long memberId);
+
+    Optional<Member> findByNickname(String nickname);
 }

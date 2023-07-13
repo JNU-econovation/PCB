@@ -1,17 +1,11 @@
 package com.oldandsea.pcb.service;
 
-
-import com.oldandsea.pcb.domain.dto.request.BoardUpdateRequestDto;
-import com.oldandsea.pcb.domain.dto.request.MemberCreateRequestDto;
-
-import com.oldandsea.pcb.domain.dto.request.MemberLoginOutRequestDto;
-import com.oldandsea.pcb.domain.dto.request.MemberUidCheckRequestDto;
+import com.oldandsea.pcb.domain.dto.request.*;
 import com.oldandsea.pcb.domain.dto.response.MemberResponseDto;
 import com.oldandsea.pcb.domain.entity.Member;
 import com.oldandsea.pcb.domain.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.util.Optional;
 
@@ -25,6 +19,12 @@ public class MemberService {
     public boolean uidCheck(MemberUidCheckRequestDto memberUidCheckRequestDto) {
         Optional<Member> member = memberRepository.findByUid(memberUidCheckRequestDto.getUid());
        return member.isPresent();
+    }
+
+    @Transactional
+    public boolean nickNameCheck(MemberNickNameCheckRequestDto memberNickNameCheckRequestDto) {
+        Optional<Member> member = memberRepository.findByNickname(memberNickNameCheckRequestDto.getNickname());
+        return member.isPresent();
     }
     @Transactional
     public String createMember(MemberCreateRequestDto memberCreateRequestDto) {
@@ -41,14 +41,14 @@ public class MemberService {
     }
 
     @Transactional
-    public MemberResponseDto login(MemberLoginOutRequestDto memberLoginOutRequestDto) {
-        Optional<Member> byMemberUid = memberRepository.findByUid(memberLoginOutRequestDto.getUid());
+    public MemberResponseDto login(MemberLoginRequestDto memberLoginRequestDto) {
+        Optional<Member> byMemberUid = memberRepository.findByUid(memberLoginRequestDto.getUid());
         if (byMemberUid.isEmpty()) {
             throw new NullPointerException("Please check uid or pwd");
         } else {
             Member member = byMemberUid.get();
 
-            if (member.getPwd().equals(memberLoginOutRequestDto.getPwd())) {
+            if (member.getPwd().equals(memberLoginRequestDto.getPwd())) {
                 return MemberResponseDto.builder()
                         .memberId(member.getMemberId())
                         .uid(member.getUid())
@@ -62,20 +62,20 @@ public class MemberService {
         }
     }
     @Transactional
-    public void update(Long memberId, BoardUpdateRequestDto boardUpdateRequestDto) {
+    public void update(Long memberId, MemberUpdateRequestDto memberUpdateRequestDto) {
         Optional<Member> member = memberRepository.findByMemberId(memberId);
         if(member.isEmpty()) {
             throw new NullPointerException("Member doesn't exist");
         }
         Member member1 = member.get();
-        String pwd = boardUpdateRequestDto.getPwd();
-        String nickname = boardUpdateRequestDto.getNickname();
+        String pwd = memberUpdateRequestDto.getPwd();
+        String nickname = memberUpdateRequestDto.getNickname();
 
-        if (!boardUpdateRequestDto.getPwd().isEmpty() && !boardUpdateRequestDto.getNickname().isEmpty()) {
+        if (!memberUpdateRequestDto.getPwd().isEmpty() && !memberUpdateRequestDto.getNickname().isEmpty()) {
             member1.updateMember(pwd, nickname);
-        } else if (!boardUpdateRequestDto.getPwd().isEmpty()) {
+        } else if (!pwd.isEmpty()) {
             member1.updateMember(pwd, member1.getNickname());
-        } else if (!boardUpdateRequestDto.getNickname().isEmpty()) {
+        } else if (!nickname.isEmpty()) {
             member1.updateMember(member1.getPwd(), nickname);
         }
     }
@@ -88,6 +88,9 @@ public class MemberService {
         }
         memberRepository.delete(member.get());
     }
+
+
+
 }
 
 

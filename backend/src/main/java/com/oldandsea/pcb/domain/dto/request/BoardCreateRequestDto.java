@@ -17,7 +17,7 @@ public class BoardCreateRequestDto {
     private String title;
     @NotNull(message = "Please write content")
     private String content;
-    @NotNull(message = "Pease write tags")
+    @NotNull(message = "Please write tags")
     private List<String> boardTagList;
     @Builder
     public BoardCreateRequestDto (Long boardId,String title, String content, List<String> boardTagList) {
