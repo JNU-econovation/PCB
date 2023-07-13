@@ -6,6 +6,7 @@ import com.oldandsea.pcb.service.SessionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.util.List;
@@ -25,7 +26,7 @@ public class WebConfig implements WebMvcConfigurer {
                 인터셉터에서 제외할 패턴 지정, 로그인할 때는 로그인 인증과정 제외
                 (안그러면 로그인하기전에는 세션이 없으니 로그인 요청이 계속 실패됨)
                  */
-                .excludePathPatterns("/css/**", "/*.ico", "/error","/member/login","/member/create","/api/main");
+                .excludePathPatterns("/css/**", "/*.ico", "/error", "/member/login", "/member/create", "/api/main");
     }
 
     @Override

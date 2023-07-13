@@ -20,7 +20,7 @@ public class SessionService {
     public MemberLoginResponseDto createSession(MemberResponseDto loginResult, String sessionId) {
         Session dbSession = createSession(sessionId, loginResult.getMemberId());
         return MemberLoginResponseDto.builder()
-                .sessionId(dbSession.getId())
+                .sessionId(dbSession.getSessionId())
                 .build();
     }
 
@@ -36,8 +36,6 @@ public class SessionService {
                 .build();
         return sessionRepository.save(dbSession);
     }
-
-
 }
 
 

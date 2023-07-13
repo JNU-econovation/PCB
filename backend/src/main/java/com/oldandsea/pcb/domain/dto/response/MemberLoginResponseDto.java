@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberLoginResponseDto {
-    private Long sessionId;
+    private String sessionId;
     @Builder
-    public MemberLoginResponseDto(Long sessionId) {
+    public MemberLoginResponseDto(String sessionId) {
         this.sessionId = sessionId;
     }
 
