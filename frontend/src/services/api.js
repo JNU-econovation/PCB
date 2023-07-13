@@ -23,3 +23,8 @@ export const home = (data) => {
     const { lastBoardId, limit } = data;
     return instance.get('./api/main', { params: { lastBoardId: lastBoardId, limit: limit } });
 };
+
+export const login = (data) => {
+    const { id, password } = data;
+    return instance.post('./users/login', { identification: id, pwd: password });
+};
