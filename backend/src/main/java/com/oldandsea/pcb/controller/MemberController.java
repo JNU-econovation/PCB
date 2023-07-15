@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -55,9 +57,9 @@ public class MemberController {
         MemberResponseDto loginResult = memberService.login(memberLoginRequestDto);
         if (loginResult != null) {
             HttpSession session = request.getSession(true);
-            session.setMaxInactiveInterval(1800);
             String sessionId = session.getId();
-            response.setHeader("Set-Cookie", "JSESSIONID=" + sessionId + "; Path=/; HttpOnly; SameSite=None; Secure");
+            session.setMaxInactiveInterval(1);
+            response.setHeader("Set-Cookie", "PCBSESSIONID=" + sessionId + "; Path=/; HttpOnly; SameSite=None; Secure");
             MemberLoginResponseDto memberLoginResponseDto = sessionService.createSession(loginResult, session.getId());
             return ResponseEntity.ok(ApiUtils.success(memberLoginResponseDto));
         } else {
@@ -68,8 +70,8 @@ public class MemberController {
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        sessionService.deleteSession(session.getId());
+        String sessionId = (String)request.getAttribute("PCBSESSIONID");
+        sessionService.deleteSession(sessionId);
         return ResponseEntity.ok(ApiUtils.success("Logout success"));
     }
 

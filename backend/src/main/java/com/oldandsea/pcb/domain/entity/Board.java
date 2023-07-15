@@ -63,9 +63,8 @@ public class Board {
     }
 
 
-    public void updateBoard(String title, String content, List<BoardTag> boardTagList) {
+    public void updateBoard(String title, String content) {
         this.title = title;
         this.content = content;
-        this.boardTagList = boardTagList;
     }
 }

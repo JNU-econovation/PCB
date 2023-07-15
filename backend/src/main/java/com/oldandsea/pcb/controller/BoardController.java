@@ -1,15 +1,13 @@
 package com.oldandsea.pcb.controller;
 
-import com.oldandsea.pcb.config.SessionConst;
+import com.oldandsea.pcb.config.Login;
 import com.oldandsea.pcb.config.apiresponse.ApiResult;
 import com.oldandsea.pcb.config.apiresponse.ApiUtils;
 import com.oldandsea.pcb.domain.dto.request.BoardCreateRequestDto;
+import com.oldandsea.pcb.domain.dto.request.BoardUpdateRequestDto;
 import com.oldandsea.pcb.service.BoardService;
 import lombok.RequiredArgsConstructor;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @RestController
@@ -18,12 +16,13 @@ import javax.validation.Valid;
 public class BoardController {
     public final BoardService boardService;
     @PostMapping("/create")
-    public ApiResult<?> createBoard(@RequestBody @Valid BoardCreateRequestDto boardCreateDto, HttpSession session) {
+    public ApiResult<?> createBoard(@RequestBody @Valid BoardCreateRequestDto boardCreateDto, @Login Long memberId) {
 
-        Long memberId = (Long) session.getAttribute(SessionConst.LOGIN_MEMBER);
-        if (memberId == null) {
-            return ApiUtils.error("Please login first", HttpStatus.BAD_REQUEST);
-        }
         return ApiUtils.success(boardService.createBoard(boardCreateDto, memberId));
+    }
+
+    @PutMapping("/update/{boardId}")
+    public ApiResult<?> updateBoard(@RequestBody @Valid BoardUpdateRequestDto boardUpdateRequestDto, @PathVariable Long boardId) {
+        return ApiUtils.success(boardService.updateBoard(boardUpdateRequestDto, boardId));
     }
 }

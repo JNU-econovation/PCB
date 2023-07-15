@@ -31,8 +31,7 @@ public class BoardTag {
         this.tag = tag;
     }
     //게시글 - 태그 관계 수정
-    public void updateBoardTag(Board board, Tag tag) {
-        this.board = board;
+    public void updateBoardTag(Tag tag) {
         this.tag = tag;
     }
 }

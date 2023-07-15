@@ -9,13 +9,13 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BoardCreateResponseDto {
+public class BoardUpdateResponseDto {
     private Long boardId;
     private String title;
     private String content;
     private List<String> boardTagList;
     @Builder
-    public BoardCreateResponseDto(Long boardId, String title, String content, List<String> boardTagList) {
+    public BoardUpdateResponseDto(Long boardId, String title, String content, List<String> boardTagList) {
         this.boardId = boardId;
         this.title = title;
         this.content = content;
