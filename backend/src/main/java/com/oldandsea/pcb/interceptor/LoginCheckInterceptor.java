@@ -32,7 +32,11 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
             log.info("미인증 사용자 요청");
             throw new NotAuthenticatedException("Plase login first");
         }
-        if(dbSessionCheck.getCreatedAt().plusMinutes(30).isAfter(LocalDateTime.now())) {
+        Session activeSession = dbSession.get();
+        activeSession.updateSession();
+        sessionRepository.save(activeSession);
+
+        if(dbSessionCheck.getModifiedAt().plusMinutes(30).isBefore(LocalDateTime.now())) {
             sessionService.deleteSession(dbSessionCheck.getSessionId());
             throw new NotAuthenticatedException("Please login first");
         }

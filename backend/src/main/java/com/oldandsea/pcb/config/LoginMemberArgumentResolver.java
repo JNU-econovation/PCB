@@ -1,6 +1,9 @@
 package com.oldandsea.pcb.config;
 
 import com.oldandsea.pcb.domain.entity.Member;
+import com.oldandsea.pcb.domain.repository.SessionRepository;
+import com.oldandsea.pcb.service.SessionService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -12,7 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Slf4j
+@RequiredArgsConstructor
 public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolver {
+    private final SessionService sessionService;
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         // @Login 어노테이션이 붙어있어야 하고
@@ -28,6 +33,6 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
         if (session == null) {
             return null;
         }
-        return session.getAttribute(SessionConst.LOGIN_MEMBER);
+        return sessionService.Session_findByKey(session.getId());
     }
 }

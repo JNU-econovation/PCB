@@ -25,10 +25,18 @@ public class Session {
     private Long memberId;
     @CreatedDate
     private LocalDateTime createdAt;
+
+    @CreatedDate
+    private LocalDateTime modifiedAt;
     @Builder
     public Session(String sessionId, Long memberId) {
         this.sessionId = sessionId;
         this.memberId= memberId;
         this.createdAt = LocalDateTime.now();
+        this.modifiedAt = LocalDateTime.now();
+    }
+
+    public void updateSession() {
+        this.modifiedAt = LocalDateTime.now();
     }
 }

@@ -4,7 +4,7 @@ import com.oldandsea.pcb.config.SessionConst;
 import com.oldandsea.pcb.config.apiresponse.ApiResult;
 import com.oldandsea.pcb.config.apiresponse.ApiUtils;
 import com.oldandsea.pcb.domain.dto.request.BoardCreateRequestDto;
-import com.oldandsea.pcb.service.BoardCreateService;
+import com.oldandsea.pcb.service.BoardService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RequestMapping("/board")
 public class BoardController {
-    public final BoardCreateService boardCreateService;
+    public final BoardService boardService;
     @PostMapping("/create")
     public ApiResult<?> createBoard(@RequestBody @Valid BoardCreateRequestDto boardCreateDto, HttpSession session) {
 
@@ -24,6 +24,6 @@ public class BoardController {
         if (memberId == null) {
             return ApiUtils.error("Please login first", HttpStatus.BAD_REQUEST);
         }
-        return ApiUtils.success(boardCreateService.createBoard(boardCreateDto, memberId));
+        return ApiUtils.success(boardService.createBoard(boardCreateDto, memberId));
     }
 }

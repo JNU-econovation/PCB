@@ -61,35 +61,33 @@ public class MemberService {
 
         }
     }
-    @Transactional
-    public void update(Long memberId, MemberUpdateRequestDto memberUpdateRequestDto) {
-        Optional<Member> member = memberRepository.findByMemberId(memberId);
-        if(member.isEmpty()) {
-            throw new NullPointerException("Member doesn't exist");
-        }
-        Member member1 = member.get();
-        String pwd = memberUpdateRequestDto.getPwd();
-        String nickname = memberUpdateRequestDto.getNickname();
-
-        if (!memberUpdateRequestDto.getPwd().isEmpty() && !memberUpdateRequestDto.getNickname().isEmpty()) {
-            member1.updateMember(pwd, nickname);
-        } else if (!pwd.isEmpty()) {
-            member1.updateMember(pwd, member1.getNickname());
-        } else if (!nickname.isEmpty()) {
-            member1.updateMember(member1.getPwd(), nickname);
-        }
-    }
 
     @Transactional
     public void delete(Long memberId) {
-        Optional<Member> member = memberRepository.findByMemberId1(memberId);
+        Optional<Member> member = memberRepository.findByMemberIdFetch(memberId);
         if(member.isEmpty()) {
             throw new NullPointerException("Member doesn't exsist");
         }
         memberRepository.delete(member.get());
     }
 
+    @Transactional
+    public void updatePwd(Long memberId,MemberPwdUpdateRequestDto pwdUpdateRequestDto) {
+        String pwd  = pwdUpdateRequestDto.getPwd();
+        Member member = memberRepository.findByMemberId(memberId).orElseThrow(
+                () -> new IllegalArgumentException("Member doesn't exsist")
+        );
+        member.updatePwd(pwd);
+    }
 
+    @Transactional
+    public void updateNickname(Long memberId, MemberNickUpdateRequestDto nickUpdateRequestDto) {
+        String nickname = nickUpdateRequestDto.getNickname();
+        Member member = memberRepository.findByMemberId(memberId).orElseThrow(
+                () -> new IllegalArgumentException("Member doesn't exsist")
+        );
+        member.updateNickname(nickname);
+    }
 
 }
 

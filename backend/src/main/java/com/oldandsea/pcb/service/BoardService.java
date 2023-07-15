@@ -17,7 +17,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class BoardCreateService {
+public class BoardService {
    private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
     private final TagService tagService;
@@ -55,6 +55,10 @@ public class BoardCreateService {
                 .title(savedBoard.getTitle())
                 .content(savedBoard.getContent())
                 .build();
+    }
+    @Transactional
+    public void updateBoard() {
+
     }
 }
 

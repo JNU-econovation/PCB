@@ -41,8 +41,11 @@ public class Member {
         this.pwd = pwd;
         this.nickname = nickname;
     }
-    public void updateMember(String pwd, String nickname) {
+    public void updatePwd(String pwd) {
         this.pwd = pwd;
+    }
+
+    public void updateNickname(String nickname) {
         this.nickname = nickname;
     }
 }

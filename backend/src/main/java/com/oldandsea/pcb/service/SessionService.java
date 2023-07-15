@@ -1,15 +1,13 @@
 package com.oldandsea.pcb.service;
 
-import com.oldandsea.pcb.domain.dto.layer.SessionCreateDto;
 import com.oldandsea.pcb.domain.dto.response.MemberLoginResponseDto;
 import com.oldandsea.pcb.domain.dto.response.MemberResponseDto;
 import com.oldandsea.pcb.domain.entity.Session;
 import com.oldandsea.pcb.domain.repository.SessionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
-import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +33,13 @@ public class SessionService {
                 .memberId(memberId)
                 .build();
         return sessionRepository.save(dbSession);
+    }
+
+    @Transactional
+    public Session Session_findByKey(String sessionId) {
+        return sessionRepository.findBySessionId(sessionId).orElseThrow(
+                () -> new IllegalArgumentException("Session doesn't exsist")
+        );
     }
 }
 

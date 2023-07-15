@@ -56,6 +56,8 @@ public class MemberController {
         if (loginResult != null) {
             HttpSession session = request.getSession(true);
             session.setMaxInactiveInterval(1800);
+            String sessionId = session.getId();
+            response.setHeader("Set-Cookie", "JSESSIONID=" + sessionId + "; Path=/; HttpOnly; SameSite=None; Secure");
             MemberLoginResponseDto memberLoginResponseDto = sessionService.createSession(loginResult, session.getId());
             return ResponseEntity.ok(ApiUtils.success(memberLoginResponseDto));
         } else {
@@ -71,12 +73,18 @@ public class MemberController {
         return ResponseEntity.ok(ApiUtils.success("Logout success"));
     }
 
-    @PutMapping("/update/{memberId}")
-    public ResponseEntity<?> update(@PathVariable("memberId") Long memberId, @RequestBody MemberUpdateRequestDto memberUpdateRequestDto) {
-        memberService.update(memberId, memberUpdateRequestDto);
-        return ResponseEntity.ok(ApiUtils.success("Member update success"));
+    @PutMapping("/pwd/{memberId}")
+    public ResponseEntity<?> updatePwd(@PathVariable("memberId") Long memberId, @RequestBody MemberPwdUpdateRequestDto memberPwdUpdateRequestDto) {
+        memberService.updatePwd(memberId,memberPwdUpdateRequestDto);
+        return ResponseEntity.ok(ApiUtils.success("Pwd update success"));
     }
 
+
+    @PutMapping("/nickname/{memberId}")
+    public ResponseEntity<?> updateNickname(@PathVariable("memberId") Long memberId, @RequestBody MemberNickUpdateRequestDto nickUpdateRequestDto) {
+        memberService.updateNickname(memberId,nickUpdateRequestDto);
+        return ResponseEntity.ok(ApiUtils.success("Nickname update success"));
+    }
     @DeleteMapping("/delete/{memberId}")
     public ResponseEntity<?> delete(@PathVariable("memberId") Long memberId) {
         memberService.delete(memberId);
