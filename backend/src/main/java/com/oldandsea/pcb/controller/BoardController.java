@@ -20,9 +20,14 @@ public class BoardController {
 
         return ApiUtils.success(boardService.createBoard(boardCreateDto, memberId));
     }
-
     @PutMapping("/update/{boardId}")
     public ApiResult<?> updateBoard(@RequestBody @Valid BoardUpdateRequestDto boardUpdateRequestDto, @PathVariable Long boardId) {
         return ApiUtils.success(boardService.updateBoard(boardUpdateRequestDto, boardId));
+    }
+
+    @DeleteMapping("/delete/{boardId}")
+    public ApiResult<?> deleteBoard(@PathVariable Long boardId) {
+        boardService.deleteBoard(boardId);
+        return ApiUtils.success("Success delete board");
     }
 }

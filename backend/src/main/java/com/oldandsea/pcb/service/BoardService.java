@@ -76,6 +76,14 @@ public class BoardService {
                 .boardTagList(tagService.tagToStringTags(tags))
                 .build();
     }
+
+    @Transactional
+    public void deleteBoard(Long boardId) {
+        Board board = boardRepository.findByBoardTagFetch(boardId).orElseThrow(
+                () -> new IllegalArgumentException("Board doesn't exsist")
+        );
+        boardRepository.delete(board);
+    }
 }
 
 
