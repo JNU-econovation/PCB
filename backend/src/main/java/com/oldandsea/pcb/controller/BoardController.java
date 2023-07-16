@@ -5,6 +5,7 @@ import com.oldandsea.pcb.config.apiresponse.ApiResult;
 import com.oldandsea.pcb.config.apiresponse.ApiUtils;
 import com.oldandsea.pcb.domain.dto.request.BoardCreateRequestDto;
 import com.oldandsea.pcb.domain.dto.request.BoardUpdateRequestDto;
+import com.oldandsea.pcb.domain.dto.response.BoardDetailResponseDto;
 import com.oldandsea.pcb.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -29,5 +30,11 @@ public class BoardController {
     public ApiResult<?> deleteBoard(@PathVariable Long boardId) {
         boardService.deleteBoard(boardId);
         return ApiUtils.success("Success delete board");
+    }
+
+    @GetMapping("/detail/{boardId}")
+    public ApiResult<?> detailBoard(@PathVariable Long boardId) {
+        BoardDetailResponseDto detailResponseDto = boardService.detailBoard(boardId);
+        return ApiUtils.success(detailResponseDto);
     }
 }

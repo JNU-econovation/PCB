@@ -3,6 +3,7 @@ package com.oldandsea.pcb.service;
 import com.oldandsea.pcb.domain.dto.request.BoardCreateRequestDto;
 import com.oldandsea.pcb.domain.dto.request.BoardUpdateRequestDto;
 import com.oldandsea.pcb.domain.dto.response.BoardCreateResponseDto;
+import com.oldandsea.pcb.domain.dto.response.BoardDetailResponseDto;
 import com.oldandsea.pcb.domain.dto.response.BoardUpdateResponseDto;
 import com.oldandsea.pcb.domain.entity.Board;
 import com.oldandsea.pcb.domain.entity.BoardTag;
@@ -10,11 +11,13 @@ import com.oldandsea.pcb.domain.entity.Member;
 import com.oldandsea.pcb.domain.entity.Tag;
 import com.oldandsea.pcb.domain.repository.BoardTagRepository;
 import com.oldandsea.pcb.domain.repository.MemberRepository;
+import com.oldandsea.pcb.domain.repository.TagRepository;
 import com.oldandsea.pcb.domain.repository.boardrepository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -24,7 +27,6 @@ public class BoardService {
     private final MemberRepository memberRepository;
     private final TagService tagService;
     private final BoardTagRepository boardTagRepository;
-
     private final BoardTagService boardTagService;
 
     @Transactional
@@ -84,6 +86,26 @@ public class BoardService {
         );
         boardRepository.delete(board);
     }
+
+    @Transactional
+    public BoardDetailResponseDto detailBoard(Long boardId) {
+        Board board = boardRepository.findByBoardTagFetch(boardId).orElseThrow(
+                () -> new IllegalArgumentException("Board doesn't exist")
+        );
+
+        List<String> tagNames = board.getBoardTagList().stream()
+                .map(boardTag -> boardTag.getTag().getName())
+                .collect(Collectors.toList());
+
+        return BoardDetailResponseDto.builder()
+                .boardId(board.getBoardId())
+                .title(board.getTitle())
+                .content(board.getContent())
+                .boardTagList(tagNames)
+                .createdAt(board.getCreatedAt())
+                .build();
+    }
+
 }
 
 

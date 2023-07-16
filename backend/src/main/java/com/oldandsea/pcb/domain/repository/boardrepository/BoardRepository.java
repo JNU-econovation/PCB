@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface BoardRepository extends JpaRepository<Board, Long>, BoardRepositoryCustom {
     @Query("select b FROM Board b join fetch b.boardTagList bt where bt.board.boardId = :boardId")
     Optional<Board> findByBoardTagFetch(@Param("boardId") Long boardId);
+
 }
