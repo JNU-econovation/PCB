@@ -10,10 +10,10 @@ public class BoardDetailResponseDto {
     private Long boardId;
     private String title;
     private String content;
-    private LocalDateTime createdAt;
+    private Long createdAt;
     private List<String> boardTagList;
     @Builder
-    public BoardDetailResponseDto(Long boardId, String title, String content, LocalDateTime createdAt, List<String> boardTagList) {
+    public BoardDetailResponseDto(Long boardId, String title, String content, Long createdAt, List<String> boardTagList) {
         this.boardId = boardId;
         this.title = title;
         this.content = content;

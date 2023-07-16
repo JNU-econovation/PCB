@@ -4,6 +4,7 @@ import com.oldandsea.pcb.domain.dto.request.BoardCreateRequestDto;
 import com.oldandsea.pcb.domain.dto.request.BoardUpdateRequestDto;
 import com.oldandsea.pcb.domain.dto.response.BoardCreateResponseDto;
 import com.oldandsea.pcb.domain.dto.response.BoardDetailResponseDto;
+import com.oldandsea.pcb.domain.dto.response.BoardListResponseDto;
 import com.oldandsea.pcb.domain.dto.response.BoardUpdateResponseDto;
 import com.oldandsea.pcb.domain.entity.Board;
 import com.oldandsea.pcb.domain.entity.BoardTag;
@@ -13,9 +14,15 @@ import com.oldandsea.pcb.domain.repository.BoardTagRepository;
 import com.oldandsea.pcb.domain.repository.MemberRepository;
 import com.oldandsea.pcb.domain.repository.TagRepository;
 import com.oldandsea.pcb.domain.repository.boardrepository.BoardRepository;
+import com.oldandsea.pcb.domain.repository.boardrepository.BoardRepositoryCustom;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +35,9 @@ public class BoardService {
     private final TagService tagService;
     private final BoardTagRepository boardTagRepository;
     private final BoardTagService boardTagService;
+    private final MainPageListService mainPageListService;
+
+    private final BoardRepositoryCustom boardRepositoryCustom;
 
     @Transactional
     public BoardCreateResponseDto createBoard(BoardCreateRequestDto boardCreateDto, Long memberId) {
@@ -88,7 +98,7 @@ public class BoardService {
     }
 
     @Transactional
-    public BoardDetailResponseDto detailBoard(Long boardId) {
+    public BoardListResponseDto detailBoard(Long boardId) {
         Board board = boardRepository.findByBoardTagFetch(boardId).orElseThrow(
                 () -> new IllegalArgumentException("Board doesn't exist")
         );
@@ -97,13 +107,20 @@ public class BoardService {
                 .map(boardTag -> boardTag.getTag().getName())
                 .collect(Collectors.toList());
 
-        return BoardDetailResponseDto.builder()
+        return BoardListResponseDto.builder()
                 .boardId(board.getBoardId())
                 .title(board.getTitle())
                 .content(board.getContent())
                 .boardTagList(tagNames)
-                .createdAt(board.getCreatedAt())
+                .createdAt(board.getCreatedAt().toEpochSecond(ZoneOffset.UTC))
                 .build();
+    }
+
+    @Transactional
+    public Slice<BoardListResponseDto> searchBoard(String tag, Long lastBoardId, int limit) {
+        PageRequest pageRequest = PageRequest.of(0, limit, Sort.by(Sort.Direction.DESC, "boardId"));
+        Slice<Board> boardsSlice = boardRepositoryCustom.searchByTagAndSlice(lastBoardId, tag, pageRequest);
+        return mainPageListService.getBoardListResponseDtos(pageRequest, boardsSlice);
     }
 
 }

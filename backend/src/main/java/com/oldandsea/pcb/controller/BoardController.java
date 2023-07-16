@@ -6,8 +6,11 @@ import com.oldandsea.pcb.config.apiresponse.ApiUtils;
 import com.oldandsea.pcb.domain.dto.request.BoardCreateRequestDto;
 import com.oldandsea.pcb.domain.dto.request.BoardUpdateRequestDto;
 import com.oldandsea.pcb.domain.dto.response.BoardDetailResponseDto;
+import com.oldandsea.pcb.domain.dto.response.BoardListResponseDto;
 import com.oldandsea.pcb.service.BoardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
@@ -34,7 +37,15 @@ public class BoardController {
 
     @GetMapping("/detail/{boardId}")
     public ApiResult<?> detailBoard(@PathVariable Long boardId) {
-        BoardDetailResponseDto detailResponseDto = boardService.detailBoard(boardId);
+        BoardListResponseDto detailResponseDto = boardService.detailBoard(boardId);
         return ApiUtils.success(detailResponseDto);
+    }
+
+    @GetMapping("/search")
+    public Slice<BoardListResponseDto> searchBoard(
+            @RequestParam(value = "lastBoardId", required = false) Long lastBoardId,
+            @RequestParam(value = "limit",defaultValue = "10") int limit,
+            @RequestParam(value = "tag", required = true) String tag) {
+        return boardService.searchBoard(tag, lastBoardId, limit);
     }
 }

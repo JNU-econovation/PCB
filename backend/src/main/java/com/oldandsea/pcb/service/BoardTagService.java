@@ -1,16 +1,15 @@
 package com.oldandsea.pcb.service;
 
-import com.oldandsea.pcb.domain.dto.request.BoardUpdateRequestDto;
 import com.oldandsea.pcb.domain.entity.Board;
 import com.oldandsea.pcb.domain.entity.BoardTag;
 import com.oldandsea.pcb.domain.entity.Tag;
 import com.oldandsea.pcb.domain.repository.BoardTagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -33,5 +32,12 @@ public class BoardTagService {
         for(Tag tag: tags) {
             boardTag.updateBoardTag(tag);
         }
+    }
+
+    @Transactional
+    public List<String> boardTagToStringTags(List<BoardTag> boardTags) {
+        return boardTags.stream()
+                .map(boardTag -> boardTag.getTag().getName())
+                .collect(Collectors.toList());
     }
 }
