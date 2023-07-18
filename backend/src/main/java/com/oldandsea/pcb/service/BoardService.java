@@ -3,7 +3,6 @@ package com.oldandsea.pcb.service;
 import com.oldandsea.pcb.domain.dto.request.BoardCreateRequestDto;
 import com.oldandsea.pcb.domain.dto.request.BoardUpdateRequestDto;
 import com.oldandsea.pcb.domain.dto.response.BoardCreateResponseDto;
-import com.oldandsea.pcb.domain.dto.response.BoardDetailResponseDto;
 import com.oldandsea.pcb.domain.dto.response.BoardListResponseDto;
 import com.oldandsea.pcb.domain.dto.response.BoardUpdateResponseDto;
 import com.oldandsea.pcb.domain.entity.Board;
@@ -12,13 +11,11 @@ import com.oldandsea.pcb.domain.entity.Member;
 import com.oldandsea.pcb.domain.entity.Tag;
 import com.oldandsea.pcb.domain.repository.BoardTagRepository;
 import com.oldandsea.pcb.domain.repository.MemberRepository;
-import com.oldandsea.pcb.domain.repository.TagRepository;
 import com.oldandsea.pcb.domain.repository.boardrepository.BoardRepository;
 import com.oldandsea.pcb.domain.repository.boardrepository.BoardRepositoryCustom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
@@ -75,9 +72,11 @@ public class BoardService {
         board.updateBoard(boardUpdateRequestDto.getTitle(),boardUpdateRequestDto.getContent());
 
         List<Tag> tags = tagService.stringToTagTags(boardUpdateRequestDto.getBoardTagList());
-        List<BoardTag> boardTag = boardTagRepository.findByBoardId(boardId).orElseThrow(
-                () -> new IllegalArgumentException("Board doesn't exsist")
-        );
+        List<BoardTag> boardTag = boardTagRepository.findByBoardId(boardId);
+        if(boardTag.isEmpty()) {
+            throw new IllegalArgumentException("Board doesn't exsist");
+        }
+
         for(BoardTag boardTags : boardTag) {
             boardTagService.updateBoardTag(tags, boardTags);
         }

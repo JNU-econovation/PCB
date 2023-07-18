@@ -11,15 +11,19 @@ import com.oldandsea.pcb.domain.dto.response.MemberResponseDto;
 import com.oldandsea.pcb.service.MemberService;
 import com.oldandsea.pcb.service.SessionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityManager;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 
 @RestController
@@ -28,6 +32,7 @@ import javax.validation.Valid;
 public class MemberController {
     private final MemberService memberService;
     private final SessionService sessionService;
+    private final EntityManager em;
 
     @PostMapping("/uid-check")
     public ApiResult<?> uidCheck(@RequestBody @Valid MemberUidCheckRequestDto memberUidCheckRequestDto) {
@@ -53,25 +58,38 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(HttpServletResponse response,@RequestBody @Valid MemberLoginRequestDto memberLoginRequestDto, HttpServletRequest request) {
+    public ResponseEntity<?> login(HttpServletResponse response,@RequestBody @Valid MemberLoginRequestDto memberLoginRequestDto, HttpServletRequest request) throws DataAccessException {
         MemberResponseDto loginResult = memberService.login(memberLoginRequestDto);
         if (loginResult != null) {
             HttpSession session = request.getSession(true);
             String sessionId = session.getId();
             session.setMaxInactiveInterval(1);
-            response.setHeader("Set-Cookie", "PCBSESSIONID=" + sessionId + "; Path=/; HttpOnly; SameSite=None; Secure");
-            MemberLoginResponseDto memberLoginResponseDto = sessionService.createSession(loginResult, session.getId());
-            return ResponseEntity.ok(ApiUtils.success(memberLoginResponseDto));
+            try {
+                MemberLoginResponseDto memberLoginResponseDto = sessionService.createSession(loginResult, sessionId);
+                response.setHeader("Set-Cookie", "PCBSESSIONID=" + sessionId + "; Path=/; HttpOnly; SameSite=None; Secure");
+                return ResponseEntity.ok(ApiUtils.success(memberLoginResponseDto));
+            }
+            catch (DataAccessException e) {
+                return ResponseEntity.badRequest().body(ApiUtils.error("Duplicate sessionId", HttpStatus.BAD_REQUEST));
+            }
+
         } else {
-            return ResponseEntity.badRequest().body(ApiUtils.error("Please check uid or pwd", HttpStatus.BAD_REQUEST));
+            return ResponseEntity.badRequest().body(ApiUtils.error("Duplicate sessionId", HttpStatus.BAD_REQUEST));
         }
     }
 
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request) {
-        String sessionId = (String)request.getAttribute("PCBSESSIONID");
-        sessionService.deleteSession(sessionId);
+        Cookie[] cookies = request.getCookies();
+        String sessionIdFromCookie = null;
+        for (Cookie cookie : cookies) {
+            if ("PCBSESSIONID".equals(cookie.getName())) {
+                sessionIdFromCookie = cookie.getValue();
+                break;
+            }
+        }
+        sessionService.deleteSession(sessionIdFromCookie);
         return ResponseEntity.ok(ApiUtils.success("Logout success"));
     }
 

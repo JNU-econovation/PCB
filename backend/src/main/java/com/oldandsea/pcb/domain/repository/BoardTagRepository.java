@@ -10,6 +10,6 @@ import java.util.Optional;
 
 public interface BoardTagRepository extends JpaRepository<BoardTag, Long> {
     @Query("select bt from BoardTag bt where bt.board.boardId = :boardId")
-    Optional<List<BoardTag>>findByBoardId(@Param("boardId") Long boardId);
+    List<BoardTag>findByBoardId(@Param("boardId") Long boardId);
 }
 

@@ -1,6 +1,5 @@
 package com.oldandsea.pcb.config;
 
-import com.oldandsea.pcb.domain.entity.Member;
 import com.oldandsea.pcb.domain.entity.Session;
 import com.oldandsea.pcb.service.SessionService;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +36,7 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
                 break;
             }
         }
-        Session dbSession = sessionService.session_findByKey(sessionIdFromCookie);
+        Session dbSession = sessionService.sessionFindBySessionId(sessionIdFromCookie);
         if (dbSession.getSessionId() ==null) {
             throw new IllegalArgumentException("Please login first");
         }

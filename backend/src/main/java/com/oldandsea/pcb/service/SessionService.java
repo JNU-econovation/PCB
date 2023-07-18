@@ -7,6 +7,8 @@ import com.oldandsea.pcb.domain.entity.Session;
 import com.oldandsea.pcb.domain.repository.SessionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 
@@ -17,7 +19,7 @@ public class SessionService {
     private final SessionRepository sessionRepository;
 
     @Transactional
-    public MemberLoginResponseDto createSession(MemberResponseDto loginResult, String sessionId) {
+    public  MemberLoginResponseDto createSession(MemberResponseDto loginResult, String sessionId) {
         Session dbSession1 = createSession1(sessionId, loginResult.getMemberId());
         return MemberLoginResponseDto.builder()
                 .sessionId(dbSession1.getSessionId())
@@ -29,7 +31,7 @@ public class SessionService {
         sessionRepository.deleteSessionBySessionId(sessionId);
     }
 
-    private Session createSession1(String sessionId, Long memberId) {
+    public  Session createSession1(String sessionId, Long memberId) {
         Session dbSession = Session.builder()
                 .sessionId(sessionId)
                 .memberId(memberId)
@@ -38,14 +40,14 @@ public class SessionService {
     }
 
     @Transactional
-    public Session session_findByKey(String sessionId) {
+    public Session sessionFindByKey(String sessionId) {
         return sessionRepository.findBySessionId(sessionId).orElseThrow(
                 () -> new IllegalArgumentException("Session doesn't exsist")
         );
     }
 
     @Transactional
-    public void sessionCheck(String sessionId) {
+    public Session sessionCheck(String sessionId) {
         Session dbSession = sessionRepository.findBySessionId(sessionId).orElseThrow(
                 () -> new NotAuthenticatedException("Please login first")
         );
@@ -53,7 +55,23 @@ public class SessionService {
             deleteSession(dbSession.getSessionId());
             throw new NotAuthenticatedException("Please login first");
         }
+        return dbSession;
     }
+
+    @Transactional
+    public Session sessionFindBySessionId(String sessionId) {
+        return sessionRepository.findBySessionId(sessionId).orElseThrow(
+                () -> new NotAuthenticatedException("Please login first")
+        );
+    }
+
+    @Transactional
+    public void sessionSave(Session dbsession) {
+        sessionRepository.save(dbsession);
+    }
+
+    @Transactional
+    public
 }
 
 
