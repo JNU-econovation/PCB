@@ -54,11 +54,14 @@ const color = {
     dark_blue: '#146C94',
     red: '#DC3434',
 
-    soft_white: '#F6F1F1',
+    soft_white: '#F8F8F8',
     soft_black: '#212529',
     soft_yellow: '#FFF3CE',
     soft_green: '#DDFFDD',
     soft_blue: '#BAEAFF',
+
+    scroll: 'rgba(175, 175, 175, 1)',
+    scroll_background: 'rgba(200, 200, 200, 0.2)',
 };
 
 const location = {
