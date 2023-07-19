@@ -32,14 +32,23 @@ const StyledInput = styled.input`
     border-radius: ${({ theme }) => theme.border.rad_base};
     outline: none;
 
+    &::placeholder {
+        font-size: ${({ theme }) => theme.fontSize.small};
+    }
+
     &:focus {
         border-color: ${({ theme }) => theme.color.light_blue};
     }
 
     &.header {
-        min-width: 40rem;
+        height: 3rem;
+        min-width: 80%;
         border-width: ${({ theme }) => theme.border.width_base};
         border-radius: ${({ theme }) => theme.border.rad_xxl};
+    }
+
+    &.board {
+        min-width: 33.5rem;
     }
 `;
 

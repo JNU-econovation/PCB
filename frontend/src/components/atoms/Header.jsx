@@ -10,10 +10,13 @@ const StyledHeader = styled.header`
     position: sticky;
     top: 0;
     width: 100%;
-    height: 5rem;
+    min-height: 5rem;
+    max-height: 5rem;
     z-index: 100;
     display: grid;
     grid-template-columns: 1fr 1.5fr 1fr;
+    justify-items: center;
+    align-content: center;
 
     background-color: ${({ theme }) => theme.color.white};
     border-bottom: 1px solid ${({ theme }) => theme.color.light_gray};

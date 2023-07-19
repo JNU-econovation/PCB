@@ -8,8 +8,8 @@ const fontSize = {
     xxl: calcRem(22),
     xxxl: calcRem(24),
 
-    heading: calcRem(40),
-    title: calcRem(32),
+    heading: calcRem(32),
+    title: calcRem(28),
 };
 
 const padding = {

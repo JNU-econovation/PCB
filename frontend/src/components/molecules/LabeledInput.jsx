@@ -1,7 +1,8 @@
-import Container from '../atoms/Container';
+import { styled } from 'styled-components';
 import Input from '../atoms/Input';
 import Label from '../atoms/Label';
-import Message from '../atoms/Message';
+import Text from '../atoms/Text';
+import Box from '../atoms/Box';
 
 const LabeledInput = ({
     id,
@@ -10,11 +11,12 @@ const LabeledInput = ({
     onChange,
     label,
     placeholder,
-    required,
+    required = false,
     errorMessage,
+    className = '',
 }) => {
     return (
-        <Container>
+        <Box direction="column" justify="center" align="flex-start" gap="0rem">
             <Label htmlFor={id}>{label}</Label>
             <Input
                 id={id}
@@ -24,9 +26,10 @@ const LabeledInput = ({
                 value={value}
                 placeholder={placeholder}
                 required={required}
+                className={className}
             />
-            {errorMessage && <Message className="error">{errorMessage}</Message>}
-        </Container>
+            {errorMessage && <Text className="error">{errorMessage}</Text>}
+        </Box>
     );
 };
 

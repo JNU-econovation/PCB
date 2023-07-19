@@ -6,7 +6,10 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import MyPage from './pages/MyPage';
-import PostPage from './pages/PostPage';
+import BoardPage from './pages/BoardPage';
+import HomeLayout from './layouts/HomeLayout';
+import MainLayout from './layouts/MainLayout';
+import CreatePage from './pages/CreatePage';
 
 function App() {
     return (
@@ -14,11 +17,16 @@ function App() {
             <GlobalStyle />
             <Router>
                 <Routes>
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/signup" element={<SignupPage />} />
-                    <Route path="/mypage" element={<MyPage />} />
-                    <Route path="/post/:id" element={<PostPage />} />
+                    <Route element={<HomeLayout />}>
+                        <Route path="/login" element={<LoginPage />} />
+                        <Route path="/signup" element={<SignupPage />} />
+                        <Route path="/" element={<HomePage />} />
+                    </Route>
+                    <Route element={<MainLayout />}>
+                        <Route path="/mypage" element={<MyPage />} />
+                        <Route path="/board/:boardId" element={<BoardPage />} />
+                        <Route path="/create" element={<CreatePage />} />
+                    </Route>
                 </Routes>
             </Router>
         </ThemeProvider>
