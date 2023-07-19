@@ -1,5 +1,6 @@
 import { atom } from 'jotai';
-import axios from 'axios';
+import FORM_DEFAULT from '../constants/FORM_DEFAULT';
 
-// 로그인 부분 구현 세션? 토큰?
-export const isLoginAtom = atom(false);
+export const loginAtom = atom(FORM_DEFAULT.LOGIN);
+export const isLoginAtom = atom(true);
+export const userNicknameAtom = atom('바다');
