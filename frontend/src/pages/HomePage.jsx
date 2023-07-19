@@ -1,16 +1,13 @@
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import { isLoginAtom } from '../store/login';
-import HomeHeader from '../components/molecules/header/HomeHeader';
-import InitHeader from '../components/molecules/header/InitHeader';
+import { useAtomValue, useSetAtom } from 'jotai';
 import PostItemsWrapper from '../components/organisms/PostItemsWrapper';
 import Box from '../components/atoms/Box';
-import { mainPostListAtom } from '../store/post';
+import { mainPostListAtom } from '../store/board';
 import { useInView } from 'react-intersection-observer';
 import { useEffect, useState } from 'react';
 import { home } from '../services/api';
+import Heading from '../components/atoms/Heading';
 
 const HomePage = () => {
-    const isLogin = useAtomValue(isLoginAtom);
     const setMainPostList = useSetAtom(mainPostListAtom);
     const mainPostList = useAtomValue(mainPostListAtom);
     const [isNext, setIsNext] = useState(true);
@@ -21,12 +18,7 @@ const HomePage = () => {
     }, []);
 
     useEffect(() => {
-        //console.log(mainPostList);
-    }, [mainPostList]);
-
-    useEffect(() => {
         if (inView) {
-            console.log('마지막');
             fetchPostList();
         }
     }, [inView]);
@@ -63,8 +55,7 @@ const HomePage = () => {
     };
 
     return (
-        <Box className="column page">
-            {isLogin ? <HomeHeader /> : <InitHeader />}
+        <Box direction="column" className="page">
             <PostItemsWrapper />
             {mainPostList.length !== 0 && <div ref={ref}>마지막</div>}
         </Box>

@@ -1,4 +1,4 @@
-import { mainPostListAtom } from '../../store/post';
+import { mainPostListAtom } from '../../store/board';
 import PostItem from '../molecules/PostItem';
 import { useAtomValue } from 'jotai';
 import { styled } from 'styled-components';
