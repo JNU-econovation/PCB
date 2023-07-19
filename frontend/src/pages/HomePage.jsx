@@ -1,4 +1,4 @@
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { isLoginAtom } from '../store/login';
 import HomeHeader from '../components/molecules/header/HomeHeader';
 import InitHeader from '../components/molecules/header/InitHeader';
@@ -11,16 +11,22 @@ import { home } from '../services/api';
 
 const HomePage = () => {
     const isLogin = useAtomValue(isLoginAtom);
-    const [mainPostList, setMainPostList] = useAtom(mainPostListAtom);
-    const [isLast, setIsLast] = useState(false);
-    const { ref, inView, entry } = useInView();
+    const setMainPostList = useSetAtom(mainPostListAtom);
+    const mainPostList = useAtomValue(mainPostListAtom);
+    const [isNext, setIsNext] = useState(true);
+    const [ref, inView] = useInView();
 
     useEffect(() => {
         fetchInitPostList();
     }, []);
 
     useEffect(() => {
+        //console.log(mainPostList);
+    }, [mainPostList]);
+
+    useEffect(() => {
         if (inView) {
+            console.log('마지막');
             fetchPostList();
         }
     }, [inView]);
@@ -29,8 +35,11 @@ const HomePage = () => {
         try {
             await home({ lastBoardId: '', limit: 9 })
                 .then((response) => {
-                    setMainPostList((prev) => [...prev, response.content]);
-                    setIsLast(response.last);
+                    setMainPostList((prev) => [
+                        ...prev,
+                        ...response.data.content.filter((v) => v !== undefined),
+                    ]);
+                    setIsNext(response.data.last);
                 })
                 .catch((error) => console.error(error));
         } catch (err) {
@@ -39,11 +48,15 @@ const HomePage = () => {
     };
 
     const fetchPostList = async () => {
-        if (!isLast) {
-            await home({ lastBoardId: mainPostList[-1].boardId, limit: 9 })
+        if (!isNext) {
+            console.log(mainPostList[mainPostList.length - 1]);
+            await home({ lastBoardId: mainPostList[mainPostList.length - 1].boardId, limit: 9 })
                 .then((response) => {
-                    setMainPostList((prev) => [...prev, response.content]);
-                    setIsLast(response.last);
+                    setMainPostList((prev) => [
+                        ...prev,
+                        ...response.data.content.filter((v) => v !== undefined),
+                    ]);
+                    setIsLast(response.data.last);
                 })
                 .catch((error) => console.error(error));
         }
@@ -53,7 +66,7 @@ const HomePage = () => {
         <Box className="column page">
             {isLogin ? <HomeHeader /> : <InitHeader />}
             <PostItemsWrapper />
-            {mainPostList.length !== 0 && <Box ref={ref}></Box>}
+            {mainPostList.length !== 0 && <div ref={ref}>마지막</div>}
         </Box>
     );
 };
