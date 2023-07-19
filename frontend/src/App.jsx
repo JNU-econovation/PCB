@@ -10,6 +10,7 @@ import BoardPage from './pages/BoardPage';
 import HomeLayout from './layouts/HomeLayout';
 import MainLayout from './layouts/MainLayout';
 import CreatePage from './pages/CreatePage';
+import PostitItem from './components/molecules/PostitItem';
 
 function App() {
     return (
@@ -26,6 +27,7 @@ function App() {
                         <Route path="/mypage" element={<MyPage />} />
                         <Route path="/board/:boardId" element={<BoardPage />} />
                         <Route path="/create" element={<CreatePage />} />
+                        <Route path="/postit/:boardId" element={<PostitItem />} />
                     </Route>
                 </Routes>
             </Router>
