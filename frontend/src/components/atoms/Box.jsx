@@ -1,23 +1,35 @@
 import { styled } from 'styled-components';
 
-const Box = ({ children, className = '', grow = null }) => {
+const Box = ({
+    children,
+    className = '',
+    grow = null,
+    direction = 'row',
+    align = 'center',
+    justify = 'center',
+    gap = '0.5rem',
+}) => {
     return (
-        <StyledBox className={className} grow={grow}>
+        <StyledBox
+            className={className}
+            grow={grow}
+            direction={direction}
+            align={align}
+            justify={justify}
+            gap={gap}
+        >
             {children}
         </StyledBox>
     );
 };
 
 const StyledBox = styled.div`
-    ${({ theme }) => theme.location.flex()};
-    gap: 0.5rem;
-    flex-grow: ${({ grow }) => grow && grow};
-    &.start {
-        justify-content: flex-start;
-    }
+    ${({ theme, direction, align, justify }) => theme.location.flex(direction, align, justify)};
+    gap: ${({ gap }) => gap};
+    grow: ${({ grow }) => grow && grow};
 
-    &.column {
-        ${({ theme }) => theme.location.flex('column', 'center', 'center')};
+    &.logo {
+        height: 3rem;
     }
 `;
 

@@ -1,11 +1,12 @@
 import axios from 'axios';
 
-const instance = axios.create({
+export const instance = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
     timeout: 1000 * 3,
     headers: {
         'Content-Type': 'application/json',
     },
+    withCredentials: true,
 });
 
 instance.interceptors.request.use((config) => {
@@ -16,7 +17,12 @@ instance.interceptors.response.use(
     (response) => {
         return response;
     },
-    (error) => {}
+    (error) => {
+        if (!!error.response.data.error) {
+            const err = error.response.data.error;
+            console.log(err);
+        }
+    }
 );
 
 export const home = (data) => {
@@ -24,7 +30,18 @@ export const home = (data) => {
     return instance.get('./api/main', { params: { lastBoardId: lastBoardId, limit: limit } });
 };
 
+export const search = (data) => {
+    const { lastBoardId, limit, tag } = data;
+    return instance.get('/board/search', {
+        params: { lastBoardId: lastBoardId, limit: limit, tag: tag },
+    });
+};
+
 export const login = (data) => {
-    const { id, password } = data;
-    return instance.post('./users/login', { identification: id, pwd: password });
+    const { uid, pwd } = data;
+    return instance.post('./member/login', { uid: uid, pwd: pwd });
+};
+
+export const logout = () => {
+    return instance.post('./member/logout');
 };
