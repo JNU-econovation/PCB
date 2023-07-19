@@ -1,10 +1,10 @@
-import MainHeader from '../components/molecules/header/MainHeader';
 import Box from '../components/atoms/Box';
+import SignupForm from '../components/organisms/SignUpForm';
 
 const SignupPage = () => {
     return (
-        <Box className="column page">
-            <MainHeader />
+        <Box direction="column" className="page">
+            <SignupForm />
         </Box>
     );
 };
