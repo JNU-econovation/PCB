@@ -27,6 +27,11 @@ const StyledMessage = styled.p`
         font-size: ${({ theme }) => theme.fontSize.title};
         font-weight: 600;
     }
+
+    &.dropdown {
+        ${({ theme }) => theme.location.flex()}
+        gap: 1rem;
+    }
 `;
 
 export default Text;

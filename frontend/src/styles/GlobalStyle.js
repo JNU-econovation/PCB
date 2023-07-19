@@ -17,7 +17,7 @@ const GlobalStyle = createGlobalStyle`
 
     html, body {
         width: 100vw;
-        min-height: 100%;
+        min-height: 100vh;
         overflow-x: hidden;
     }
 
@@ -25,8 +25,8 @@ const GlobalStyle = createGlobalStyle`
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 100%;
-        height: 100%;
+        width: 100vw;
+        height: 100vh;
     }
 
     input { 
@@ -43,9 +43,13 @@ const GlobalStyle = createGlobalStyle`
         text-decoration: none;
     }
 
+    p{
+        text-align: start;
+    }
+
     .page{
         width: 100%;
-        height: 100%;
+        min-height: 100%;
     }
 
 `;
