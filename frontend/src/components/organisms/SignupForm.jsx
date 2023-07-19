@@ -5,7 +5,7 @@ import LabeledInput from '../molecules/LabeledInput';
 import Form from '../atoms/Form';
 import SubmitButton from '../atoms/SubmitButton';
 import { useState } from 'react';
-import _ from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import { useNavigate } from 'react-router-dom';
 import validateSignupForm from '../../utils/validateSignupForm';
 import Button from '../atoms/Button';
@@ -27,24 +27,29 @@ const SignupForm = () => {
         e.preventDefault();
         if (!values.isUidCheck) {
             alert('아이디 중복 확인을 해주세요');
-        } else if (!values.isNicknameCheck) {
-            alert('닉네임 중복 확인을 해주세요');
-        } else {
-            const validationError = validateSignupForm({
-                uid: values.uid,
-                pwd: values.pwd,
-                pwdCheck: values.pwdCheck,
-                nickname: values.nickname,
-            });
-            setError(validationError);
-            if (_.isEmpty(validationError)) {
-                await signup({ uid: values.uid, pwd: values.pwd, nickname: values.nickname })
-                    .then((res) => {
-                        navigate('/login');
-                    })
-                    .catch((err) => alert(err));
-            }
+            return;
         }
+        if (!values.isNicknameCheck) {
+            alert('닉네임 중복 확인을 해주세요');
+            return;
+        }
+
+        const validationError = validateSignupForm({
+            uid: values.uid,
+            pwd: values.pwd,
+            pwdCheck: values.pwdCheck,
+            nickname: values.nickname,
+        });
+        setError(validationError);
+
+        if (!isEmpty(validationError)) {
+            return;
+        }
+        await signup({ uid: values.uid, pwd: values.pwd, nickname: values.nickname })
+            .then((res) => {
+                navigate('/login');
+            })
+            .catch((err) => alert(err));
     };
 
     const handleUidCheck = async () => {

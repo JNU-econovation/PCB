@@ -10,6 +10,10 @@ const StyledMessage = styled.p`
     font-weight: 400;
     color: ${({ theme }) => theme.color.black};
 
+    &.small {
+        font-size: ${({ theme }) => theme.fontSize.small};
+    }
+
     &.error {
         color: ${({ theme }) => theme.color.red};
     }

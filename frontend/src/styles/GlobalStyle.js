@@ -50,6 +50,7 @@ const GlobalStyle = createGlobalStyle`
     .page{
         width: 100%;
         min-height: 100%;
+        align-items: center;
     }
 
 `;
