@@ -18,7 +18,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.ZoneOffset;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class BoardService {
    private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
@@ -33,8 +35,8 @@ public class BoardService {
     private final BoardTagRepository boardTagRepository;
     private final BoardTagService boardTagService;
     private final MainPageListService mainPageListService;
-
     private final BoardRepositoryCustom boardRepositoryCustom;
+    private final CommentService commentService;
 
     @Transactional
     public BoardCreateResponseDTO createBoard(BoardCreateRequestDTO boardCreateDto, Long memberId) {
@@ -116,12 +118,12 @@ public class BoardService {
                 .build();
     }
 
-    @Transactional
     public Slice<BoardListResponseDTO> searchBoard(String tag, Long lastBoardId, int limit) {
         PageRequest pageRequest = PageRequest.of(0, limit, Sort.by(Sort.Direction.DESC, "boardId"));
         Slice<Board> boardsSlice = boardRepositoryCustom.searchByTagAndSlice(lastBoardId, tag, pageRequest);
         return mainPageListService.getBoardListResponseDtos(pageRequest, boardsSlice);
     }
+
 }
 
 

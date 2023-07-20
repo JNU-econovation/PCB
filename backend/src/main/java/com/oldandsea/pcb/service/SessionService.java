@@ -30,7 +30,7 @@ public class SessionService {
         sessionRepository.deleteSessionBySessionId(sessionId);
     }
     @Transactional
-    public  Session createSession1(String sessionId, Long memberId) {
+    public   Session createSession1(String sessionId, Long memberId) {
         Session dbSession = Session.builder()
                 .sessionId(sessionId)
                 .memberId(memberId)

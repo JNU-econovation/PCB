@@ -6,22 +6,22 @@ import com.oldandsea.pcb.domain.entity.Member;
 import com.oldandsea.pcb.domain.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Optional;
 
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MemberService {
    private final MemberRepository memberRepository;
 
-    @Transactional
     public boolean uidCheck(MemberUidCheckRequestDTO memberUidCheckRequestDto) {
         Optional<Member> member = memberRepository.findByUid(memberUidCheckRequestDto.getUid());
        return member.isPresent();
     }
 
-    @Transactional
     public boolean nickNameCheck(MemberNickNameCheckRequestDTO memberNickNameCheckRequestDto) {
         Optional<Member> member = memberRepository.findByNickname(memberNickNameCheckRequestDto.getNickname());
         return member.isPresent();
@@ -40,7 +40,6 @@ public class MemberService {
         }
     }
 
-    @Transactional
     public MemberResponseDTO login(MemberLoginRequestDTO memberLoginRequestDto) {
         Optional<Member> byMemberUid = memberRepository.findByUid(memberLoginRequestDto.getUid());
         if (byMemberUid.isEmpty()) {
@@ -58,7 +57,6 @@ public class MemberService {
 
             } else
                 throw new IllegalArgumentException("Please check pwd");
-
         }
     }
 
@@ -88,7 +86,6 @@ public class MemberService {
         );
         member.updateNickname(nickname);
     }
-
 }
 
 
