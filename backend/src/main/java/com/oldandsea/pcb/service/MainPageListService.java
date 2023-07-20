@@ -41,6 +41,7 @@ public class MainPageListService {
                         .content(board.getContent())
                         .createdAt(board.getCreatedAt().toEpochSecond(ZoneOffset.UTC))
                         .boardTagList(boardTagService.boardTagToStringTags(board.getBoardTagList()))
+                        .nickname(board.getMember().getNickname())
                         .build())
                 .collect(Collectors.toList());
 

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "session",indexes = @Index(name = "idx_session_key",columnList = "session_key"))
+@Table(name = "session")
 public class Session {
     @Id
     @Column(name = "id")
@@ -21,7 +21,7 @@ public class Session {
 
     @Column(name = "session_key",nullable = false,unique = true)
     private String sessionId;
-    @Column(name = "seesion_value",nullable = false,unique = true)
+    @Column(name = "seesion_value",nullable = false)
     private Long memberId;
     @CreatedDate
     private LocalDateTime createdAt;

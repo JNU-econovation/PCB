@@ -1,5 +1,6 @@
 package com.oldandsea.pcb.domain.dto.response;
 
-public class BoardToPostitResponseDTO {
+import org.springframework.data.repository.query.Param;
 
+public class BoardToPostitResponseDTO {
 }

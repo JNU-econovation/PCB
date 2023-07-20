@@ -11,12 +11,14 @@ public class BoardDetailResponseDTO {
     private String content;
     private Long createdAt;
     private List<String> boardTagList;
+    private String nickname;
     @Builder
-    public BoardDetailResponseDTO(Long boardId, String title, String content, Long createdAt, List<String> boardTagList) {
+    public BoardDetailResponseDTO(Long boardId, String title, String content, Long createdAt, List<String> boardTagList, String nickname) {
         this.boardId = boardId;
         this.title = title;
         this.content = content;
         this.createdAt = createdAt;
         this.boardTagList = boardTagList;
+        this.nickname = nickname;
     }
 }

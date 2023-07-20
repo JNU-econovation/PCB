@@ -112,6 +112,7 @@ public class BoardService {
                 .content(board.getContent())
                 .boardTagList(tagNames)
                 .createdAt(board.getCreatedAt().toEpochSecond(ZoneOffset.UTC))
+                .nickname(board.getMember().getNickname())
                 .build();
     }
 
@@ -121,7 +122,6 @@ public class BoardService {
         Slice<Board> boardsSlice = boardRepositoryCustom.searchByTagAndSlice(lastBoardId, tag, pageRequest);
         return mainPageListService.getBoardListResponseDtos(pageRequest, boardsSlice);
     }
-
 }
 
 

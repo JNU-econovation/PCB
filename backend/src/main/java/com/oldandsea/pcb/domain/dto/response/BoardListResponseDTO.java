@@ -14,19 +14,17 @@ public class BoardListResponseDTO {
     private String content;
     private List<String> boardTagList;
     private Long createdAt;
+    private String nickname;
+
 
     @Builder
-    public BoardListResponseDTO(Long boardId, String title, String content, List<String> boardTagList, Long createdAt) {
+    public BoardListResponseDTO(Long boardId, String title, String content, List<String> boardTagList, Long createdAt, String nickname) {
         this.boardId = boardId;
         this.title = title;
         this.content = content;
         this.createdAt = createdAt;
-
-         /* board에 연결된 boardtag 리스트를 스트림으로 가져오고 map()을 사용하여 각 boardtag에서 tag이름을 가져온다.
-        그 결과를 리스트로 수집하여 boardTagList에 저장
-         */
-
         this.boardTagList = boardTagList;
+        this.nickname = nickname;
     }
 }
 
