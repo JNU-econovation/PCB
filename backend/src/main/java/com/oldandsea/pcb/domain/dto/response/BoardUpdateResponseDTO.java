@@ -1,23 +1,24 @@
 package com.oldandsea.pcb.domain.dto.response;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.List;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BoardDetailResponseDto {
+public class BoardUpdateResponseDTO {
     private Long boardId;
     private String title;
     private String content;
-    private Long createdAt;
     private List<String> boardTagList;
     @Builder
-    public BoardDetailResponseDto(Long boardId, String title, String content, Long createdAt, List<String> boardTagList) {
+    public BoardUpdateResponseDTO(Long boardId, String title, String content, List<String> boardTagList) {
         this.boardId = boardId;
         this.title = title;
         this.content = content;
-        this.createdAt = createdAt;
         this.boardTagList = boardTagList;
     }
 }

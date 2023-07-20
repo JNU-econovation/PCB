@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotNull;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MemberCreateRequestDto {
+public class MemberCreateRequestDTO {
     @NotNull(message = "Please write uid")
     private String uid;
     @NotNull(message = "Please write pwd")
@@ -17,7 +17,7 @@ public class MemberCreateRequestDto {
     @NotNull(message = "Please write nickname")
     private String nickname;
     @Builder
-    public MemberCreateRequestDto(String uid, String pwd, String nickname) {
+    public MemberCreateRequestDTO(String uid, String pwd, String nickname) {
         this.uid = uid;
         this.pwd = pwd;
         this.nickname = nickname;

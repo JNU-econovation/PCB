@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MemberLoginResponseDto {
+public class MemberLoginResponseDTO {
     private String sessionId;
     @Builder
-    public MemberLoginResponseDto(String sessionId) {
+    public MemberLoginResponseDTO(String sessionId) {
         this.sessionId = sessionId;
     }
 

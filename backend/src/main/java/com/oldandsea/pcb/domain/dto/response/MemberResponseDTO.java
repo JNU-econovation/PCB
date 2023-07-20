@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MemberResponseDto {
+public class MemberResponseDTO {
     private Long memberId;
 
     private String uid;
@@ -16,7 +16,7 @@ public class MemberResponseDto {
 
     private String nickname;
     @Builder
-    public MemberResponseDto(Long memberId, String uid, String pwd, String nickname) {
+    public MemberResponseDTO(Long memberId, String uid, String pwd, String nickname) {
         this.memberId = memberId;
         this.uid = uid;
         this.pwd = pwd;

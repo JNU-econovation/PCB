@@ -1,14 +1,13 @@
 package com.oldandsea.pcb.service;
 
 import com.oldandsea.pcb.config.exception.NotAuthenticatedException;
-import com.oldandsea.pcb.domain.dto.response.MemberLoginResponseDto;
-import com.oldandsea.pcb.domain.dto.response.MemberResponseDto;
+import com.oldandsea.pcb.domain.dto.response.MemberLoginResponseDTO;
+import com.oldandsea.pcb.domain.dto.response.MemberResponseDTO;
 import com.oldandsea.pcb.domain.entity.Session;
 import com.oldandsea.pcb.domain.repository.SessionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 
@@ -19,9 +18,9 @@ public class SessionService {
     private final SessionRepository sessionRepository;
 
     @Transactional
-    public  MemberLoginResponseDto createSession(MemberResponseDto loginResult, String sessionId) {
+    public MemberLoginResponseDTO createSession(MemberResponseDTO loginResult, String sessionId) {
         Session dbSession1 = createSession1(sessionId, loginResult.getMemberId());
-        return MemberLoginResponseDto.builder()
+        return MemberLoginResponseDTO.builder()
                 .sessionId(dbSession1.getSessionId())
                 .build();
     }
@@ -30,7 +29,7 @@ public class SessionService {
     public void deleteSession(String sessionId) {
         sessionRepository.deleteSessionBySessionId(sessionId);
     }
-
+    @Transactional
     public  Session createSession1(String sessionId, Long memberId) {
         Session dbSession = Session.builder()
                 .sessionId(sessionId)
@@ -70,8 +69,6 @@ public class SessionService {
         sessionRepository.save(dbsession);
     }
 
-    @Transactional
-    public
 }
 
 

@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MemberNickUpdateRequestDto {
+public class MemberNickUpdateRequestDTO {
     private String nickname;
     @Builder
-    public MemberNickUpdateRequestDto(String nickname) {
+    public MemberNickUpdateRequestDTO(String nickname) {
         this.nickname = nickname;
     }
 }

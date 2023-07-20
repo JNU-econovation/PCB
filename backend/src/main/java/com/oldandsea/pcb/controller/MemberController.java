@@ -6,8 +6,8 @@ import com.oldandsea.pcb.config.apiresponse.ApiResult;
 import com.oldandsea.pcb.config.apiresponse.ApiUtils;
 import com.oldandsea.pcb.domain.dto.request.*;
 
-import com.oldandsea.pcb.domain.dto.response.MemberLoginResponseDto;
-import com.oldandsea.pcb.domain.dto.response.MemberResponseDto;
+import com.oldandsea.pcb.domain.dto.response.MemberLoginResponseDTO;
+import com.oldandsea.pcb.domain.dto.response.MemberResponseDTO;
 import com.oldandsea.pcb.service.MemberService;
 import com.oldandsea.pcb.service.SessionService;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 
 
 @RestController
@@ -35,7 +33,7 @@ public class MemberController {
     private final EntityManager em;
 
     @PostMapping("/uid-check")
-    public ApiResult<?> uidCheck(@RequestBody @Valid MemberUidCheckRequestDto memberUidCheckRequestDto) {
+    public ApiResult<?> uidCheck(@RequestBody @Valid MemberUidCheckRequestDTO memberUidCheckRequestDto) {
         if (memberService.uidCheck(memberUidCheckRequestDto))
             return ApiUtils.error("Duplicate uid", HttpStatus.BAD_REQUEST);
         else
@@ -43,7 +41,7 @@ public class MemberController {
     }
 
     @PostMapping("/nickname-check")
-    public ApiResult<?> nickNameCheck(@RequestBody @Valid MemberNickNameCheckRequestDto memberNickNameCheckRequestDto) {
+    public ApiResult<?> nickNameCheck(@RequestBody @Valid MemberNickNameCheckRequestDTO memberNickNameCheckRequestDto) {
         if (memberService.nickNameCheck(memberNickNameCheckRequestDto))
             return ApiUtils.error("Duplicate nickname", HttpStatus.BAD_REQUEST);
         else
@@ -51,30 +49,30 @@ public class MemberController {
     }
 
     @PostMapping("/create")
-    public ApiResult<?> insertMember(@RequestBody @Valid MemberCreateRequestDto memberCreateRequestDto) {
+    public ApiResult<?> insertMember(@RequestBody @Valid MemberCreateRequestDTO memberCreateRequestDto) {
         memberService.createMember(memberCreateRequestDto);
         return ApiUtils.success("Create member success");
 
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(HttpServletResponse response,@RequestBody @Valid MemberLoginRequestDto memberLoginRequestDto, HttpServletRequest request) throws DataAccessException {
-        MemberResponseDto loginResult = memberService.login(memberLoginRequestDto);
+    public ResponseEntity<?> login(HttpServletResponse response, @RequestBody @Valid MemberLoginRequestDTO memberLoginRequestDto, HttpServletRequest request) throws DataAccessException {
+        MemberResponseDTO loginResult = memberService.login(memberLoginRequestDto);
         if (loginResult != null) {
             HttpSession session = request.getSession(true);
             String sessionId = session.getId();
             session.setMaxInactiveInterval(1);
             try {
-                MemberLoginResponseDto memberLoginResponseDto = sessionService.createSession(loginResult, sessionId);
+                MemberLoginResponseDTO memberLoginResponseDto = sessionService.createSession(loginResult, sessionId);
                 response.setHeader("Set-Cookie", "PCBSESSIONID=" + sessionId + "; Path=/; HttpOnly; SameSite=None; Secure");
                 return ResponseEntity.ok(ApiUtils.success(memberLoginResponseDto));
             }
             catch (DataAccessException e) {
-                return ResponseEntity.badRequest().body(ApiUtils.error("Duplicate sessionId", HttpStatus.BAD_REQUEST));
+                return ResponseEntity.badRequest().body(ApiUtils.error("Multiple sessions exist in one member", HttpStatus.BAD_REQUEST));
             }
 
         } else {
-            return ResponseEntity.badRequest().body(ApiUtils.error("Duplicate sessionId", HttpStatus.BAD_REQUEST));
+            return ResponseEntity.badRequest().body(ApiUtils.error("Multiple sessions exist in one member", HttpStatus.BAD_REQUEST));
         }
     }
 
@@ -94,14 +92,14 @@ public class MemberController {
     }
 
     @PutMapping("/pwd/{memberId}")
-    public ResponseEntity<?> updatePwd(@PathVariable("memberId") Long memberId, @RequestBody MemberPwdUpdateRequestDto memberPwdUpdateRequestDto) {
+    public ResponseEntity<?> updatePwd(@PathVariable("memberId") Long memberId, @RequestBody MemberPwdUpdateRequestDTO memberPwdUpdateRequestDto) {
         memberService.updatePwd(memberId,memberPwdUpdateRequestDto);
         return ResponseEntity.ok(ApiUtils.success("Pwd update success"));
     }
 
 
     @PutMapping("/nickname/{memberId}")
-    public ResponseEntity<?> updateNickname(@PathVariable("memberId") Long memberId, @RequestBody MemberNickUpdateRequestDto nickUpdateRequestDto) {
+    public ResponseEntity<?> updateNickname(@PathVariable("memberId") Long memberId, @RequestBody MemberNickUpdateRequestDTO nickUpdateRequestDto) {
         memberService.updateNickname(memberId,nickUpdateRequestDto);
         return ResponseEntity.ok(ApiUtils.success("Nickname update success"));
     }

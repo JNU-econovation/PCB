@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MemberPwdUpdateRequestDto {
+public class MemberPwdUpdateRequestDTO {
     private String pwd;
     @Builder
-    public MemberPwdUpdateRequestDto(String nickname, String pwd) {
+    public MemberPwdUpdateRequestDTO(String nickname, String pwd) {
         this.pwd = pwd;
     }
 }

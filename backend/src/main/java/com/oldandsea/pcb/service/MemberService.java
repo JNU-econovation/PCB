@@ -1,7 +1,7 @@
 package com.oldandsea.pcb.service;
 
 import com.oldandsea.pcb.domain.dto.request.*;
-import com.oldandsea.pcb.domain.dto.response.MemberResponseDto;
+import com.oldandsea.pcb.domain.dto.response.MemberResponseDTO;
 import com.oldandsea.pcb.domain.entity.Member;
 import com.oldandsea.pcb.domain.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,18 +16,18 @@ public class MemberService {
    private final MemberRepository memberRepository;
 
     @Transactional
-    public boolean uidCheck(MemberUidCheckRequestDto memberUidCheckRequestDto) {
+    public boolean uidCheck(MemberUidCheckRequestDTO memberUidCheckRequestDto) {
         Optional<Member> member = memberRepository.findByUid(memberUidCheckRequestDto.getUid());
        return member.isPresent();
     }
 
     @Transactional
-    public boolean nickNameCheck(MemberNickNameCheckRequestDto memberNickNameCheckRequestDto) {
+    public boolean nickNameCheck(MemberNickNameCheckRequestDTO memberNickNameCheckRequestDto) {
         Optional<Member> member = memberRepository.findByNickname(memberNickNameCheckRequestDto.getNickname());
         return member.isPresent();
     }
     @Transactional
-    public String createMember(MemberCreateRequestDto memberCreateRequestDto) {
+    public String createMember(MemberCreateRequestDTO memberCreateRequestDto) {
 
         Member memeber = memberCreateRequestDto.toEntity();
         Optional<Member> findMember = memberRepository.findByUid(memeber.getUid());
@@ -41,15 +41,15 @@ public class MemberService {
     }
 
     @Transactional
-    public MemberResponseDto login(MemberLoginRequestDto memberLoginRequestDto) {
+    public MemberResponseDTO login(MemberLoginRequestDTO memberLoginRequestDto) {
         Optional<Member> byMemberUid = memberRepository.findByUid(memberLoginRequestDto.getUid());
         if (byMemberUid.isEmpty()) {
-            throw new NullPointerException("Please check uid or pwd");
+            throw new IllegalArgumentException("Please check uid");
         } else {
             Member member = byMemberUid.get();
 
             if (member.getPwd().equals(memberLoginRequestDto.getPwd())) {
-                return MemberResponseDto.builder()
+                return MemberResponseDTO.builder()
                         .memberId(member.getMemberId())
                         .uid(member.getUid())
                         .pwd(member.getPwd())
@@ -57,7 +57,7 @@ public class MemberService {
                         .build();
 
             } else
-                return null;
+                throw new IllegalArgumentException("Please check pwd");
 
         }
     }
@@ -72,7 +72,7 @@ public class MemberService {
     }
 
     @Transactional
-    public void updatePwd(Long memberId,MemberPwdUpdateRequestDto pwdUpdateRequestDto) {
+    public void updatePwd(Long memberId, MemberPwdUpdateRequestDTO pwdUpdateRequestDto) {
         String pwd  = pwdUpdateRequestDto.getPwd();
         Member member = memberRepository.findByMemberId(memberId).orElseThrow(
                 () -> new IllegalArgumentException("Member doesn't exsist")
@@ -81,7 +81,7 @@ public class MemberService {
     }
 
     @Transactional
-    public void updateNickname(Long memberId, MemberNickUpdateRequestDto nickUpdateRequestDto) {
+    public void updateNickname(Long memberId, MemberNickUpdateRequestDTO nickUpdateRequestDto) {
         String nickname = nickUpdateRequestDto.getNickname();
         Member member = memberRepository.findByMemberId(memberId).orElseThrow(
                 () -> new IllegalArgumentException("Member doesn't exsist")

@@ -12,7 +12,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BoardCreateRequestDto {
+public class BoardCreateRequestDTO {
     @NotNull(message = "Please  write title")
     private String title;
     @NotNull(message = "Please write content")
@@ -20,7 +20,7 @@ public class BoardCreateRequestDto {
     @NotNull(message = "Please write tags")
     private List<String> boardTagList;
     @Builder
-    public BoardCreateRequestDto (Long boardId,String title, String content, List<String> boardTagList) {
+    public BoardCreateRequestDTO(Long boardId, String title, String content, List<String> boardTagList) {
 
         this.title = title;
         this.content = content;

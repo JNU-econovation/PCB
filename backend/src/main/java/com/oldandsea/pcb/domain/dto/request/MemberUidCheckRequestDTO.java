@@ -9,11 +9,11 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MemberNickNameCheckRequestDto {
-    @NotNull(message = "Please write nickname")
-    private String nickname;
+public class MemberUidCheckRequestDTO {
+    @NotNull(message = "Please write uid")
+    private String uid;
     @Builder
-    public MemberNickNameCheckRequestDto(String nickname) {
-        this.nickname = nickname;
+    public MemberUidCheckRequestDTO(String uid) {
+        this.uid = uid;
     }
 }

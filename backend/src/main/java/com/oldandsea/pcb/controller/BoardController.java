@@ -3,9 +3,9 @@ package com.oldandsea.pcb.controller;
 import com.oldandsea.pcb.config.Login;
 import com.oldandsea.pcb.config.apiresponse.ApiResult;
 import com.oldandsea.pcb.config.apiresponse.ApiUtils;
-import com.oldandsea.pcb.domain.dto.request.BoardCreateRequestDto;
-import com.oldandsea.pcb.domain.dto.request.BoardUpdateRequestDto;
-import com.oldandsea.pcb.domain.dto.response.BoardListResponseDto;
+import com.oldandsea.pcb.domain.dto.request.BoardCreateRequestDTO;
+import com.oldandsea.pcb.domain.dto.request.BoardUpdateRequestDTO;
+import com.oldandsea.pcb.domain.dto.response.BoardListResponseDTO;
 import com.oldandsea.pcb.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
@@ -18,12 +18,12 @@ import javax.validation.Valid;
 public class BoardController {
     public final BoardService boardService;
     @PostMapping("/create")
-    public ApiResult<?> createBoard(@RequestBody @Valid BoardCreateRequestDto boardCreateDto, @Login Long memberId) {
+    public ApiResult<?> createBoard(@RequestBody @Valid BoardCreateRequestDTO boardCreateDto, @Login Long memberId) {
 
         return ApiUtils.success(boardService.createBoard(boardCreateDto, memberId));
     }
     @PutMapping("/update/{boardId}")
-    public ApiResult<?> updateBoard(@RequestBody @Valid BoardUpdateRequestDto boardUpdateRequestDto, @PathVariable Long boardId) {
+    public ApiResult<?> updateBoard(@RequestBody @Valid BoardUpdateRequestDTO boardUpdateRequestDto, @PathVariable Long boardId) {
         return ApiUtils.success(boardService.updateBoard(boardUpdateRequestDto, boardId));
     }
 
@@ -35,12 +35,12 @@ public class BoardController {
 
     @GetMapping("/detail/{boardId}")
     public ApiResult<?> detailBoard(@PathVariable Long boardId) {
-        BoardListResponseDto detailResponseDto = boardService.detailBoard(boardId);
+        BoardListResponseDTO detailResponseDto = boardService.detailBoard(boardId);
         return ApiUtils.success(detailResponseDto);
     }
 
     @GetMapping("/search")
-    public Slice<BoardListResponseDto> searchBoard(
+    public Slice<BoardListResponseDTO> searchBoard(
             @RequestParam(value = "lastBoardId", required = false) Long lastBoardId,
             @RequestParam(value = "limit",defaultValue = "10") int limit,
             @RequestParam(value = "tag", required = true) String tag) {

@@ -1,10 +1,10 @@
 package com.oldandsea.pcb.service;
 
-import com.oldandsea.pcb.domain.dto.request.BoardCreateRequestDto;
-import com.oldandsea.pcb.domain.dto.request.BoardUpdateRequestDto;
-import com.oldandsea.pcb.domain.dto.response.BoardCreateResponseDto;
-import com.oldandsea.pcb.domain.dto.response.BoardListResponseDto;
-import com.oldandsea.pcb.domain.dto.response.BoardUpdateResponseDto;
+import com.oldandsea.pcb.domain.dto.request.BoardCreateRequestDTO;
+import com.oldandsea.pcb.domain.dto.request.BoardUpdateRequestDTO;
+import com.oldandsea.pcb.domain.dto.response.BoardCreateResponseDTO;
+import com.oldandsea.pcb.domain.dto.response.BoardListResponseDTO;
+import com.oldandsea.pcb.domain.dto.response.BoardUpdateResponseDTO;
 import com.oldandsea.pcb.domain.entity.Board;
 import com.oldandsea.pcb.domain.entity.BoardTag;
 import com.oldandsea.pcb.domain.entity.Member;
@@ -37,7 +37,7 @@ public class BoardService {
     private final BoardRepositoryCustom boardRepositoryCustom;
 
     @Transactional
-    public BoardCreateResponseDto createBoard(BoardCreateRequestDto boardCreateDto, Long memberId) {
+    public BoardCreateResponseDTO createBoard(BoardCreateRequestDTO boardCreateDto, Long memberId) {
         /*
         먼저 Board Entity를 생성하고 저장한다.
          */
@@ -57,7 +57,7 @@ public class BoardService {
         boardTagService.createBoardTag(tags,savedBoard);
 
         //Board를 BoardTag생성 전에 이미 persist 해놓았기 때문에 수정사항이 있으면 알아서 flush 시에(commit시에) DirtyChekcing 되서 수정될것이다.
-        return BoardCreateResponseDto.builder()
+        return BoardCreateResponseDTO.builder()
                 .boardId(savedBoard.getBoardId())
                 .title(savedBoard.getTitle())
                 .content(savedBoard.getContent())
@@ -65,7 +65,7 @@ public class BoardService {
                 .build();
     }
     @Transactional
-    public BoardUpdateResponseDto updateBoard(BoardUpdateRequestDto boardUpdateRequestDto, Long boardId) {
+    public BoardUpdateResponseDTO updateBoard(BoardUpdateRequestDTO boardUpdateRequestDto, Long boardId) {
         Board board = boardRepository.findById(boardId).orElseThrow(
                 () -> new IllegalArgumentException("Board doesn't exsist")
         );
@@ -80,7 +80,7 @@ public class BoardService {
         for(BoardTag boardTags : boardTag) {
             boardTagService.updateBoardTag(tags, boardTags);
         }
-        return BoardUpdateResponseDto.builder()
+        return BoardUpdateResponseDTO.builder()
                 .boardId(board.getBoardId())
                 .title(board.getTitle())
                 .content(board.getContent())
@@ -97,7 +97,7 @@ public class BoardService {
     }
 
     @Transactional
-    public BoardListResponseDto detailBoard(Long boardId) {
+    public BoardListResponseDTO detailBoard(Long boardId) {
         Board board = boardRepository.findByBoardTagFetch(boardId).orElseThrow(
                 () -> new IllegalArgumentException("Board doesn't exist")
         );
@@ -106,7 +106,7 @@ public class BoardService {
                 .map(boardTag -> boardTag.getTag().getName())
                 .collect(Collectors.toList());
 
-        return BoardListResponseDto.builder()
+        return BoardListResponseDTO.builder()
                 .boardId(board.getBoardId())
                 .title(board.getTitle())
                 .content(board.getContent())
@@ -116,7 +116,7 @@ public class BoardService {
     }
 
     @Transactional
-    public Slice<BoardListResponseDto> searchBoard(String tag, Long lastBoardId, int limit) {
+    public Slice<BoardListResponseDTO> searchBoard(String tag, Long lastBoardId, int limit) {
         PageRequest pageRequest = PageRequest.of(0, limit, Sort.by(Sort.Direction.DESC, "boardId"));
         Slice<Board> boardsSlice = boardRepositoryCustom.searchByTagAndSlice(lastBoardId, tag, pageRequest);
         return mainPageListService.getBoardListResponseDtos(pageRequest, boardsSlice);
