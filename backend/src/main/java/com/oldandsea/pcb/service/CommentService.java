@@ -2,6 +2,7 @@ package com.oldandsea.pcb.service;
 
 import com.oldandsea.pcb.domain.dto.request.CommentCreateRequestDTO;
 import com.oldandsea.pcb.domain.dto.response.CommentCreateResponseDTO;
+import com.oldandsea.pcb.domain.dto.response.CommentResponseDTO;
 import com.oldandsea.pcb.domain.entity.Board;
 import com.oldandsea.pcb.domain.entity.Comment;
 import com.oldandsea.pcb.domain.entity.Member;
@@ -11,12 +12,16 @@ import com.oldandsea.pcb.domain.repository.boardrepository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.ZoneOffset;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CommentService {
     private final CommentRepository commentRepository;
     private final BoardRepository boardRepository;
@@ -56,5 +61,28 @@ public class CommentService {
                 .content(comment.getContent())
                 .createdAt(comment.getCreatedAt().toEpochSecond(ZoneOffset.UTC))
                 .build();
+    }
+
+    public List<Comment> commentListfindByBoardId(Long boardId) {
+        List<Comment> commentList =  commentRepository.findByBoardBoardId(boardId);
+        if(commentList.isEmpty()) {
+            throw new IllegalArgumentException("comment doesn't exsist");
+        }
+        return commentList;
+    }
+
+    public List<CommentResponseDTO> commentDTO (Board board) {
+        Long boardId = board.getBoardId();
+        List<Comment> commentList = commentListfindByBoardId(boardId);
+        return commentList.stream()
+                .map(comment -> CommentResponseDTO.builder()
+                        .color(comment.getColor())
+                        .nickname(comment.getMember().getNickname())
+                        .commentId(comment.getCommentId())
+                        .position(comment.getPosition())
+                        .after(comment.getAfter())
+                        .content(comment.getContent())
+                        .build())
+                .collect(Collectors.toList());
     }
 }

@@ -4,11 +4,9 @@ import com.oldandsea.pcb.domain.dto.request.BoardCreateRequestDTO;
 import com.oldandsea.pcb.domain.dto.request.BoardUpdateRequestDTO;
 import com.oldandsea.pcb.domain.dto.response.BoardCreateResponseDTO;
 import com.oldandsea.pcb.domain.dto.response.BoardListResponseDTO;
+import com.oldandsea.pcb.domain.dto.response.BoardToPostItResponseDTO;
 import com.oldandsea.pcb.domain.dto.response.BoardUpdateResponseDTO;
-import com.oldandsea.pcb.domain.entity.Board;
-import com.oldandsea.pcb.domain.entity.BoardTag;
-import com.oldandsea.pcb.domain.entity.Member;
-import com.oldandsea.pcb.domain.entity.Tag;
+import com.oldandsea.pcb.domain.entity.*;
 import com.oldandsea.pcb.domain.repository.BoardTagRepository;
 import com.oldandsea.pcb.domain.repository.MemberRepository;
 import com.oldandsea.pcb.domain.repository.boardrepository.BoardRepository;
@@ -68,9 +66,7 @@ public class BoardService {
     }
     @Transactional
     public BoardUpdateResponseDTO updateBoard(BoardUpdateRequestDTO boardUpdateRequestDto, Long boardId) {
-        Board board = boardRepository.findById(boardId).orElseThrow(
-                () -> new IllegalArgumentException("Board doesn't exsist")
-        );
+        Board board = boardFindById(boardId);
         board.updateBoard(boardUpdateRequestDto.getTitle(),boardUpdateRequestDto.getContent());
 
         List<Tag> tags = tagService.stringToTagTags(boardUpdateRequestDto.getBoardTagList());
@@ -123,6 +119,27 @@ public class BoardService {
         Slice<Board> boardsSlice = boardRepositoryCustom.searchByTagAndSlice(lastBoardId, tag, pageRequest);
         return mainPageListService.getBoardListResponseDtos(pageRequest, boardsSlice);
     }
+
+    public BoardToPostItResponseDTO boardToPostIt(Long boardId) {
+        Board board = boardFindById(boardId);
+        return toBoardToPostItResponseDTO(board);
+    }
+
+    private BoardToPostItResponseDTO toBoardToPostItResponseDTO(Board board) {
+        return BoardToPostItResponseDTO.builder()
+                .title(board.getTitle())
+                .boardId(board.getBoardId())
+                .createdAt(board.getCreatedAt().toEpochSecond(ZoneOffset.UTC))
+                .nickname(board.getMember().getNickname())
+                .boardCommentList(commentService.commentDTO(board))
+                .build();
+    }
+    public Board boardFindById(Long boardId) {
+        return  boardRepository.findById(boardId).orElseThrow(
+                () -> new IllegalArgumentException("Board doesn't exsist")
+        );
+    }
+
 
 }
 

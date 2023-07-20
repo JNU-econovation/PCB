@@ -6,6 +6,7 @@ import com.oldandsea.pcb.config.apiresponse.ApiUtils;
 import com.oldandsea.pcb.domain.dto.request.BoardCreateRequestDTO;
 import com.oldandsea.pcb.domain.dto.request.BoardUpdateRequestDTO;
 import com.oldandsea.pcb.domain.dto.response.BoardListResponseDTO;
+import com.oldandsea.pcb.domain.dto.response.BoardToPostItResponseDTO;
 import com.oldandsea.pcb.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
@@ -45,5 +46,11 @@ public class BoardController {
             @RequestParam(value = "limit",defaultValue = "10") int limit,
             @RequestParam(value = "tag", required = true) String tag) {
         return boardService.searchBoard(tag, lastBoardId, limit);
+    }
+
+    @GetMapping("/participate/{boardId}")
+    public ApiResult<?> participateBoard(@PathVariable Long boardId) {
+        BoardToPostItResponseDTO responseDTO = boardService.boardToPostIt(boardId);
+        return ApiUtils.success(responseDTO);
     }
 }

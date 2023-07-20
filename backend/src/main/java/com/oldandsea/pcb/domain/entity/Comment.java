@@ -34,11 +34,14 @@ public class Comment {
     @Column(name = "posititon", nullable = false)
     private String position;
 
-    @ManyToOne
-    @JoinColumn(nullable = false)
+    @Column(name = "color", columnDefinition = "varchar(100) default 'white'")
+    private String color;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_id", nullable = false)
     private Board board;
-    @ManyToOne
-    @JoinColumn(nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id",nullable = false)
     private Member member;
 
     @Builder
