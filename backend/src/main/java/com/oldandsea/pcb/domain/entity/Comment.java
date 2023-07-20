@@ -27,12 +27,13 @@ public class Comment {
     @LastModifiedDate
 //    @Temporal(value = TemporalType.DATE)
     private LocalDateTime modifiedAt;
-    @Column(name = "parent_id", nullable = false)
-    private Long parentId; // 0이면 댓글, 1이면 대댓글
-    @Column(name = "sequence", nullable = false)
-    private Long sequence;
-    @Column(name = "like_count",nullable = false,columnDefinition = "bigint default 0")
-    private Long like;
+
+    @Column(name = "after", unique = true, nullable = false)
+    private Long after;
+
+    @Column(name = "posititon", nullable = false)
+    private String position;
+
     @ManyToOne
     @JoinColumn(nullable = false)
     private Board board;
@@ -41,19 +42,24 @@ public class Comment {
     private Member member;
 
     @Builder
-    public Comment(String content,  Long parentId, Board board, Member member, Long sequence) {
+    public Comment(String content, Board board, Member member, Long after, String position) {
         this.content = content;
         this.createdAt = LocalDateTime.now();
         this.modifiedAt= LocalDateTime.now();
-        this.parentId = parentId;
         this.board = board;
         this.member = member;
-        this.sequence = sequence;
+        this.after = after;
+        this.position = position;
     }
 
     public void updateComment(String content) {
         this.content = content;
         this.modifiedAt = LocalDateTime.now();
+    }
+
+    public void updatePosition(Long after, String position) {
+        this.after = after;
+        this.position = position;
     }
 
 }

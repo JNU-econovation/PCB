@@ -10,9 +10,5 @@ import java.util.Optional;
 
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    Optional<Comment> findByMemberAndBoard(Member member, Board board);
-    List<Comment> findByMember(Member member);
-    List<Comment> findByParentId(Long parentId);
-    List<Comment> findByBoard(Board board);
 
 }
