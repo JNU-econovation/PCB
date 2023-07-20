@@ -15,8 +15,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.persistence.EntityManager;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,8 +28,6 @@ import javax.validation.Valid;
 public class MemberController {
     private final MemberService memberService;
     private final SessionService sessionService;
-    private final EntityManager em;
-
     @PostMapping("/uid-check")
     public ApiResult<?> uidCheck(@RequestBody @Valid MemberUidCheckRequestDTO memberUidCheckRequestDto) {
         if (memberService.uidCheck(memberUidCheckRequestDto))
@@ -62,16 +58,11 @@ public class MemberController {
             HttpSession session = request.getSession(true);
             String sessionId = session.getId();
             session.setMaxInactiveInterval(1);
-            try {
-                MemberLoginResponseDTO memberLoginResponseDto = sessionService.createSession(loginResult, sessionId);
-                response.setHeader("Set-Cookie", "PCBSESSIONID=" + sessionId + "; Path=/; HttpOnly; SameSite=None; Secure");
-                return ResponseEntity.ok(ApiUtils.success(memberLoginResponseDto));
-            }
-            catch (DataAccessException e) {
-                return ResponseEntity.badRequest().body(ApiUtils.error("Multiple sessions exist in one member", HttpStatus.BAD_REQUEST));
-            }
-
-        } else {
+            MemberLoginResponseDTO memberLoginResponseDto = sessionService.createSession(loginResult, sessionId);
+            response.setHeader("Set-Cookie", "PCBSESSIONID=" + sessionId + "; Path=/; HttpOnly; SameSite=None; Secure");
+            return ResponseEntity.ok(ApiUtils.success(memberLoginResponseDto));
+        }
+        else {
             return ResponseEntity.badRequest().body(ApiUtils.error("Multiple sessions exist in one member", HttpStatus.BAD_REQUEST));
         }
     }

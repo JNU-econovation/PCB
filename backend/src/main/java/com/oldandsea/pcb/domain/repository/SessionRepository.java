@@ -9,7 +9,9 @@ import java.util.Optional;
 
 public interface SessionRepository extends JpaRepository<Session, Long> {
     Optional<Session> findBySessionId(String sessionId);
-
+    @Modifying
+    @Query("delete from Session s where s.sessionId not in (:sessionId) ")
+    void deleteDuplicateSession(@Param("sessionId") String sessionId);
     @Modifying
     @Query("delete from Session s where s.sessionId = :sessionId")
     void deleteSessionBySessionId(@Param("sessionId") String sessionId);

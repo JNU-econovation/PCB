@@ -39,17 +39,11 @@ public class SessionService {
     }
 
     @Transactional
-    public Session sessionFindByKey(String sessionId) {
-        return sessionRepository.findBySessionId(sessionId).orElseThrow(
-                () -> new IllegalArgumentException("Session doesn't exsist")
-        );
-    }
-
-    @Transactional
     public Session sessionCheck(String sessionId) {
         Session dbSession = sessionRepository.findBySessionId(sessionId).orElseThrow(
                 () -> new NotAuthenticatedException("Please login first")
         );
+        deleteDuplicateSession(dbSession);
         if(dbSession.getModifiedAt().plusMinutes(30).isBefore(LocalDateTime.now())) {
             deleteSession(dbSession.getSessionId());
             throw new NotAuthenticatedException("Please login first");
@@ -65,10 +59,15 @@ public class SessionService {
     }
 
     @Transactional
-    public void sessionSave(Session dbsession) {
+    public void saveSession(Session dbsession) {
         sessionRepository.save(dbsession);
     }
 
+    @Transactional
+    public void deleteDuplicateSession(Session dbSession) {
+        String sessionId = dbSession.getSessionId();
+        sessionRepository.deleteDuplicateSession(sessionId);
+    }
 }
 
 

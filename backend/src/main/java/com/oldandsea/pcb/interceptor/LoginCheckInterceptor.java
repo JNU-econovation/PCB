@@ -28,7 +28,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         }
         Session dbSession = sessionService.sessionCheck(sessionIdFromCookie);
         dbSession.updateSession();
-        sessionService.sessionSave(dbSession);
+        sessionService.saveSession(dbSession);
         return true;
     }
 }
