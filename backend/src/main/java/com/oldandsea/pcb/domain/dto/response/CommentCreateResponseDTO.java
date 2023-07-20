@@ -14,13 +14,15 @@ public class CommentCreateResponseDTO {
     private Long after;
     private String position;
     private Long createdAt;
+    private String color;
     @Builder
-    public CommentCreateResponseDTO(Long commentId, String content, String nickmame, Long after, String position, Long createdAt) {
+    public CommentCreateResponseDTO(Long commentId, String content, String nickmame, Long after, String position, Long createdAt, String color) {
         this.commentId = commentId;
         this.content = content;
         this.nickmame = nickmame;
         this.after = after;
         this.position = position;
         this.createdAt = createdAt;
+        this.color = color;
     }
 }

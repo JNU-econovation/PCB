@@ -50,6 +50,7 @@ public class CommentService {
                 .position(createRequestDTO.getPosition())
                 .content(createRequestDTO.getContent())
                 .member(member)
+                .color(createRequestDTO.getColor())
                 .build();
     }
     private CommentCreateResponseDTO entityToDTO(Comment comment) {
@@ -60,6 +61,7 @@ public class CommentService {
                 .position(comment.getPosition())
                 .content(comment.getContent())
                 .createdAt(comment.getCreatedAt().toEpochSecond(ZoneOffset.UTC))
+                .color(comment.getColor())
                 .build();
     }
 

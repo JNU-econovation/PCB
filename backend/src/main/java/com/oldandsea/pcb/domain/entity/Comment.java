@@ -45,7 +45,7 @@ public class Comment {
     private Member member;
 
     @Builder
-    public Comment(String content, Board board, Member member, Long after, String position) {
+    public Comment(String content, Board board, Member member, Long after, String position, String color) {
         this.content = content;
         this.createdAt = LocalDateTime.now();
         this.modifiedAt= LocalDateTime.now();
@@ -53,6 +53,7 @@ public class Comment {
         this.member = member;
         this.after = after;
         this.position = position;
+        this.color = color;
     }
 
     public void updateComment(String content) {

@@ -13,13 +13,15 @@ public class CommentCreateRequestDTO {
     private String content;
     private Long after;
     private String position;
+    private String color;
 
     @Builder
-    public CommentCreateRequestDTO(Long boardId, String content, Long after, String position) {
+    public CommentCreateRequestDTO(Long boardId, String content, Long after, String position, String color) {
         this.boardId = boardId;
         this.content = content;
         this.after = after;
         this.position = position;
+        this.color = color;
     }
 
 }
