@@ -2,7 +2,7 @@ package com.oldandsea.pcb.service;
 
 import com.oldandsea.pcb.config.exception.NotAuthenticatedException;
 import com.oldandsea.pcb.domain.dto.response.MemberLoginResponseDTO;
-import com.oldandsea.pcb.domain.dto.response.MemberResponseDTO;
+import com.oldandsea.pcb.domain.dto.layer.LoginDTO;
 import com.oldandsea.pcb.domain.entity.Session;
 import com.oldandsea.pcb.domain.repository.SessionRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ public class SessionService {
     private final SessionRepository sessionRepository;
 
     @Transactional
-    public MemberLoginResponseDTO createSession(MemberResponseDTO loginResult, String sessionId) {
+    public MemberLoginResponseDTO createSession(LoginDTO loginResult, String sessionId) {
         Session dbSession1 = createSession1(sessionId, loginResult.getMemberId());
         return MemberLoginResponseDTO.builder()
                 .sessionId(dbSession1.getSessionId())

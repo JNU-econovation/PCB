@@ -7,7 +7,7 @@ import com.oldandsea.pcb.config.apiresponse.ApiUtils;
 import com.oldandsea.pcb.domain.dto.request.*;
 
 import com.oldandsea.pcb.domain.dto.response.MemberLoginResponseDTO;
-import com.oldandsea.pcb.domain.dto.response.MemberResponseDTO;
+import com.oldandsea.pcb.domain.dto.layer.LoginDTO;
 import com.oldandsea.pcb.service.MemberService;
 import com.oldandsea.pcb.service.SessionService;
 import lombok.RequiredArgsConstructor;
@@ -53,7 +53,7 @@ public class MemberController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(HttpServletResponse response, @RequestBody @Valid MemberLoginRequestDTO memberLoginRequestDto, HttpServletRequest request) throws DataAccessException {
-        MemberResponseDTO loginResult = memberService.login(memberLoginRequestDto);
+        LoginDTO loginResult = memberService.login(memberLoginRequestDto);
         if (loginResult != null) {
             HttpSession session = request.getSession(true);
             String sessionId = session.getId();

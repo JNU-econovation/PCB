@@ -1,4 +1,4 @@
-package com.oldandsea.pcb.domain.dto.response;
+package com.oldandsea.pcb.domain.dto.layer;
 
 import com.oldandsea.pcb.domain.entity.Member;
 import lombok.AccessLevel;
@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MemberResponseDTO {
+public class LoginDTO {
     private Long memberId;
 
     private String uid;
@@ -16,7 +16,7 @@ public class MemberResponseDTO {
 
     private String nickname;
     @Builder
-    public MemberResponseDTO(Long memberId, String uid, String pwd, String nickname) {
+    public LoginDTO(Long memberId, String uid, String pwd, String nickname) {
         this.memberId = memberId;
         this.uid = uid;
         this.pwd = pwd;
