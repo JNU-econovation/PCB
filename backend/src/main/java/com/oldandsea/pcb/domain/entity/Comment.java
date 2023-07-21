@@ -66,4 +66,12 @@ public class Comment {
         this.position = position;
     }
 
+    public void updateColor(String color) {
+        this.color = color;
+    }
+
+    public void updateAfter(Long after) {
+        this.after = after;
+    }
+
 }

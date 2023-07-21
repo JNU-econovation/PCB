@@ -7,6 +7,7 @@ import com.oldandsea.pcb.domain.entity.Board;
 import com.oldandsea.pcb.domain.entity.Comment;
 import com.oldandsea.pcb.domain.entity.Member;
 import com.oldandsea.pcb.domain.repository.CommentRepository;
+import com.oldandsea.pcb.domain.repository.CommentRepositoryCustom;
 import com.oldandsea.pcb.domain.repository.MemberRepository;
 import com.oldandsea.pcb.domain.repository.boardrepository.BoardRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
+    private final CommentRepositoryCustom commentRepositoryCustom;
 
     @Transactional
     public CommentCreateResponseDTO createComment(CommentCreateRequestDTO createRequestDTO, Long memberId) {
@@ -38,6 +40,7 @@ public class CommentService {
         try {
             Comment comment = dtoToEntity(board,member,createRequestDTO);
             commentRepository.save(comment);
+            updateAfter(comment);
             return entityToDTO(comment);
         } catch (DataAccessException e) {
             throw new IllegalArgumentException("After of comment must not duplicate");
@@ -46,7 +49,7 @@ public class CommentService {
     private Comment dtoToEntity(Board board, Member member, CommentCreateRequestDTO createRequestDTO) {
         return Comment.builder()
                 .board(board)
-                .after(createRequestDTO.getAfter())
+                .after(-1L)
                 .position(createRequestDTO.getPosition())
                 .content(createRequestDTO.getContent())
                 .member(member)
@@ -87,4 +90,9 @@ public class CommentService {
                         .build())
                 .collect(Collectors.toList());
     }
+    @Transactional
+    public void updateAfter(Comment comment) {
+        commentRepositoryCustom.updateAfter(comment);
+    }
+
 }

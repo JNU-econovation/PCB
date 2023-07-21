@@ -11,15 +11,13 @@ import lombok.NoArgsConstructor;
 public class CommentCreateRequestDTO {
     private Long boardId;
     private String content;
-    private Long after;
     private String position;
     private String color;
 
     @Builder
-    public CommentCreateRequestDTO(Long boardId, String content, Long after, String position, String color) {
+    public CommentCreateRequestDTO(Long boardId, String content, String position, String color) {
         this.boardId = boardId;
         this.content = content;
-        this.after = after;
         this.position = position;
         this.color = color;
     }
