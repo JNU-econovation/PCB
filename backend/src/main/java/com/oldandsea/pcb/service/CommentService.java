@@ -1,9 +1,11 @@
 package com.oldandsea.pcb.service;
 
+import com.oldandsea.pcb.domain.dto.layer.CommentUpdateContentList;
 import com.oldandsea.pcb.domain.dto.request.CommentCreateRequestDTO;
 import com.oldandsea.pcb.domain.dto.layer.CommentUpdatePositionList;
 import com.oldandsea.pcb.domain.dto.response.CommentCreateResponseDTO;
 import com.oldandsea.pcb.domain.dto.response.CommentResponseDTO;
+import com.oldandsea.pcb.domain.dto.response.CommentUpdateContentResponseDTO;
 import com.oldandsea.pcb.domain.dto.response.CommentUpdatePositionResponseDTO;
 import com.oldandsea.pcb.domain.entity.Board;
 import com.oldandsea.pcb.domain.entity.Comment;
@@ -101,14 +103,12 @@ public class CommentService {
     @Transactional
     public CommentUpdatePositionResponseDTO updatePosition(List<CommentUpdatePositionList> requestDTO, Long memberId) {
         List<CommentUpdatePositionList> responseDTOList = new ArrayList<>();
-        for (CommentUpdatePositionList requet : requestDTO) {
-            Long commentId = requet.getCommentId();
-            Comment comment = commentRepository.findByCommentIdAndMemberMemberId(commentId, memberId).orElseThrow(
-                    () -> new IllegalArgumentException("Comment doesn't exsist")
-            );
+        for (CommentUpdatePositionList request : requestDTO) {
+            Long commentId = request.getCommentId();
+            Comment comment = findByCommentIdAndMemberMemberId(commentId,memberId);
 
-            if (checkAfter(requet.getAfter(), comment.getBoard().getBoardId())) {
-                comment.updatePosition(requet.getAfter(), requet.getPosition());
+            if (checkAfter(request.getAfter(), comment.getBoard().getBoardId())) {
+                comment.updatePosition(request.getAfter(), request.getPosition());
                 responseDTOList.add(toUpdatePositionDTO(comment));
             } else throw new IllegalArgumentException("after에 해당하는 Id를 가진 comment가 같은 게시글에 있지 않습니다");
         }
@@ -116,12 +116,34 @@ public class CommentService {
                 .updatePositionList(responseDTOList)
                 .build();
     }
+    @Transactional
+    public CommentUpdateContentResponseDTO updateContent(List<CommentUpdateContentList> requestDTO, Long memberId) {
+        List<CommentUpdateContentList> responseDTOList = new ArrayList<>();
+        for(CommentUpdateContentList request : requestDTO) {
+            Long commentId = request.getCommentId();
+            Comment comment = findByCommentIdAndMemberMemberId(commentId, memberId);
+            comment.updateColorAndContent(request.getColor(), request.getContent());
+            responseDTOList.add(toUpdateContentDTO(comment));
+        }
+            return CommentUpdateContentResponseDTO.builder()
+                    .updateContentList(responseDTOList)
+                    .build();
+    }
+
 
     private CommentUpdatePositionList toUpdatePositionDTO(Comment comment) {
         return CommentUpdatePositionList.builder()
                 .commentId(comment.getCommentId())
                 .after(comment.getAfter())
                 .position(comment.getPosition())
+                .build();
+    }
+
+    private CommentUpdateContentList toUpdateContentDTO(Comment comment) {
+        return CommentUpdateContentList.builder()
+                .commentId(comment.getCommentId())
+                .color(comment.getColor())
+                .content(comment.getContent())
                 .build();
     }
     private boolean checkAfter(Long after, Long boardId) {
@@ -132,5 +154,10 @@ public class CommentService {
             return true;
         }else
             throw new IllegalArgumentException("after에 해당하는 Id를 가진 comment가 같은 게시글에 있지 않습니다");
+    }
+    private Comment findByCommentIdAndMemberMemberId(Long commentId, Long memberId) {
+        return commentRepository.findByCommentIdAndMemberMemberId(commentId, memberId).orElseThrow(
+                () -> new IllegalArgumentException("Comment doesn't exsist")
+        );
     }
 }
