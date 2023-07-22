@@ -5,7 +5,7 @@
 //import com.oldandsea.pcb.domain.entity.Member;
 //
 //import com.oldandsea.pcb.domain.repository.boardrepository.BoardRepository;
-//import com.oldandsea.pcb.domain.repository.CommentRepository;
+//import com.oldandsea.pcb.domain.repository.commentrepository.CommentRepository;
 //import com.oldandsea.pcb.domain.repository.MemberRepository;
 //import org.junit.jupiter.api.Test;
 //import org.springframework.beans.factory.annotation.Autowired;

@@ -17,7 +17,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RequestMapping("/board")
 public class BoardController {
-    public final BoardService boardService;
+    private final BoardService boardService;
     @PostMapping("/create")
     public ApiResult<?> createBoard(@RequestBody @Valid BoardCreateRequestDTO boardCreateDto, @Login Long memberId) {
 

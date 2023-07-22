@@ -6,13 +6,15 @@ import com.oldandsea.pcb.domain.entity.Tag;
 import com.oldandsea.pcb.domain.repository.BoardTagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class BoardTagService {
     private final BoardTagRepository boardTagRepository;
 
@@ -27,14 +29,13 @@ public class BoardTagService {
         }
     }
 
-    @Transactional
     public void updateBoardTag(List<Tag> tags, BoardTag boardTag) {
         for(Tag tag: tags) {
             boardTag.updateBoardTag(tag);
         }
     }
 
-    @Transactional
+
     public List<String> boardTagToStringTags(List<BoardTag> boardTags) {
         return boardTags.stream()
                 .map(boardTag -> boardTag.getTag().getName())

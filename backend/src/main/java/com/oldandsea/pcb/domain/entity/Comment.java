@@ -28,7 +28,7 @@ public class Comment {
 //    @Temporal(value = TemporalType.DATE)
     private LocalDateTime modifiedAt;
 
-    @Column(name = "after", unique = true, nullable = false)
+    @Column(name = "after", nullable = false)
     private Long after;
 
     @Column(name = "posititon", nullable = false)
@@ -56,18 +56,14 @@ public class Comment {
         this.color = color;
     }
 
-    public void updateComment(String content) {
-        this.content = content;
-        this.modifiedAt = LocalDateTime.now();
-    }
-
     public void updatePosition(Long after, String position) {
         this.after = after;
         this.position = position;
     }
 
-    public void updateColor(String color) {
+    public void updateColorAndContent(String color, String content) {
         this.color = color;
+        this.content = content;
     }
 
     public void updateAfter(Long after) {
