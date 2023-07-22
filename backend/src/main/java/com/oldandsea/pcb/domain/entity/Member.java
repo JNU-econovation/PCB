@@ -23,7 +23,7 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
-    @Column(nullable = false, name = "uid" )
+    @Column(nullable = false, unique = true, name = "uid" )
     private String uid;
 
     @Column(nullable = false, name = "pwd")

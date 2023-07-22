@@ -9,9 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberLoginResponseDTO {
     private String sessionId;
+    private String nickname;
     @Builder
-    public MemberLoginResponseDTO(String sessionId) {
+    public MemberLoginResponseDTO(String sessionId, String nickname) {
         this.sessionId = sessionId;
+        this.nickname = nickname;
     }
 
 }

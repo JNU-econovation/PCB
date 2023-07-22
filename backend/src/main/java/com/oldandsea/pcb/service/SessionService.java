@@ -1,9 +1,12 @@
 package com.oldandsea.pcb.service;
 
 import com.oldandsea.pcb.config.exception.NotAuthenticatedException;
+import com.oldandsea.pcb.domain.dto.request.MemberLoginRequestDTO;
 import com.oldandsea.pcb.domain.dto.response.MemberLoginResponseDTO;
 import com.oldandsea.pcb.domain.dto.layer.LoginDTO;
+import com.oldandsea.pcb.domain.entity.Member;
 import com.oldandsea.pcb.domain.entity.Session;
+import com.oldandsea.pcb.domain.repository.MemberRepository;
 import com.oldandsea.pcb.domain.repository.SessionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,12 +19,14 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class SessionService {
     private final SessionRepository sessionRepository;
+    private final MemberRepository memberRepository;
 
     @Transactional
-    public MemberLoginResponseDTO createSession(LoginDTO loginResult, String sessionId) {
+    public MemberLoginResponseDTO createSession(LoginDTO loginResult, String sessionId, MemberLoginRequestDTO requestDTO) {
         Session dbSession1 = createSession1(sessionId, loginResult.getMemberId());
         return MemberLoginResponseDTO.builder()
                 .sessionId(dbSession1.getSessionId())
+                .nickname(findMemberUid(requestDTO.getUid()))
                 .build();
     }
 
@@ -67,6 +72,12 @@ public class SessionService {
     public void deleteDuplicateSession(Session dbSession) {
         String sessionId = dbSession.getSessionId();
         sessionRepository.deleteDuplicateSession(sessionId);
+    }
+    private String findMemberUid(String memberUid) {
+        Member member = memberRepository.findByUid(memberUid).orElseThrow(
+                () -> new IllegalArgumentException("회원을 찾을 수 없습니다.")
+        );
+        return member.getNickname();
     }
 }
 

@@ -2,6 +2,7 @@ package com.oldandsea.pcb.controller;
 
 
 
+import com.oldandsea.pcb.config.Login;
 import com.oldandsea.pcb.config.apiresponse.ApiResult;
 import com.oldandsea.pcb.config.apiresponse.ApiUtils;
 import com.oldandsea.pcb.domain.dto.request.*;
@@ -52,13 +53,14 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(HttpServletResponse response, @RequestBody @Valid MemberLoginRequestDTO memberLoginRequestDto, HttpServletRequest request) throws DataAccessException {
+    public ResponseEntity<?> login(HttpServletResponse response, @RequestBody @Valid MemberLoginRequestDTO memberLoginRequestDto,
+                                   HttpServletRequest request) throws DataAccessException {
         LoginDTO loginResult = memberService.login(memberLoginRequestDto);
         if (loginResult != null) {
             HttpSession session = request.getSession(true);
             String sessionId = session.getId();
             session.setMaxInactiveInterval(1);
-            MemberLoginResponseDTO memberLoginResponseDto = sessionService.createSession(loginResult, sessionId);
+            MemberLoginResponseDTO memberLoginResponseDto = sessionService.createSession(loginResult, sessionId, memberLoginRequestDto);
             response.setHeader("Set-Cookie", "PCBSESSIONID=" + sessionId + "; Path=/; HttpOnly; SameSite=None; Secure");
             return ResponseEntity.ok(ApiUtils.success(memberLoginResponseDto));
         }
