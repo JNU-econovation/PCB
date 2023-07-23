@@ -42,17 +42,15 @@ public class BoardService {
         먼저 Board Entity를 생성하고 저장한다.
          */
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
-
+                .orElseThrow(() -> new IllegalArgumentException("memberId에 해당하는 member가 존재하지 않습니다(게시글 생성)"));
         Board board = boardCreateDto.toEntity(member);
         Board savedBoard = boardRepository.save(board);
 
         //BoardCreateDto로부터 List<String> 태그들을 가져와 List<Tag> 를 생성
         if(tagService.hasDuplicateTagNames(boardCreateDto.getBoardTagList())) {
-            throw new IllegalArgumentException("Duplicate tag name");
+            throw new IllegalArgumentException("중복된 태그는 입력할 수 없습니다");
         }
         List<Tag> tags = tagService.stringToTagTags(boardCreateDto.getBoardTagList());
-
         //반복문을 통해 생성하고 저장한 Board Entity와 List<Tag>들의 tag들을 받아와 BoardTag 생성(연관 맺어주기)
         boardTagService.createBoardTag(tags,savedBoard);
 
@@ -72,7 +70,7 @@ public class BoardService {
         List<Tag> tags = tagService.stringToTagTags(boardUpdateRequestDto.getBoardTagList());
         List<BoardTag> boardTag = boardTagRepository.findByBoardId(boardId);
         if(boardTag.isEmpty()) {
-            throw new IllegalArgumentException("Board doesn't exsist");
+            throw new IllegalArgumentException("boardId에 해당하는 board가 존재하지 않습니다(게시글 수정)");
         }
 
         for(BoardTag boardTags : boardTag) {
@@ -136,13 +134,9 @@ public class BoardService {
     }
     public Board boardFindById(Long boardId) {
         return  boardRepository.findById(boardId).orElseThrow(
-                () -> new IllegalArgumentException("Board doesn't exsist")
+                () -> new IllegalArgumentException("boardId에 해당하는 board가 존재하지 않습니다(게시글 수정)")
         );
     }
-
-
-
-
 }
 
 

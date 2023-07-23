@@ -1,12 +1,10 @@
 package com.oldandsea.pcb.controller;
 
-
-
 import com.oldandsea.pcb.config.Login;
 import com.oldandsea.pcb.config.apiresponse.ApiResult;
 import com.oldandsea.pcb.config.apiresponse.ApiUtils;
+import com.oldandsea.pcb.config.exception.NotAuthenticatedException;
 import com.oldandsea.pcb.domain.dto.request.*;
-
 import com.oldandsea.pcb.domain.dto.response.MemberLoginResponseDTO;
 import com.oldandsea.pcb.domain.dto.layer.LoginDTO;
 import com.oldandsea.pcb.service.MemberService;
@@ -14,7 +12,6 @@ import com.oldandsea.pcb.service.SessionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -32,28 +29,28 @@ public class MemberController {
     @PostMapping("/uid-check")
     public ApiResult<?> uidCheck(@RequestBody @Valid MemberUidCheckRequestDTO memberUidCheckRequestDto) {
         if (memberService.uidCheck(memberUidCheckRequestDto))
-            return ApiUtils.error("Duplicate uid", HttpStatus.BAD_REQUEST);
+            return ApiUtils.error("중복된 아이디입니다", HttpStatus.BAD_REQUEST);
         else
-            return ApiUtils.success("Can use uid");
+            return ApiUtils.success("사용할 수 있는 아이디입니다");
     }
 
     @PostMapping("/nickname-check")
     public ApiResult<?> nickNameCheck(@RequestBody @Valid MemberNickNameCheckRequestDTO memberNickNameCheckRequestDto) {
         if (memberService.nickNameCheck(memberNickNameCheckRequestDto))
-            return ApiUtils.error("Duplicate nickname", HttpStatus.BAD_REQUEST);
+            return ApiUtils.error("중복된 닉네임입니다", HttpStatus.BAD_REQUEST);
         else
-            return ApiUtils.success("Can use nickname");
+            return ApiUtils.success("사용할 수 있는 닉네임입니다");
     }
 
     @PostMapping("/create")
     public ApiResult<?> insertMember(@RequestBody @Valid MemberCreateRequestDTO memberCreateRequestDto) {
         memberService.createMember(memberCreateRequestDto);
-        return ApiUtils.success("Create member success");
+        return ApiUtils.success("회원가입 성공");
 
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(HttpServletResponse response, @RequestBody @Valid MemberLoginRequestDTO memberLoginRequestDto,
+    public ApiResult<?> login(HttpServletResponse response, @RequestBody @Valid MemberLoginRequestDTO memberLoginRequestDto,
                                    HttpServletRequest request) throws DataAccessException {
         LoginDTO loginResult = memberService.login(memberLoginRequestDto);
         if (loginResult != null) {
@@ -62,44 +59,45 @@ public class MemberController {
             session.setMaxInactiveInterval(1);
             MemberLoginResponseDTO memberLoginResponseDto = sessionService.createSession(loginResult, sessionId, memberLoginRequestDto);
             response.setHeader("Set-Cookie", "PCBSESSIONID=" + sessionId + "; Path=/; HttpOnly; SameSite=None; Secure");
-            return ResponseEntity.ok(ApiUtils.success(memberLoginResponseDto));
+            return ApiUtils.success(memberLoginResponseDto);
         }
         else {
-            return ResponseEntity.badRequest().body(ApiUtils.error("Multiple sessions exist in one member", HttpStatus.BAD_REQUEST));
+            return ApiUtils.error("로그인을 다시해주세요",HttpStatus.BAD_REQUEST);
         }
     }
 
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(HttpServletRequest request) {
+    public ApiResult<?> logout(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         String sessionIdFromCookie = null;
         for (Cookie cookie : cookies) {
             if ("PCBSESSIONID".equals(cookie.getName())) {
                 sessionIdFromCookie = cookie.getValue();
                 break;
-            }
+            } else
+                throw new NotAuthenticatedException("쿠키에 PCBSESSIOND가 존재하지 않습니다");
         }
         sessionService.deleteSession(sessionIdFromCookie);
-        return ResponseEntity.ok(ApiUtils.success("Logout success"));
+        return ApiUtils.success("로그아웃 성공");
     }
 
-    @PutMapping("/pwd/{memberId}")
-    public ResponseEntity<?> updatePwd(@PathVariable("memberId") Long memberId, @RequestBody MemberPwdUpdateRequestDTO memberPwdUpdateRequestDto) {
+    @PutMapping("/pwd")
+    public ApiResult<?> updatePwd(@Login Long memberId, @RequestBody MemberPwdUpdateRequestDTO memberPwdUpdateRequestDto) {
         memberService.updatePwd(memberId,memberPwdUpdateRequestDto);
-        return ResponseEntity.ok(ApiUtils.success("Pwd update success"));
+        return ApiUtils.success("비밀번호 수정 성공");
     }
 
 
-    @PutMapping("/nickname/{memberId}")
-    public ResponseEntity<?> updateNickname(@PathVariable("memberId") Long memberId, @RequestBody MemberNickUpdateRequestDTO nickUpdateRequestDto) {
+    @PutMapping("/nickname")
+    public ApiResult<?> updateNickname(@Login Long memberId, @RequestBody MemberNickUpdateRequestDTO nickUpdateRequestDto) {
         memberService.updateNickname(memberId,nickUpdateRequestDto);
-        return ResponseEntity.ok(ApiUtils.success("Nickname update success"));
+        return ApiUtils.success("닉네임 수정 성공");
     }
-    @DeleteMapping("/delete/{memberId}")
-    public ResponseEntity<?> delete(@PathVariable("memberId") Long memberId) {
+    @DeleteMapping("/delete")
+    public ApiResult<?> delete(@Login Long memberId) {
         memberService.delete(memberId);
-        return ResponseEntity.ok((ApiUtils.success("Memeber delete success")));
+        return ApiUtils.success("회원 탈퇴 성공");
     }
 
 }

@@ -35,7 +35,7 @@ public class MemberService {
         memeber.updatePwd(passwordEncoder.encode(memeber.getPwd()));
         Optional<Member> findMember = memberRepository.findByUid(memeber.getUid());
         if (findMember.isPresent()) {
-            throw new IllegalArgumentException("Duplicate uid");
+            throw new IllegalArgumentException("회원가입이 이미 완료된 아이디입니다");
         }
         else {
             memberRepository.save(memeber);
@@ -46,7 +46,7 @@ public class MemberService {
     public LoginDTO login(MemberLoginRequestDTO memberLoginRequestDto) {
         Optional<Member> byMemberUid = memberRepository.findByUid(memberLoginRequestDto.getUid());
         if (byMemberUid.isEmpty()) {
-            throw new IllegalArgumentException("Please check uid");
+            throw new IllegalArgumentException("아이디를 다시 입력해주세요");
         } else {
             Member member = byMemberUid.get();
 
@@ -57,7 +57,7 @@ public class MemberService {
                         .nickname(member.getNickname())
                         .build();
             } else
-                throw new IllegalArgumentException("Please check pwd");
+                throw new IllegalArgumentException("비밀번호를 다시 입력해주세요");
         }
     }
 
@@ -65,7 +65,7 @@ public class MemberService {
     public void delete(Long memberId) {
         Optional<Member> member = memberRepository.findByMemberIdFetch(memberId);
         if(member.isEmpty()) {
-            throw new NullPointerException("Member doesn't exsist");
+            throw new NullPointerException("memberId에 해당하는 member가 존재하지 않습니다(탈퇴)");
         }
         memberRepository.delete(member.get());
     }
@@ -74,7 +74,7 @@ public class MemberService {
     public void updatePwd(Long memberId, MemberPwdUpdateRequestDTO pwdUpdateRequestDto) {
         String pwd  = pwdUpdateRequestDto.getPwd();
         Member member = memberRepository.findByMemberId(memberId).orElseThrow(
-                () -> new IllegalArgumentException("Member doesn't exsist")
+                () -> new IllegalArgumentException("memberId에 해당하는 member가 존재하지 않습니다(비밀번호 변경)")
         );
         member.updatePwd(pwd);
     }
@@ -83,7 +83,7 @@ public class MemberService {
     public void updateNickname(Long memberId, MemberNickUpdateRequestDTO nickUpdateRequestDto) {
         String nickname = nickUpdateRequestDto.getNickname();
         Member member = memberRepository.findByMemberId(memberId).orElseThrow(
-                () -> new IllegalArgumentException("Member doesn't exsist")
+                () -> new IllegalArgumentException("memberId에 해당하는 member가 존재하지 않습니다(닉네임 변경)")
         );
         member.updateNickname(nickname);
     }

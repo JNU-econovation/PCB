@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:mysql://localhost:3306/springboot</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="AWS-deploy" uuid="f6ff6787-6cc8-48bc-9009-d048472aba61">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://spring-deploy.cifqgagtvadq.us-east-2.rds.amazonaws.com/spring_deploy</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
