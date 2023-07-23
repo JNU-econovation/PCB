@@ -173,6 +173,6 @@ Temporary Items
 # iCloud generated files
 *.icloud
 
-application-aws.properties
+application-db.yml
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,intellij,java
