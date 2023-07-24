@@ -1,5 +1,6 @@
 package com.oldandsea.pcb.interceptor;
 
+import com.oldandsea.pcb.config.exception.NotAuthenticatedException;
 import com.oldandsea.pcb.domain.entity.Session;
 import com.oldandsea.pcb.service.SessionService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,8 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
             if ("PCBSESSIONID".equals(cookie.getName())) {
                 sessionIdFromCookie = cookie.getValue();
                 break;
-            }
+            } else
+                throw new NotAuthenticatedException("Please login first");
         }
         Session dbSession = sessionService.sessionCheck(sessionIdFromCookie);
         dbSession.updateSession();

@@ -20,7 +20,6 @@ public class BoardController {
     private final BoardService boardService;
     @PostMapping("/create")
     public ApiResult<?> createBoard(@RequestBody @Valid BoardCreateRequestDTO boardCreateDto, @Login Long memberId) {
-
         return ApiUtils.success(boardService.createBoard(boardCreateDto, memberId));
     }
     @PutMapping("/update/{boardId}")

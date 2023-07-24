@@ -19,7 +19,7 @@ public class MemberCreateRequestDTO {
     private String uid;
     @NotNull(message = "Please write pwd")
     @Size(min = 8, max = 20, message = "8에서 20자 이내여야 합니다")
-    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[@#$%^&+=!~`<>,./?;:'\"\\[\\]{}\\\\()|_-])\\S*$", message = "영문, 숫자, 특수문자가 포함되어야하고 공백이 포함될 수 없습니다.")
+    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[@#$%^&+=!~`<>,./?;:'\"\\[\\]{}\\\\()|_-])\\S*$", message = "영문, 숫자, 특수문자가 포함되어야하고 공백이 포함될 수 없습니다")
     private String pwd;
     @NotNull(message = "Please write nickname")
     @Size(min = 3, max = 10, message = "3에서 10자 이내여야 합니다")

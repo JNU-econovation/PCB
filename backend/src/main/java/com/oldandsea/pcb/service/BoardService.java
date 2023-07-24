@@ -87,15 +87,14 @@ public class BoardService {
     @Transactional
     public void deleteBoard(Long boardId) {
         Board board = boardRepository.findByBoardTagFetch(boardId).orElseThrow(
-                () -> new IllegalArgumentException("Board doesn't exsist")
+                () -> new IllegalArgumentException("boardId에 해당하는 board가 존재하지 않습니다(게시글 삭제)")
         );
         boardRepository.delete(board);
     }
 
-    @Transactional
     public BoardListResponseDTO detailBoard(Long boardId) {
         Board board = boardRepository.findByBoardTagFetch(boardId).orElseThrow(
-                () -> new IllegalArgumentException("Board doesn't exist")
+                () -> new IllegalArgumentException("boardId에 해당하는 board가 존재하지 않습니다(게시글 상세)")
         );
 
         List<String> tagNames = board.getBoardTagList().stream()
