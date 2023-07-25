@@ -37,7 +37,7 @@ public class MyPageService {
                         .boardId(board.getBoardId())
                         .content(board.getContent())
                         .title(board.getTitle())
-                        .boardTagList(tagService.toTagDTOList(board.getBoardId()))
+                        .boardTagList(tagService.toTagDTOList(board))
                         .build())
                 .collect(Collectors.toList());
     }
@@ -46,7 +46,7 @@ public class MyPageService {
                 .map(comment -> CommentDTO.builder()
                         .title(comment.getBoard().getTitle())
                         .content(comment.getContent())
-                        .boardTagList(tagService.toTagDTOList(comment.getBoard().getBoardId()))
+                        .boardTagList(tagService.toTagDTOList(comment.getBoard()))
                         .build())
                 .collect(Collectors.toList());
     }

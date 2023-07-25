@@ -129,6 +129,7 @@ public class BoardService {
                 .createdAt(board.getCreatedAt().toEpochSecond(ZoneOffset.UTC))
                 .nickname(board.getMember().getNickname())
                 .boardCommentList(commentService.commentDTO(board))
+                .boardTagList(board.getBoardTagList())
                 .build();
     }
     public Board boardFindById(Long boardId) {

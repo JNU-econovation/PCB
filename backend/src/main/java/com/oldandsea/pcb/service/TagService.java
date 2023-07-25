@@ -1,6 +1,7 @@
 package com.oldandsea.pcb.service;
 
 import com.oldandsea.pcb.domain.dto.layer.TagDTO;
+import com.oldandsea.pcb.domain.entity.Board;
 import com.oldandsea.pcb.domain.entity.Tag;
 import com.oldandsea.pcb.domain.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +39,8 @@ public class TagService {
                 .collect(Collectors.toList());
     }
 
-    public List<TagDTO> toTagDTOList(Long boardId) {
+    public List<TagDTO> toTagDTOList(Board board) {
+       Long boardId = board.getBoardId();
         List<Tag> tagList = findByBoardId(boardId);
         return tagList.stream()
                 .map(tag -> TagDTO.builder()

@@ -74,11 +74,7 @@ public class CommentService {
     }
 
     public List<Comment> commentListfindByBoardId(Long boardId) {
-        List<Comment> commentList =  commentRepository.findByBoardBoardId(boardId);
-        if(commentList.isEmpty()) {
-            throw new IllegalArgumentException("comment doesn't exsist");
-        }
-        return commentList;
+        return commentRepository.findByBoardBoardId(boardId);
     }
 
     public List<CommentResponseDTO> commentDTO (Board board) {

@@ -1,14 +1,15 @@
 package com.oldandsea.pcb.interceptor;
 
-import com.oldandsea.pcb.config.exception.NotAuthenticatedException;
 import com.oldandsea.pcb.domain.entity.Session;
 import com.oldandsea.pcb.service.SessionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
+
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import java.util.Objects;
 
 
 @Slf4j
@@ -18,8 +19,15 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        Cookie[] cookies = request.getCookies();
+        String sessionId = null;
+        for(Cookie cookie : cookies) {
+            if(Objects.equals(cookie.getName(), "PCBSESSIONID")) {
+                sessionId = cookie.getValue();
+                break;
+            }
+        }
 
-        String sessionId = request.getHeader("PCBSESSIONID");
         if (sessionId == null) {
             throw new IllegalArgumentException("Please login first");
         } else {
