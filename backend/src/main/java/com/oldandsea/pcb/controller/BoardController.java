@@ -40,11 +40,12 @@ public class BoardController {
     }
 
     @GetMapping("/search")
-    public Slice<BoardListResponseDTO> searchBoard(
+    public ApiResult<?> searchBoard(
             @RequestParam(value = "lastBoardId", required = false) Long lastBoardId,
             @RequestParam(value = "limit",defaultValue = "10") int limit,
             @RequestParam(value = "tag", required = true) String tag) {
-        return boardService.searchBoard(tag, lastBoardId, limit);
+        Slice<BoardListResponseDTO> responseDTOSlice = boardService.searchBoard(tag, lastBoardId, limit);
+        return ApiUtils.success(responseDTOSlice);
     }
 
     @GetMapping("/participate/{boardId}")
