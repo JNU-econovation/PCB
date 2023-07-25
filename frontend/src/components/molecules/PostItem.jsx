@@ -4,12 +4,13 @@ import Box from '../atoms/Box';
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { timestampToDate } from '../../utils/convert';
+import ROUTES from '../../constants/ROUTES';
 
 const PostItem = ({ data }) => {
     const navigate = useNavigate();
     const { boardId, title, content, boardTagList, createdAt } = data;
     return (
-        <StyledPostItem onClick={() => navigate(`/post/:${boardId}`)}>
+        <StyledPostItem onClick={() => navigate(`${ROUTES.board}/${boardId}`)}>
             <Text className="smallTitle">{title}</Text>
             <Text className="gray">
                 {content.length < 200 ? content : `${content.substr(0, 200)} ...`}

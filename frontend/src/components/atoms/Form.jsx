@@ -1,7 +1,17 @@
 import { styled } from 'styled-components';
 
-const Form = ({ children, onSubmit }) => {
-    return <StyledForm onSubmit={onSubmit}>{children}</StyledForm>;
+const Form = ({
+    children,
+    onSubmit,
+    onKeyPress = function () {
+        return;
+    },
+}) => {
+    return (
+        <StyledForm onSubmit={onSubmit} onKeyPress={onKeyPress}>
+            {children}
+        </StyledForm>
+    );
 };
 
 const StyledForm = styled.form`

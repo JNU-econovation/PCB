@@ -8,6 +8,7 @@ const pwdCheckValidation = info.find((e) => e.id === 'pwdCheck').validation;
 const nicknameValidation = info.find((e) => e.id === 'nickname').validation;
 
 const validateSignupForm = ({ uid, pwd, pwdCheck, nickname }) => {
+    console.log();
     const errors = {};
 
     // user id

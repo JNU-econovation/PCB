@@ -11,7 +11,7 @@ const BoardWrapper = ({ info }) => {
             <Box>
                 <Text className="gray">작성자 : {info.creator}</Text>
                 <Text>/</Text>
-                <Text className="gray">작성일자 : {timestampToDate(info.createAt)}</Text>
+                <Text className="gray">작성일자 : {timestampToDate(info.createdAt)}</Text>
             </Box>
             <Text>{info.content}</Text>
             <Box>

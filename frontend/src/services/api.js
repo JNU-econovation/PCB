@@ -18,10 +18,14 @@ instance.interceptors.response.use(
         return response;
     },
     (error) => {
-        if (!!error.response.data.error) {
+        if (!!error?.response?.data?.error) {
             const err = error.response.data.error;
-            console.log(err);
+            if (err.message === 'Please login First') {
+                alert('로그인이 필요한 서비스 입니다');
+                localStorage.removeItem('sessionId');
+            }
         }
+        return Promise.reject(error);
     }
 );
 

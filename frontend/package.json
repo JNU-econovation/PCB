@@ -1,23 +1,30 @@
 {
     "name": "frontend",
+    "proxy": "http://localhost:8080/",
     "private": true,
     "version": "0.0.0",
     "type": "module",
     "scripts": {
-        "dev": "vite",
+        "dev": "vite --port 4000",
         "build": "vite build",
         "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-        "preview": "vite preview"
+        "preview": "vite preview",
+        "predeploy": "npm run build",
+        "deploy": "gh-pages -d dist"
     },
     "dependencies": {
         "@fortawesome/fontawesome-svg-core": "^6.4.0",
         "@fortawesome/free-regular-svg-icons": "^6.4.0",
         "@fortawesome/free-solid-svg-icons": "^6.4.0",
         "@fortawesome/react-fontawesome": "^0.2.0",
+        "@tanstack/react-query": "^4.32.0",
         "axios": "^1.4.0",
+        "gh-pages": "^5.0.0",
+        "http-proxy-middleware": "^2.0.6",
         "jotai": "^2.2.2",
         "lodash": "^4.17.21",
         "react": "^18.2.0",
+        "react-beautiful-dnd": "^13.1.1",
         "react-dom": "^18.2.0",
         "react-intersection-observer": "^9.5.2",
         "react-router-dom": "^6.14.1",

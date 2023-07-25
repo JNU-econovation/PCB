@@ -24,7 +24,7 @@ const StyledButton = styled.button`
     }
 
     &.white {
-        border-color: ${({ theme }) => theme.color.green};
+        border-color: ${({ theme }) => theme.color.blue};
         background-color: ${({ theme }) => theme.color.white};
         color: ${({ theme }) => theme.color.blue};
     }
@@ -56,6 +56,18 @@ const StyledButton = styled.button`
     &.xl {
         min-width: 33.5rem;
         margin-top: ${({ theme }) => theme.margin.xl};
+    }
+
+    &.tag {
+        min-width: auto;
+        font-size: 0.5rem;
+        padding: 0;
+        margin: 0;
+        margin-left: ${({ theme }) => theme.margin.small};
+        border: none;
+        border-radius: 0;
+        background-color: ${({ theme }) => theme.color.light_blue};
+        color: ${({ theme }) => theme.color.black};
     }
 `;
 
