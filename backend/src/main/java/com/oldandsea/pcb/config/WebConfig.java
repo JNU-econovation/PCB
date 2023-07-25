@@ -29,7 +29,8 @@ public class WebConfig implements WebMvcConfigurer {
                 인터셉터에서 제외할 패턴 지정, 로그인할 때는 로그인 인증과정 제외
                 (안그러면 로그인하기전에는 세션이 없으니 로그인 요청이 계속 실패됨)
                  */
-                .excludePathPatterns("/css/**", "/*.ico", "/error","/member/login","/member/create", "/api/main");
+                .excludePathPatterns("/css/**", "/*.ico", "/error","/member/login","/member/create", "/api/main",
+                        "member/uid-check","member/nickname-check");
     }
 
     @Override
@@ -45,9 +46,8 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:4000") // 허용할 출처
-                .allowedMethods("*") // 허용할 HTTP method (OPTIONS 도 허용)
+                .allowedMethods("GET","PUT","") // 허용할 HTTP method (OPTIONS 도 허용)
                 .allowCredentials(true) // 쿠키 인증 요청 허용
-                .allowedHeaders("*")
                 .maxAge(3000) // 원하는 시간만큼 pre-flight 리퀘스트를 캐싱
         ;
     }

@@ -17,15 +17,15 @@ public class BoardToPostItResponseDTO {
     private List<CommentResponseDTO> boardCommentList;
     private Long createdAt;
     private String nickname;
-    private List<BoardTag> boardTagList;
+    private List<TagDTO> boardTagList;
     @Builder
     public BoardToPostItResponseDTO(Long boardId, String title, List<CommentResponseDTO> boardCommentList, Long createdAt, String nickname,
-                                    List<BoardTag> boardTagList) {
+                                    List<TagDTO> boardTagList) {
         this.boardId = boardId;
         this.title = title;
         this.boardCommentList = boardCommentList;
         this.createdAt = createdAt;
         this.nickname = nickname;
-        this.boardCommentList = boardCommentList;
+        this.boardTagList = boardTagList;
     }
 }
