@@ -47,6 +47,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins("http://localhost:4000") // 허용할 출처
                 .allowedMethods("*") // 허용할 HTTP method (OPTIONS 도 허용)
                 .allowCredentials(true) // 쿠키 인증 요청 허용
+                .allowedHeaders("*")
                 .maxAge(3000) // 원하는 시간만큼 pre-flight 리퀘스트를 캐싱
         ;
     }

@@ -46,7 +46,7 @@ public class SessionService {
     @Transactional
     public Session sessionCheck(String sessionId) {
         Session dbSession = sessionRepository.findBySessionId(sessionId).orElseThrow(
-                () -> new NotAuthenticatedException("Please login first")
+                () -> new IllegalArgumentException("Please login first")
         );
         deleteDuplicateSession(dbSession);
         if(dbSession.getModifiedAt().plusMinutes(30).isBefore(LocalDateTime.now())) {

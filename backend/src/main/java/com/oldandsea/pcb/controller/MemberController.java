@@ -69,17 +69,13 @@ public class MemberController {
 
     @PostMapping("/logout")
     public ApiResult<?> logout(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        String sessionIdFromCookie = null;
-        for (Cookie cookie : cookies) {
-            if ("PCBSESSIONID".equals(cookie.getName())) {
-                sessionIdFromCookie = cookie.getValue();
-                break;
-            } else
-                throw new NotAuthenticatedException("쿠키에 PCBSESSIOND가 존재하지 않습니다");
+        String sessionId = request.getHeader("Pcbsessionid");
+        if (sessionId == null) {
+            throw new IllegalArgumentException("Please login first");
+        } else {
+            sessionService.deleteSession(sessionId);
+            return ApiUtils.success("로그아웃 성공");
         }
-        sessionService.deleteSession(sessionIdFromCookie);
-        return ApiUtils.success("로그아웃 성공");
     }
 
     @PutMapping("/pwd")
