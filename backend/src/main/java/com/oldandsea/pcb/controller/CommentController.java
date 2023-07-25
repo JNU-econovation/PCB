@@ -45,4 +45,13 @@ public class CommentController {
         CommentUpdateContentResponseDTO responseDTO = commentService.updateContent(updateContentList,memberId);
         return ApiUtils.success(responseDTO);
     }
+
+    @PostMapping("/delete/{commentId}")
+    public ApiResult<?> deleteComment(@RequestBody @Valid CommentUpdatePositionReqeustDTO reqeustDTO,
+                                      @Login Long memberId, @PathVariable Long commentId) {
+        List<CommentUpdatePositionList> updatePositionList = reqeustDTO.getUpdatePositionList();
+        CommentUpdatePositionResponseDTO responseDTO = commentService.deleteCommnet(updatePositionList,memberId,commentId);
+        return ApiUtils.success(responseDTO);
+    }
+
 }

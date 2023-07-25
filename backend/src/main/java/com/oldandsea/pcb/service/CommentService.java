@@ -1,8 +1,8 @@
 package com.oldandsea.pcb.service;
 
 import com.oldandsea.pcb.domain.dto.layer.CommentUpdateContentList;
-import com.oldandsea.pcb.domain.dto.request.CommentCreateRequestDTO;
 import com.oldandsea.pcb.domain.dto.layer.CommentUpdatePositionList;
+import com.oldandsea.pcb.domain.dto.request.CommentCreateRequestDTO;
 import com.oldandsea.pcb.domain.dto.response.CommentCreateResponseDTO;
 import com.oldandsea.pcb.domain.dto.response.CommentResponseDTO;
 import com.oldandsea.pcb.domain.dto.response.CommentUpdateContentResponseDTO;
@@ -10,10 +10,10 @@ import com.oldandsea.pcb.domain.dto.response.CommentUpdatePositionResponseDTO;
 import com.oldandsea.pcb.domain.entity.Board;
 import com.oldandsea.pcb.domain.entity.Comment;
 import com.oldandsea.pcb.domain.entity.Member;
-import com.oldandsea.pcb.domain.repository.commentrepository.CommentRepository;
-import com.oldandsea.pcb.domain.repository.commentrepository.CommentRepositoryCustom;
 import com.oldandsea.pcb.domain.repository.MemberRepository;
 import com.oldandsea.pcb.domain.repository.boardrepository.BoardRepository;
+import com.oldandsea.pcb.domain.repository.commentrepository.CommentRepository;
+import com.oldandsea.pcb.domain.repository.commentrepository.CommentRepositoryCustom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -102,10 +102,12 @@ public class CommentService {
         for (CommentUpdatePositionList request : requestDTO) {
             Long commentId = request.getCommentId();
             Long after = request.getAfter();
-            String position = request.getPosition();
             Comment comment = findByCommentIdAndMemberMemberId(commentId,memberId);
             if (after == -1|| checkAfter(after, comment.getBoard().getBoardId())) {
                 comment.updatePosition(request.getAfter(), request.getPosition());
+                if(Objects.equals(comment.getCommentId(), comment.getAfter())) {
+                    throw new IllegalArgumentException("commentId랑 After랑 같을 수 없습니다");
+                }
                 responseDTOList.add(toUpdatePositionDTO(comment));
             } else throw new IllegalArgumentException("after에 해당하는 Id를 가진 comment가 같은 게시글에 있지 않습니다");
         }
@@ -156,5 +158,10 @@ public class CommentService {
         return commentRepository.findByCommentIdAndMemberMemberId(commentId, memberId).orElseThrow(
                 () -> new IllegalArgumentException("Comment doesn't exsist")
         );
+    }
+    @Transactional
+    public CommentUpdatePositionResponseDTO deleteCommnet(List<CommentUpdatePositionList> requestDTO, Long memberId, Long commentId) {
+        commentRepository.deleteById(commentId);
+        return updatePosition(requestDTO,memberId);
     }
 }
