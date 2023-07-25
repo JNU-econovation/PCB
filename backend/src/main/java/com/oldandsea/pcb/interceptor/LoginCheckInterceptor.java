@@ -24,6 +24,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         }
         Cookie[] cookies = request.getCookies();
         String sessionId = null;
+
         for(Cookie cookie : cookies) {
             if(Objects.equals(cookie.getName(), "PCBSESSIONID")) {
                 sessionId = cookie.getValue();
@@ -33,11 +34,10 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 
         if (sessionId == null) {
             throw new IllegalArgumentException("Please login first");
-        } else {
+        }
             Session dbSession = sessionService.sessionCheck(sessionId);
             dbSession.updateSession();
             sessionService.saveSession(dbSession);
             return true;
-        }
     }
 }

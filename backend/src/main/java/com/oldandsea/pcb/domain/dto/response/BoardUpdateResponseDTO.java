@@ -1,5 +1,6 @@
 package com.oldandsea.pcb.domain.dto.response;
 
+import com.oldandsea.pcb.domain.dto.layer.TagDTO;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,9 +14,9 @@ public class BoardUpdateResponseDTO {
     private Long boardId;
     private String title;
     private String content;
-    private List<String> boardTagList;
+    private List<TagDTO> boardTagList;
     @Builder
-    public BoardUpdateResponseDTO(Long boardId, String title, String content, List<String> boardTagList) {
+    public BoardUpdateResponseDTO(Long boardId, String title, String content, List<TagDTO> boardTagList) {
         this.boardId = boardId;
         this.title = title;
         this.content = content;

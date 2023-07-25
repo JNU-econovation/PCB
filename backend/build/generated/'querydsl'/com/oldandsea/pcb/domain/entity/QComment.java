@@ -22,7 +22,11 @@ public class QComment extends EntityPathBase<Comment> {
 
     public static final QComment comment = new QComment("comment");
 
+    public final NumberPath<Long> after = createNumber("after", Long.class);
+
     public final QBoard board;
+
+    public final StringPath color = createString("color");
 
     public final NumberPath<Long> commentId = createNumber("commentId", Long.class);
 
@@ -30,15 +34,11 @@ public class QComment extends EntityPathBase<Comment> {
 
     public final DateTimePath<java.time.LocalDateTime> createdAt = createDateTime("createdAt", java.time.LocalDateTime.class);
 
-    public final NumberPath<Long> like = createNumber("like", Long.class);
-
     public final QMember member;
 
     public final DateTimePath<java.time.LocalDateTime> modifiedAt = createDateTime("modifiedAt", java.time.LocalDateTime.class);
 
-    public final NumberPath<Long> parentId = createNumber("parentId", Long.class);
-
-    public final NumberPath<Long> sequence = createNumber("sequence", Long.class);
+    public final StringPath position = createString("position");
 
     public QComment(String variable) {
         this(Comment.class, forVariable(variable), INITS);

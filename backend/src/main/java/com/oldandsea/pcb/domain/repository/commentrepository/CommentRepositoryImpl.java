@@ -20,10 +20,11 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom{
     public void updateAfter(Comment comment) {
         Long commentId = comment.getCommentId();
         Long boardId = comment.getBoard().getBoardId();
+        String position = comment.getPosition();
 
         Comment preComment = query
                 .selectFrom(QComment.comment)
-                .where(beforeCommnet(commentId,boardId))
+                .where(beforeCommnet(commentId,boardId,position))
                 .orderBy(QComment.comment.commentId.desc())
                 .fetchFirst();
         if(preComment != null) {
@@ -31,11 +32,12 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom{
             em.persist(preComment);
         }
     }
-    private BooleanExpression beforeCommnet(Long commentId, Long boardId) {
+    private BooleanExpression beforeCommnet(Long commentId, Long boardId,String position) {
         if(commentId == null || boardId == null) {
             return null;
         }
         return QComment.comment.board.boardId.eq(boardId)
+                .and(QComment.comment.position.eq(position))
                 .and(QComment.comment.commentId.lt(commentId));
     }
 }

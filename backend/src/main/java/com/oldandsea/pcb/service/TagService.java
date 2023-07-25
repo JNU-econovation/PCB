@@ -24,8 +24,11 @@ public class TagService {
         return tagNameSet.size() != tagNameList.size();
     }
 
-    public List<String> tagToStringTags(List<Tag> tagNames) {
-        return tagNames.stream().map(Tag::getName)
+    public List<TagDTO> tagToStringTags(List<Tag> tagNames) {
+        return tagNames.stream()
+                .map(tag -> TagDTO.builder()
+                        .name(tag.getName())
+                        .build())
                 .collect(Collectors.toList());
     }
 
