@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.Objects;
 
 
 @RestController
@@ -69,7 +70,15 @@ public class MemberController {
 
     @PostMapping("/logout")
     public ApiResult<?> logout(HttpServletRequest request) {
-        String sessionId = request.getHeader("Pcbsessionid");
+        Cookie[] cookies = request.getCookies();
+        String sessionId = null;
+
+        for(Cookie cookie : cookies) {
+            if(Objects.equals(cookie.getName(), "PCBSESSIONID")) {
+                sessionId = cookie.getValue();
+                break;
+            }
+        }
         if (sessionId == null) {
             throw new IllegalArgumentException("Please login first");
         } else {
