@@ -60,6 +60,11 @@ const color = {
     soft_green: '#DDFFDD',
     soft_blue: '#BAEAFF',
 
+    border_white: '#AFB1B6',
+    border_yellow: '#BEB496',
+    border_green: '#ACC9AC',
+    border_blue: '#93BCCE',
+
     scroll: 'rgba(175, 175, 175, 1)',
     scroll_background: 'rgba(200, 200, 200, 0.2)',
 };

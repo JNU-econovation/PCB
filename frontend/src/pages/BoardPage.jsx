@@ -1,35 +1,52 @@
 import Box from '../components/atoms/Box';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { boardDetail } from '../services/board';
+import { boardDelete, boardDetail } from '../services/board';
 import BoardWrapper from '../components/organisms/BoardWrapper';
 import Button from '../components/atoms/Button';
 import Text from '../components/atoms/Text';
+import { validateResponse } from '../utils/validateResponse';
+import REQUIRED from '../constants/REQUIRED';
+import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+import ROUTES from '../constants/ROUTES';
 
 const BoardPage = () => {
     const { boardId } = useParams();
-    const [values, setValues] = useState({
-        title: '제목입니다',
-        content:
-            '안녕하십니까 어쭈구 저쭈구 입니다. 잘 부탁드립니다. 이건 board page 입니다. 고구마입니다. 감자도 될 수 있습니다 어쭈구 저쭈구 입니다',
-        createAt: 1684850580,
-        creator: '또리',
-        boardTagList: ['태그1', '강아지', '고구마', '감자'],
-    });
+    const navigate = useNavigate();
 
-    useEffect(() => {
-        fetchData();
-    }, []);
-    const fetchData = async () => {
-        await boardDetail({ boardId: boardId })
-            .then((res) => setValues(res.data.response))
-            .catch((err) => alert(err));
+    const { data, isLoading, error } = useQuery(
+        ['boardDetail'],
+        () => boardDetail({ boardId: boardId }),
+        {
+            onSuccess: (data) => {
+                console.log(validateResponse(data, REQUIRED.boardDetail));
+            },
+        }
+    );
+    const handleDelete = async () => {
+        await boardDelete({ boardId }).then((res) => navigate(ROUTES.home));
     };
+
     return (
         <Box direction="column" justify="start" className="page" gap="5rem">
             <Text></Text>
-            <BoardWrapper info={values} />
-            <Button className="xl">참여하기</Button>
+            {validateResponse(data, REQUIRED.boardDetail) && (
+                <>
+                    <BoardWrapper info={data.data.response} />
+                    <Box>
+                        <Button
+                            className="xl"
+                            onClick={() => navigate(`${ROUTES.postit}/${boardId}`)}
+                        >
+                            참여하기
+                        </Button>
+                        <Button className="xl" onClick={handleDelete}>
+                            삭제하기
+                        </Button>
+                    </Box>
+                </>
+            )}
         </Box>
     );
 };

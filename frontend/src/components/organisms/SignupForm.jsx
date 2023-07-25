@@ -26,11 +26,11 @@ const SignupForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!values.isUidCheck) {
-            alert('아이디 중복 확인을 해주세요');
+            alert('아이디 중복 확인을 해주세요'); // 여기 메세지들도 constant로 만들어~
             return;
         }
         if (!values.isNicknameCheck) {
-            alert('닉네임 중복 확인을 해주세요');
+            alert('닉네임 중복 확인을 해주세요'); // 여기 메세지들도 constant로 만들어~
             return;
         }
 
@@ -54,7 +54,7 @@ const SignupForm = () => {
 
     const handleUidCheck = async () => {
         try {
-            await uidCheck({ uid: uid });
+            await uidCheck({ uid: values.uid });
             setValues((prev) => ({ ...prev, isUidCheck: true }));
         } catch (error) {
             setValues((prev) => ({ ...prev, isUidCheck: false }));

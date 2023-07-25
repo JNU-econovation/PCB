@@ -77,21 +77,21 @@ const SIGNUP = Object.freeze([
     },
 ]);
 
-const BOARD = Object.freeze([
-    {
+const BOARD = Object.freeze({
+    title: {
         id: 'title',
         label: '제목',
         type: 'text',
         placeholder: '',
     },
-    {
+    content: {
         id: 'content',
         label: '설명',
         rows: 15,
         cols: 60,
     },
-    { id: 'tag', label: '태그', type: 'text', placeholder: '' },
-]);
+    tag: { id: 'boardTagList', label: '태그 (최대 3개)', type: 'text', placeholder: '' },
+});
 
 export default {
     LOGIN,

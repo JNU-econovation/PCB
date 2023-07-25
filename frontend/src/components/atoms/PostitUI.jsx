@@ -23,6 +23,10 @@ const StyledPostit = styled.div`
     &.white {
         background-color: ${({ theme }) => theme.color.white};
     }
+
+    &.green {
+        background-color: ${({ theme }) => theme.color.soft_green};
+    }
 `;
 
 export default PostitUI;

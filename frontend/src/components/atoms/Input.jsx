@@ -50,6 +50,14 @@ const StyledInput = styled.input`
     &.board {
         min-width: 33.5rem;
     }
+
+    &.tag {
+        border: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        border-radius: 0;
+    }
 `;
 
 export default Input;

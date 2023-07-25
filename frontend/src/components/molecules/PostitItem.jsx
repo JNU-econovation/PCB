@@ -2,41 +2,55 @@ import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useAtomValue } from 'jotai';
-import { commentAtom } from '../../store/comment';
 import { userNicknameAtom } from '../../store/login';
 import Text from '../atoms/Text';
 import Box from '../atoms/Box';
 import PostitUI from '../atoms/PostitUI';
-import PostitWrapper from '../organisms/PostitWrapper';
 import { styled } from 'styled-components';
+import { useState } from 'react';
+import PostitEditItem from './PostitEditItem';
 
-const PostitItem = () => {
+const PostitItem = ({ comment, setComments, position, isEdit = false }) => {
+    const [onEdit, setOnEdit] = useState(isEdit);
     const userNickname = useAtomValue(userNicknameAtom);
-    const comments = useAtomValue(commentAtom);
+
+    const handleEdit = () => {
+        setOnEdit(true);
+    };
+    const handleDelete = () => {};
+
     return (
-        <PostitWrapper>
-            {comments.map((comment) => {
-                return (
-                    <PostitUI className={comment.color}>
-                        <StyledDiv justify="start" align="start">
-                            <Text className="small">{comment.content}</Text>
-                        </StyledDiv>
-                        <Box justify="space-between">
-                            <Text className="small">{comment.nickname}</Text>
-                            {userNickname === comment.nickname && (
-                                <Box>
-                                    <FontAwesomeIcon
-                                        icon={faPenToSquare}
-                                        size="sm"
-                                    ></FontAwesomeIcon>
-                                    <FontAwesomeIcon icon={faTrash} size="sm"></FontAwesomeIcon>
-                                </Box>
-                            )}
-                        </Box>
-                    </PostitUI>
-                );
-            })}
-        </PostitWrapper>
+        <PostitUI className={comment.color}>
+            {!onEdit ? (
+                <>
+                    <StyledDiv justify="start" align="start">
+                        <Text className="small">{comment.content}</Text>
+                    </StyledDiv>
+                    <Box justify="space-between" width="98%">
+                        <Text className="small">{comment.nickname}</Text>
+                        {userNickname === comment.nickname && (
+                            <Box justify="space-between" width="15%">
+                                <FontAwesomeIcon
+                                    icon={faPenToSquare}
+                                    onClick={handleEdit}
+                                ></FontAwesomeIcon>
+                                <FontAwesomeIcon
+                                    icon={faTrash}
+                                    onClick={handleDelete}
+                                ></FontAwesomeIcon>
+                            </Box>
+                        )}
+                    </Box>
+                </>
+            ) : (
+                <PostitEditItem
+                    comment={comment}
+                    setComments={setComments}
+                    position={position}
+                    setOnEdit={setOnEdit}
+                />
+            )}
+        </PostitUI>
     );
 };
 
@@ -66,6 +80,7 @@ const StyledDiv = styled.div`
     }
 
     & > p,
+    & > textarea,
     &:hover,
     &:focus {
         visibility: visible;

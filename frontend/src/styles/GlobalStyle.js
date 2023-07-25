@@ -15,6 +15,14 @@ const GlobalStyle = createGlobalStyle`
         font-family: "pretendard", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
     }
 
+    button:focus{
+        outline: none;
+    }
+
+    button:hover{
+        outline: none;
+    }
+
     html, body {
         width: 100vw;
         min-height: 100vh;
@@ -48,9 +56,19 @@ const GlobalStyle = createGlobalStyle`
     }
 
     .page{
+        flex: 1;
         width: 100%;
-        min-height: 100%;
+        //min-height: 100%;
         align-items: center;
+    }
+
+    .postit-column{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: start;
+        gap: 1.5rem;
+        height: 100%;
     }
 
 `;
