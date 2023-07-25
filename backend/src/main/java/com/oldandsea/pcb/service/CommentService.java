@@ -101,9 +101,10 @@ public class CommentService {
         List<CommentUpdatePositionList> responseDTOList = new ArrayList<>();
         for (CommentUpdatePositionList request : requestDTO) {
             Long commentId = request.getCommentId();
+            Long after = request.getAfter();
+            String position = request.getPosition();
             Comment comment = findByCommentIdAndMemberMemberId(commentId,memberId);
-
-            if (checkAfter(request.getAfter(), comment.getBoard().getBoardId())) {
+            if (after == -1|| checkAfter(after, comment.getBoard().getBoardId(), position)) {
                 comment.updatePosition(request.getAfter(), request.getPosition());
                 responseDTOList.add(toUpdatePositionDTO(comment));
             } else throw new IllegalArgumentException("after에 해당하는 Id를 가진 comment가 같은 게시글에 있지 않습니다");
@@ -142,9 +143,9 @@ public class CommentService {
                 .content(comment.getContent())
                 .build();
     }
-    private boolean checkAfter(Long after, Long boardId) {
-        Comment commentCheck = commentRepository.findById(after).orElseThrow(
-                () -> new IllegalArgumentException("after에 해당하는 Id를 가진 comment가 없습니다")
+    private boolean checkAfter(Long after, Long boardId, String position) {
+        Comment commentCheck = commentRepository.findByIdAndPosition(after,position).orElseThrow(
+                () -> new IllegalArgumentException("after에 해당하는 Id를 가진 comment가 존재하지 않습니다")
         );
         if(Objects.equals(commentCheck.getBoard().getBoardId(), boardId)) {
             return true;
