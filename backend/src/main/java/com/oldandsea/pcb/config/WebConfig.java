@@ -30,7 +30,7 @@ public class WebConfig implements WebMvcConfigurer {
                 (안그러면 로그인하기전에는 세션이 없으니 로그인 요청이 계속 실패됨)
                  */
                 .excludePathPatterns("/css/**", "/*.ico", "/error","/member/login","/member/create", "/api/main",
-                        "member/uid-check","member/nickname-check");
+                        "/member/uid-check","/member/nickname-check");
     }
 
     @Override
