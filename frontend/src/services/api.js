@@ -15,16 +15,21 @@ instance.interceptors.request.use((config) => {
 
 instance.interceptors.response.use(
     (response) => {
+        if (!response?.data?.success) {
+            const err = response.data.error.message;
+
+            if (err === 'Please Login First') {
+                alert('로그인이 필요한 서비스 입니다.');
+                alert(err);
+                return;
+            }
+
+            alert(err);
+        }
         return response;
     },
     (error) => {
-        if (!!error?.response?.data?.error) {
-            const err = error.response.data.error;
-            if (err.message === 'Please login First') {
-                alert('로그인이 필요한 서비스 입니다');
-                localStorage.removeItem('sessionId');
-            }
-        }
+        console.log(error);
         return Promise.reject(error);
     }
 );

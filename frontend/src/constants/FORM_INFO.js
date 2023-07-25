@@ -19,8 +19,8 @@ const LOGIN = Object.freeze([
     },
 ]);
 
-const SIGNUP = Object.freeze([
-    {
+const SIGNUP = Object.freeze({
+    uid: {
         id: 'uid',
         label: '아이디',
         type: 'text',
@@ -36,7 +36,7 @@ const SIGNUP = Object.freeze([
             },
         },
     },
-    {
+    pwd: {
         id: 'pwd',
         label: '비밀번호',
         type: 'password',
@@ -49,7 +49,7 @@ const SIGNUP = Object.freeze([
             },
         },
     },
-    {
+    pwdCheck: {
         id: 'pwdCheck',
         label: '비밀번호 확인',
         type: 'password',
@@ -59,23 +59,23 @@ const SIGNUP = Object.freeze([
             mismatch: { message: '비밀번호가 일치하지 않습니다.' },
         },
     },
-    {
+    nickname: {
         id: 'nickname',
         label: '닉네임',
         type: 'text',
-        placeholder: '숫자와 영어, 한글로 이루어진 1~10자를 입력하세요',
+        placeholder: '숫자와 영어, 한글로 이루어진 3~10자를 입력하세요',
         validation: {
             required: { message: '닉네임을 입력하세요' },
             pattern: {
-                value: /^[a-zA-Zㄱ-힣\d]{1,10}$/,
-                message: '숫자와 영어, 한글로 이루어진 1~10자를 입력하세요',
+                value: /^[a-zA-Zㄱ-힣\d]{3,10}$/,
+                message: '숫자와 영어, 한글로 이루어진 3~10자를 입력하세요',
             },
             checkUrl: {
                 message: '사용 불가능한 닉네임 입니다.',
             },
         },
     },
-]);
+});
 
 const BOARD = Object.freeze({
     title: {
@@ -92,6 +92,8 @@ const BOARD = Object.freeze({
     },
     tag: { id: 'boardTagList', label: '태그 (최대 3개)', type: 'text', placeholder: '' },
 });
+
+const COMMENT = Object.freeze({});
 
 export default {
     LOGIN,

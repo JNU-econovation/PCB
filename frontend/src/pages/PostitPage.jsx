@@ -40,7 +40,7 @@ const data = {
                     color: 'green',
                     content:
                         '국회는 법률에 저촉되지 아니하는 범위안에서 의사와 내부규율에 관한 규칙을 제정할 수 있다. 국토와 자원은 국가의 보호를 받으며, 국가는 그 균형있는 개발과 이용을 위하여 필요한 계획을 수립한다.',
-                    nickname: '바다',
+                    nickname: '바다1',
                 },
                 {
                     commentId: 5,
@@ -71,14 +71,12 @@ const data = {
 const PostitPage = () => {
     const { boardId } = useParams();
 
-    // const { data, isLoading, error } = useQuery(['postit'], () => participate({ boardId }), {
-    //     onSuccess: (data) => {
-    //         console.log(data);
-    //     },
-    //     onError: () => {
-    //         alert(error);
-    //     },
-    // });
+    const { data, isLoading, error } = useQuery(['postit'], () => participate({ boardId }), {
+        onSuccess: (data) => {},
+        onError: () => {
+            alert(error);
+        },
+    });
 
     return (
         <Box direction="column" className="page">

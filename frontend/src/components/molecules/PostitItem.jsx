@@ -7,17 +7,47 @@ import Text from '../atoms/Text';
 import Box from '../atoms/Box';
 import PostitUI from '../atoms/PostitUI';
 import { styled } from 'styled-components';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import PostitEditItem from './PostitEditItem';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { commentDelete } from '../../services/comment';
 
-const PostitItem = ({ comment, setComments, position, isEdit = false }) => {
+const PostitItem = ({ comment, prev, setComments, position, isEdit = false }) => {
     const [onEdit, setOnEdit] = useState(isEdit);
     const userNickname = useAtomValue(userNicknameAtom);
+    const deletePayload = useRef({ commentId: null, updatePositionList: [] });
+
+    useEffect(() => {
+        deletePayload.current.commentId = comment.commentId;
+    }, []);
+
+    const { mutate } = useMutation({
+        mutationFn: commentDelete,
+    });
 
     const handleEdit = () => {
         setOnEdit(true);
     };
-    const handleDelete = () => {};
+
+    const handleDelete = () => {
+        console.log(deletePayload);
+        if (prev !== -1) {
+            deletePayload.current.updatePositionList.push({
+                commentId: prev,
+                position: comment.position,
+                after: comment.after,
+            });
+        }
+
+        mutate(deletePayload.current, {
+            onSuccess: () => {
+                alert('정상적으로 삭제되었습니다.');
+            },
+            onError: () => {
+                alert('정상적으로 삭제되지 않았습니다.');
+            },
+        });
+    };
 
     return (
         <PostitUI className={comment.color}>

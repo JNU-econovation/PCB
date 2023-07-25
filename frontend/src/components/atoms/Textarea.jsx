@@ -28,6 +28,22 @@ const StyledTextarea = styled.textarea`
         border: ${({ theme }) => `1.5px solid ${theme.color.border_white}`};
         font-size: ${({ theme }) => theme.fontSize.small};
     }
+
+    &.yellow {
+        background-color: ${({ theme }) => theme.color.soft_yellow};
+    }
+
+    &.blue {
+        background-color: ${({ theme }) => theme.color.soft_blue};
+    }
+
+    &.white {
+        background-color: ${({ theme }) => theme.color.white};
+    }
+
+    &.green {
+        background-color: ${({ theme }) => theme.color.soft_green};
+    }
 `;
 
 export default Textarea;

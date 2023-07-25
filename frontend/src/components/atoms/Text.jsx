@@ -9,7 +9,7 @@ const StyledMessage = styled.p`
     font-size: ${({ theme }) => theme.fontSize.base};
     font-weight: 400;
     color: ${({ theme }) => theme.color.black};
-    width: max-content;
+    max-width: max-content;
 
     &.small {
         font-size: ${({ theme }) => theme.fontSize.small};

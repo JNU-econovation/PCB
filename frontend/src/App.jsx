@@ -11,26 +11,56 @@ import HomeLayout from './layouts/HomeLayout';
 import MainLayout from './layouts/MainLayout';
 import CreatePage from './pages/CreatePage';
 import PostitPage from './pages/PostitPage';
-import { useAtom, useAtomValue } from 'jotai';
-import { isLoginAtom, sessionIdAtom } from './store/login';
-import { useEffect } from 'react';
+import { useAtomValue } from 'jotai';
+import { sessionIdAtom } from './store/login';
 import ROUTES from './constants/ROUTES';
-import { useNavigate } from 'react-router-dom';
 import EditPage from './pages/EditPage';
+import { Navigate } from 'react-router-dom';
+
+const PrivateRoute = ({ component: Component }) => {
+    const sessionId = JSON.parse(localStorage.getItem('sessionId'));
+    return !!sessionId ? (
+        Component
+    ) : (
+        <Navigate to={ROUTES.login} {...alert('로그인이 필요합니다.')} />
+    );
+};
+
+const PublicRoute = ({ component: Component }) => {
+    const sessionId = JSON.parse(localStorage.getItem('sessionId'));
+    console.log(!!sessionId);
+    return !!sessionId ? (
+        <Navigate to={ROUTES.home} {...alert('이미 로그인 되었습니다.')} />
+    ) : (
+        Component
+    );
+};
 
 const PrivateRouter = () => {
     return (
         <>
             <Route element={<HomeLayout />}>
-                <Route path={ROUTES.home} element={<HomePage />} />
+                <Route path={ROUTES.home} element={<PrivateRoute component={<HomePage />} />} />
             </Route>
             <Route element={<MainLayout />}>
-                <Route path={ROUTES.mypage} element={<MyPage />} />
-                <Route path={`${ROUTES.board}/:boardId`} element={<BoardPage />} />
-                <Route path={ROUTES.create} element={<CreatePage />} />
-                <Route path={`${ROUTES.postit}/:boardId`} element={<PostitPage />} />
-                <Route path={`${ROUTES.edit}/:boardId`} element={<EditPage />} />
-                <Route path={`${ROUTES.search}/:keyword`} element={<EditPage />} />
+                <Route path={ROUTES.mypage} element={<PrivateRoute component={<MyPage />} />} />
+                <Route
+                    path={`${ROUTES.board}/:boardId`}
+                    element={<PrivateRoute component={<BoardPage />} />}
+                />
+                <Route path={ROUTES.create} element={<PrivateRoute component={<CreatePage />} />} />
+                <Route
+                    path={`${ROUTES.postit}/:boardId`}
+                    element={<PrivateRoute component={<PostitPage />} />}
+                />
+                <Route
+                    path={`${ROUTES.edit}/:boardId`}
+                    element={<PrivateRoute component={<EditPage />} />}
+                />
+                <Route
+                    path={`${ROUTES.search}/:tag`}
+                    element={<PrivateRoute component={<EditPage />} />}
+                />
             </Route>
         </>
     );
@@ -40,29 +70,20 @@ const PublicRouter = () => {
     return (
         <>
             <Route element={<HomeLayout />}>
-                <Route path={ROUTES.login} element={<LoginPage />} />
-                <Route path={ROUTES.signup} element={<SignupPage />} />
-                <Route path={ROUTES.home} element={<HomePage />} />
+                <Route path={ROUTES.login} element={<PublicRoute component={<LoginPage />} />} />
+                <Route path={ROUTES.signup} element={<PublicRoute component={<SignupPage />} />} />
             </Route>
         </>
     );
 };
 
 function AppRouter() {
-    const [isLogin, setIsLogin] = useAtom(isLoginAtom);
-    const sessionId = useAtomValue(sessionIdAtom);
-
-    useEffect(() => {
-        if (!sessionId) {
-            setIsLogin(false);
-            return;
-        }
-        setIsLogin(true);
-    }, [sessionId]);
-
     return (
         <Router basename={'/pcb/'}>
-            <Routes>{isLogin ? PrivateRouter() : PublicRouter()}</Routes>
+            <Routes>
+                {PrivateRouter()}
+                {PublicRouter()}
+            </Routes>
         </Router>
     );
 }

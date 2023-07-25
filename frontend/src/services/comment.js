@@ -11,16 +11,17 @@ export const commentCreate = (data) => {
 };
 
 export const commentPositionUpdate = (data) => {
-    const { updatePostionList } = data;
-    return instance.put('/comment/update/position', { updatePostionList });
+    const { updatePositionList } = data;
+    return instance.post('/comment/update/position', { updatePositionList });
 };
 
 export const commentContentUpdate = (data) => {
     const { updateContentList } = data;
-    return instance.put('/comment/update/content', { updateContentList });
+    return instance.post('/comment/update/content', { updateContentList });
 };
 
 export const commentDelete = (data) => {
-    const { commentId, parentID } = data;
-    return instance.delete('/comment', { params: { commentId, parentID } });
+    console.log(data);
+    const { commentId, updatePositionList } = data;
+    return instance.post(`/comment/delete/${commentId}`, { updatePositionList });
 };

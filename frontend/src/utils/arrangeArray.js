@@ -1,4 +1,7 @@
 export const arrangeArray = (array) => {
+    if (array.length === 0) {
+        return [];
+    }
     const tail = array.find((item) => item.after === -1);
     const result = [tail];
 

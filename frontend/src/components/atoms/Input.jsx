@@ -58,6 +58,11 @@ const StyledInput = styled.input`
         width: 100%;
         border-radius: 0;
     }
+
+    &.lg {
+        width: 30rem;
+        padding: ${({ theme }) => theme.padding.xl};
+    }
 `;
 
 export default Input;

@@ -3,14 +3,14 @@ import Layout from '../components/atoms/Layout';
 import InitHeader from '../components/molecules/header/InitHeader';
 import HomeHeader from '../components/molecules/header/HomeHeader';
 import { useAtomValue } from 'jotai';
-import { isLoginAtom } from '../store/login';
+import { sessionIdAtom } from '../store/login';
 import Footer from '../components/molecules/Footer';
 
 const HomeLayout = () => {
-    const isLogin = useAtomValue(isLoginAtom);
+    const sessionId = useAtomValue(sessionIdAtom);
     return (
         <Layout>
-            {isLogin ? <HomeHeader /> : <InitHeader />}
+            {!!sessionId ? <HomeHeader /> : <InitHeader />}
             <Outlet />
             <Footer />
         </Layout>

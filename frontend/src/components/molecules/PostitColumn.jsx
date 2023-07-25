@@ -1,7 +1,6 @@
 import { styled } from 'styled-components';
 import { Draggable } from 'react-beautiful-dnd';
 import PostitItem from './PostitItem';
-import PostitEditItem from './PostitEditItem';
 
 const PostitColumn = ({ comments, setComments, position }) => {
     return (
@@ -20,8 +19,10 @@ const PostitColumn = ({ comments, setComments, position }) => {
                         >
                             <PostitItem
                                 comment={comment}
+                                comments={comments}
                                 setComments={setComments}
                                 position={position}
+                                prev={!!index ? comments[index - 1].commentId : -1}
                             ></PostitItem>
                         </div>
                     )}

@@ -18,8 +18,16 @@ const BOARD = Object.freeze({
     boardTagList: [],
 });
 
+const COMMENT = Object.freeze({
+    boardId: '',
+    content: '',
+    position: '',
+    color: '',
+});
+
 export default {
     LOGIN,
     SIGNUP,
     BOARD,
+    COMMENT,
 };

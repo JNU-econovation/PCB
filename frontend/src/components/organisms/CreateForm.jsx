@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import FORM_DEFAULT from '../../constants/FORM_DEFAULT';
 import { boardCreate } from '../../services/board';
 import TagInput from '../molecules/TagInput';
+import { useNavigate } from 'react-router-dom';
 
 const CreateForm = ({ data, handleSubmit }) => {
     const [values, setValues] = useState(data);
@@ -19,6 +20,7 @@ const CreateForm = ({ data, handleSubmit }) => {
 
     const onCheckEnter = (e) => {
         if (e.key === 'Enter') {
+            if (e.target.type === 'textarea') return;
             if (e.target.id === 'boardTagList' && e.target.value.length !== 0) {
                 if (values.boardTagList.length >= 3) {
                     alert('태그는 최대 3개 입력할 수 있습니다.');

@@ -10,10 +10,11 @@ import { useNavigate } from 'react-router-dom';
 import validateSignupForm from '../../utils/validateSignupForm';
 import Button from '../atoms/Button';
 import Box from '../atoms/Box';
+import LabeledButtonInput from '../molecules/LabeledButtonInput';
 import { signup, uidCheck, nicknameCheck } from '../../services/signup';
 
-const uidValidation = FORM_INFO.SIGNUP.find((e) => e.id === 'uid').validation;
-const nicknameValidation = FORM_INFO.SIGNUP.find((e) => e.id === 'nickname').validation;
+const uidValidation = FORM_INFO.SIGNUP.uid.validation;
+const nicknameValidation = FORM_INFO.SIGNUP.nickname.validation;
 
 const SignupForm = () => {
     const navigate = useNavigate();
@@ -64,7 +65,7 @@ const SignupForm = () => {
 
     const handleNicknameCheck = async () => {
         try {
-            await nicknameCheck({ nickname: nickname });
+            await nicknameCheck({ nickname: values.nickname });
             setValues((prev) => ({ ...prev, isNicknameCheck: true }));
         } catch (error) {
             setValues((prev) => ({ ...prev, isNicknameCheck: false }));
@@ -74,31 +75,56 @@ const SignupForm = () => {
 
     return (
         <Form onSubmit={handleSubmit}>
-            {FORM_INFO.SIGNUP.map((info) => (
-                <Box align="flex-start">
-                    <LabeledInput
-                        key={info.id}
-                        id={info.id}
-                        type={info.type}
-                        value={values.id}
-                        onChange={handleChange}
-                        label={info.label}
-                        placeholder={info.placeholder}
-                        required={false}
-                        errorMessage={error[info.id] ?? ''}
-                    />
-                    {info.id === 'uid' && (
-                        <Button className="check white" onClick={handleUidCheck}>
-                            중복 확인
-                        </Button>
-                    )}
-                    {info.id === 'nickname' && (
-                        <Button className="check white" onClick={handleNicknameCheck}>
-                            중복 확인
-                        </Button>
-                    )}
-                </Box>
-            ))}
+            <LabeledButtonInput
+                key={FORM_INFO.SIGNUP.uid.id}
+                id={FORM_INFO.SIGNUP.uid.id}
+                type={FORM_INFO.SIGNUP.uid.type}
+                value={values.uid}
+                onChange={handleChange}
+                label={FORM_INFO.SIGNUP.uid.label}
+                placeholder={FORM_INFO.SIGNUP.uid.placeholder}
+                required={false}
+                btn={'중복 확인'}
+                onClick={handleUidCheck}
+                errorMessage={error[FORM_INFO.SIGNUP.uid.id] ?? ''}
+            />
+            <LabeledInput
+                key={FORM_INFO.SIGNUP.pwd.id}
+                id={FORM_INFO.SIGNUP.pwd.id}
+                type={FORM_INFO.SIGNUP.pwd.type}
+                value={values.pwd}
+                onChange={handleChange}
+                label={FORM_INFO.SIGNUP.pwd.label}
+                placeholder={FORM_INFO.SIGNUP.pwd.placeholder}
+                required={false}
+                className="lg"
+                errorMessage={error[FORM_INFO.SIGNUP.pwd.id] ?? ''}
+            />
+            <LabeledInput
+                key={FORM_INFO.SIGNUP.pwdCheck.id}
+                id={FORM_INFO.SIGNUP.pwdCheck.id}
+                type={FORM_INFO.SIGNUP.pwdCheck.type}
+                value={values.pwdCheck}
+                onChange={handleChange}
+                label={FORM_INFO.SIGNUP.pwdCheck.label}
+                placeholder={FORM_INFO.SIGNUP.pwdCheck.placeholder}
+                required={false}
+                className="lg"
+                errorMessage={error[FORM_INFO.SIGNUP.pwdCheck.id] ?? ''}
+            />
+            <LabeledButtonInput
+                key={FORM_INFO.SIGNUP.nickname.id}
+                id={FORM_INFO.SIGNUP.nickname.id}
+                type={FORM_INFO.SIGNUP.nickname.type}
+                value={values.nickname}
+                onChange={handleChange}
+                label={FORM_INFO.SIGNUP.nickname.label}
+                placeholder={FORM_INFO.SIGNUP.nickname.placeholder}
+                required={false}
+                btn={'중복 확인'}
+                onClick={handleNicknameCheck}
+                errorMessage={error[FORM_INFO.SIGNUP.nickname.id] ?? ''}
+            />
             <SubmitButton className="xl">회원가입</SubmitButton>
         </Form>
     );

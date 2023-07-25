@@ -48,13 +48,21 @@ const StyledButton = styled.button`
         font-size: ${({ theme }) => theme.fontSize.small};
     }
 
+    &.xs {
+        min-width: 5rem;
+        font-size: ${({ theme }) => theme.fontSize.small};
+        margin: 0;
+        padding: 0.25rem;
+        font-size: ${({ theme }) => theme.fontSize.small};
+    }
+
     &.lg {
         min-width: 20rem;
         margin-top: ${({ theme }) => theme.margin.xxxl};
     }
 
     &.xl {
-        min-width: 33.5rem;
+        min-width: 30rem;
         margin-top: ${({ theme }) => theme.margin.xl};
     }
 

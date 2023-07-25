@@ -1,149 +1,116 @@
 import Textarea from '../atoms/Textarea';
-import Text from '../atoms/Text';
 import Box from '../atoms/Box';
 import { styled } from 'styled-components';
 import ColorCircle from '../atoms/ColorCircle';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useMutation } from '@tanstack/react-query';
-import { faFloppyDisk } from '@fortawesome/free-regular-svg-icons';
-import { faMinusSquare } from '@fortawesome/free-regular-svg-icons';
 import { useEffect, useRef, useState } from 'react';
-import { commentContentUpdate } from '../../services/comment';
+import { commentCreate } from '../../services/comment';
+import FORM_DEFAULT from '../../constants/FORM_DEFAULT';
+import { useParams } from 'react-router-dom';
+import { AiOutlineSend } from 'react-icons/ai';
 
-const PostitEditItem = ({ comment, setComments, position, setOnEdit }) => {
+const PostitCreateItem = ({ position }) => {
+    const { boardId } = useParams();
     const colors = ['white', 'yellow', 'green', 'blue'];
-    const [payload, usePayload] = useState({});
-    const initState = useRef({});
+    const [values, setValues] = useState(FORM_DEFAULT.COMMENT);
     const { mutate } = useMutation({
-        mutationFn: commentContentUpdate,
+        mutationFn: commentCreate,
     });
 
     useEffect(() => {
-        initState.current = comment;
+        setValues((prev) => ({ ...prev, boardId: boardId, position: position, color: 'white' }));
     }, []);
 
     const handleChangeColor = (color) => {
-        setComments((prev) => ({
+        setValues((prev) => ({
             ...prev,
-            [position]: prev[position].map((com) =>
-                com.commentId === comment.commentId ? { ...com, color: color } : com
-            ),
+            color: color,
         }));
     };
 
     const handleChangeContent = (e) => {
-        setComments((prev) => ({
+        setValues((prev) => ({
             ...prev,
-            [position]: prev[position].map((com) =>
-                com.commentId === comment.commentId ? { ...com, content: e.target.value } : com
-            ),
+            content: e.target.value,
         }));
     };
 
     const handleSave = () => {
-        mutate(
-            {
-                updateContentList: [
-                    {
-                        commentId: comment.commentId,
-                        color: comment.color,
-                        content: comment.content,
-                    },
-                ],
+        mutate(values, {
+            onSuccess: () => {
+                setValues((prev) => ({
+                    ...prev,
+                    content: '',
+                }));
+                alert('댓글이 정상적으로 작성됐습니다.');
             },
-            {
-                onSuccess: () => {
-                    alert('저장되었습니다.');
-                    setOnEdit(false);
-                },
-                onError: () => {
-                    alert('저장에 실패했습니다');
-                    setComments((prev) => ({
-                        ...prev,
-                        [position]: prev[position].map((com) =>
-                            com.commentId === comment.commentId ? initState.current : com
-                        ),
-                    }));
-                    setOnEdit(false);
-                },
-            }
-        );
-    };
-    const handleCancel = () => {
-        setComments((prev) => ({
-            ...prev,
-            [position]: prev[position].map((com) =>
-                com.commentId === comment.commentId ? initState.current : com
-            ),
-        }));
-        setOnEdit(false);
+            onError: () => {
+                alert('댓글 작성에 실패했습니다');
+            },
+        });
     };
 
     return (
         <>
             <StyledDiv>
                 <Textarea
-                    id={comment.commentId}
+                    id={values.boardId}
                     rows={5}
                     cols={10}
                     onChange={handleChangeContent}
-                    value={comment.content}
-                    className="postit"
+                    value={values.content}
+                    className={`postit ${values.color}`}
                 ></Textarea>
-            </StyledDiv>
-            <Box width="95%" justify="space-between">
-                <Box>
-                    <Text className="small">{comment.nickname}</Text>
-                    {colors.map((color) => {
-                        if (color === comment.color) {
+                <Box width="95%" justify="space-between">
+                    <Box>
+                        {colors.map((color, idx) => {
+                            if (color === values.color) {
+                                return (
+                                    <ColorCircle
+                                        key={idx}
+                                        className={color}
+                                        onClick={() => handleChangeColor(color)}
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="13"
+                                            height="12"
+                                            viewBox="0 0 13 12"
+                                            fill="none"
+                                        >
+                                            <path
+                                                d="M10.2 3L4.69995 8.5L2.19995 6"
+                                                stroke="#BEB496"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            />
+                                        </svg>
+                                    </ColorCircle>
+                                );
+                            }
                             return (
                                 <ColorCircle
                                     className={color}
                                     onClick={() => handleChangeColor(color)}
-                                >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="13"
-                                        height="12"
-                                        viewBox="0 0 13 12"
-                                        fill="none"
-                                    >
-                                        <path
-                                            d="M10.2 3L4.69995 8.5L2.19995 6"
-                                            stroke="#BEB496"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                        />
-                                    </svg>
-                                </ColorCircle>
+                                />
                             );
-                        }
-                        return (
-                            <ColorCircle
-                                className={color}
-                                onClick={() => handleChangeColor(color)}
-                            />
-                        );
-                    })}
+                        })}
+                    </Box>
+                    <AiOutlineSend onClick={handleSave} size={'1.25rem'} />
                 </Box>
-                <Box gap="1rem">
-                    <FontAwesomeIcon icon={faFloppyDisk} size={'lg'} onClick={handleSave} />
-                    <FontAwesomeIcon icon={faMinusSquare} size={'lg'} onClick={handleCancel} />
-                </Box>
-            </Box>
+            </StyledDiv>
         </>
     );
 };
 
 const StyledDiv = styled.div`
     display: flex;
-    align-items: flex-start;
-    justify-content: start;
-    width: 100%;
-    height: 8rem;
-
-    overflow-y: scroll;
-    visibility: hidden;
+    gap: 1rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 70%;
+    margin: ${({ theme }) => theme.margin.small} 0;
 
     &::-webkit-scrollbar {
         width: 0.5rem;
@@ -159,13 +126,6 @@ const StyledDiv = styled.div`
     &::-webkit-scrollbar-track {
         background: ${({ theme }) => theme.color.scroll_background}; /*스크롤바 뒷 배경 색상*/
     }
-
-    & > p,
-    & > textarea,
-    &:hover,
-    &:focus {
-        visibility: visible;
-    }
 `;
 
-export default PostitEditItem;
+export default PostitCreateItem;

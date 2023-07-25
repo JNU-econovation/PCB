@@ -2,10 +2,10 @@ import FORM_INFO from '../constants/FORM_INFO';
 
 const info = FORM_INFO.SIGNUP;
 
-const uidValidation = info.find((e) => e.id === 'uid').validation;
-const pwdValidation = info.find((e) => e.id === 'pwd').validation;
-const pwdCheckValidation = info.find((e) => e.id === 'pwdCheck').validation;
-const nicknameValidation = info.find((e) => e.id === 'nickname').validation;
+const uidValidation = info.uid.validation;
+const pwdValidation = info.pwd.validation;
+const pwdCheckValidation = info.pwdCheck.validation;
+const nicknameValidation = info.nickname.validation;
 
 const validateSignupForm = ({ uid, pwd, pwdCheck, nickname }) => {
     console.log();

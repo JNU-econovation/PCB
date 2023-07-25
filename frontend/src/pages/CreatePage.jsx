@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Box from '../components/atoms/Box';
 import Heading from '../components/atoms/Heading';
 import CreateForm from '../components/organisms/CreateForm';
@@ -6,6 +7,7 @@ import FORM_DEFAULT from '../constants/FORM_DEFAULT';
 import { boardCreate } from '../services/board';
 
 const CreatePage = () => {
+    const navigate = useNavigate();
     const [value, setValues] = useState();
     const handleSubmit = async (e, values) => {
         e.preventDefault();
@@ -20,7 +22,7 @@ const CreatePage = () => {
                 boardTagList: values.boardTagList,
             })
                 .then((res) => {
-                    navigate(`/board/:${res.data.response.boardId}`);
+                    navigate(`/board/${res.data.response.boardId}`);
                 })
                 .catch((err) => alert(err));
         }

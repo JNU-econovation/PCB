@@ -10,10 +10,13 @@ import REQUIRED from '../constants/REQUIRED';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../constants/ROUTES';
+import { useAtomValue } from 'jotai';
+import { userNicknameAtom } from '../store/login';
 
 const BoardPage = () => {
     const { boardId } = useParams();
     const navigate = useNavigate();
+    const username = useAtomValue(userNicknameAtom);
 
     const { data, isLoading, error } = useQuery(
         ['boardDetail'],
@@ -34,17 +37,28 @@ const BoardPage = () => {
             {validateResponse(data, REQUIRED.boardDetail) && (
                 <>
                     <BoardWrapper info={data.data.response} />
-                    <Box>
+                    {data.data.response.nickname === username ? (
+                        <>
+                            <Box>
+                                <Button
+                                    className="lg"
+                                    onClick={() => navigate(`${ROUTES.postit}/${boardId}`)}
+                                >
+                                    참여하기
+                                </Button>
+                                <Button className="lg" onClick={handleDelete}>
+                                    삭제하기
+                                </Button>
+                            </Box>
+                        </>
+                    ) : (
                         <Button
-                            className="xl"
+                            className="lg"
                             onClick={() => navigate(`${ROUTES.postit}/${boardId}`)}
                         >
                             참여하기
                         </Button>
-                        <Button className="xl" onClick={handleDelete}>
-                            삭제하기
-                        </Button>
-                    </Box>
+                    )}
                 </>
             )}
         </Box>

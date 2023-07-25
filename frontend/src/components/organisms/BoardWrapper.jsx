@@ -9,7 +9,7 @@ const BoardWrapper = ({ info }) => {
         <StyledWrapper>
             <Text className={'title'}>{info.title}</Text>
             <Box>
-                <Text className="gray">작성자 : {info.creator}</Text>
+                <Text className="gray">작성자 : {info.nickname}</Text>
                 <Text>/</Text>
                 <Text className="gray">작성일자 : {timestampToDate(info.createdAt)}</Text>
             </Box>

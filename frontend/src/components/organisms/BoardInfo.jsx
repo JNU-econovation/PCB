@@ -28,12 +28,8 @@ const BoardInfo = ({ data }) => {
 
 const StyledDiv = styled.div`
     ${({ theme }) => theme.location.flex('column', 'start', 'center')}
-    width: 60%;
+    width: 70%;
     margin: ${({ theme }) => theme.margin.base} 0;
-
-    @media screen and (max-width: 900px) {
-        width: 55%;
-    }
 `;
 
 export default BoardInfo;

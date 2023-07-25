@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { logout } from '../../services/api';
 import { sessionIdAtom, userNicknameAtom } from '../../store/login';
 import URL from '../../constants/ROUTES';
+import ROUTES from '../../constants/ROUTES';
 
 const DropdownList = () => {
     const navigate = useNavigate();
@@ -18,28 +19,12 @@ const DropdownList = () => {
                         .then(() => {
                             setSessionId('');
                             setNickname('');
-                            navigate('/');
+                            navigate(ROUTES.home);
                         })
                         .catch((err) => alert(err));
                 }}
             >
                 로그아웃
-            </li>
-            <li
-                onClick={() => {
-                    setSessionId('');
-                    setNickname('');
-                    navigate(URL.home);
-                }}
-            >
-                테스트 로그아웃
-            </li>
-            <li
-                onClick={() => {
-                    navigate(`${URL.postit}/1`);
-                }}
-            >
-                포스트잇 페이지
             </li>
         </>
     );

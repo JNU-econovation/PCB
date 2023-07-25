@@ -15,7 +15,7 @@ const Form = ({
 };
 
 const StyledForm = styled.form`
-    ${({ theme }) => theme.location.flex('column', 'flex-start', 'center')};
+    ${({ theme }) => theme.location.flex('column', 'center', 'center')};
     gap: 0.75rem;
     margin: ${({ theme }) => theme.margin.xl};
 `;
