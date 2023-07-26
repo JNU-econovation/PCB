@@ -6,12 +6,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardUpdateRequestDTO {
+    @NotEmpty
     private String title;
+    @NotEmpty
     private String content;
     private List<String> boardTagList;
 

@@ -88,14 +88,14 @@ public class MemberController {
     }
 
     @PutMapping("/pwd")
-    public ApiResult<?> updatePwd(@Login Long memberId, @RequestBody MemberPwdUpdateRequestDTO memberPwdUpdateRequestDto) {
+    public ApiResult<?> updatePwd(@Login Long memberId, @RequestBody @Valid MemberPwdUpdateRequestDTO memberPwdUpdateRequestDto) {
         memberService.updatePwd(memberId,memberPwdUpdateRequestDto);
         return ApiUtils.success("비밀번호 수정 성공");
     }
 
 
     @PutMapping("/nickname")
-    public ApiResult<?> updateNickname(@Login Long memberId, @RequestBody MemberNickUpdateRequestDTO nickUpdateRequestDto) {
+    public ApiResult<?> updateNickname(@Login Long memberId, @RequestBody @Valid MemberNickUpdateRequestDTO nickUpdateRequestDto) {
         memberService.updateNickname(memberId,nickUpdateRequestDto);
         return ApiUtils.success("닉네임 수정 성공");
     }

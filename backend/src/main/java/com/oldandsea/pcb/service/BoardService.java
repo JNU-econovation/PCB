@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -42,6 +43,9 @@ public class BoardService {
         /*
         먼저 Board Entity를 생성하고 저장한다.
          */
+        if(checkBlank(boardCreateDto.getBoardTagList())) {
+            throw new IllegalArgumentException("태그는 공백이 될 수 없습니다");
+        }
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("memberId에 해당하는 member가 존재하지 않습니다(게시글 생성)"));
         Board board = boardCreateDto.toEntity(member);
@@ -64,6 +68,9 @@ public class BoardService {
     }
     @Transactional
     public BoardUpdateResponseDTO updateBoard(BoardUpdateRequestDTO boardUpdateRequestDto, Long boardId) {
+        if(checkBlank(boardUpdateRequestDto.getBoardTagList())) {
+            throw new IllegalArgumentException("태그는 공백이 될 수 없습니다");
+        }
         Board board = boardFindById(boardId);
         board.updateBoard(boardUpdateRequestDto.getTitle(),boardUpdateRequestDto.getContent());
         boardTagRepository.deleteByBoardId(boardId);
@@ -130,7 +137,15 @@ public class BoardService {
                 () -> new IllegalArgumentException("boardId에 해당하는 board가 존재하지 않습니다(게시글 수정)")
         );
     }
+    private boolean checkBlank(List<String> stirngList) {
+        for(String list : stirngList) {
+            if(list.isBlank()) {
+                return true;
+            }
+        } return false;
+    }
 }
+
 
 
 
