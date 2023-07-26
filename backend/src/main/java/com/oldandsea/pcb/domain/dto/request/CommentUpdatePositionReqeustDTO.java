@@ -12,9 +12,11 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CommentUpdatePositionReqeustDTO {
     private List<CommentUpdatePositionList> updatePositionList;
+    private Long boardId;
     
     @Builder
-    public CommentUpdatePositionReqeustDTO(List<CommentUpdatePositionList> updatePositionList) {
+    public CommentUpdatePositionReqeustDTO(List<CommentUpdatePositionList> updatePositionList, Long boardId) {
         this.updatePositionList = updatePositionList;
+        this.boardId = boardId;
     }
 }

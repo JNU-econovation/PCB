@@ -51,6 +51,9 @@ public class Board {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
+    @OneToMany(mappedBy = "board", cascade = {CascadeType.ALL}, orphanRemoval = true)
+    private List<Comment> commentList = new ArrayList<>();
+
     @Builder
     public Board(String title, String content, Member member, List<BoardTag> boardTagList) {
         this.title = title;
@@ -60,7 +63,6 @@ public class Board {
         this.member = member;
         this.boardTagList = boardTagList;
     }
-
 
     public void updateBoard(String title, String content) {
         this.title = title;

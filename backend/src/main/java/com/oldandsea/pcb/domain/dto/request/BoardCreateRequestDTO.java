@@ -7,17 +7,19 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardCreateRequestDTO {
-    @NotNull(message = "Please  write title")
+    @NotEmpty(message = "Please  write title")
     private String title;
-    @NotNull(message = "Please write content")
+    @NotEmpty(message = "Please write content")
     private String content;
-    @NotNull(message = "Please write tags")
+    @NotEmpty(message = "Please write tags")
     private List<String> boardTagList;
     @Builder
     public BoardCreateRequestDTO(Long boardId, String title, String content, List<String> boardTagList) {

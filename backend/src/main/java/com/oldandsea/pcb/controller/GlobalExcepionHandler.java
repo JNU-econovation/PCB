@@ -5,8 +5,13 @@ import com.oldandsea.pcb.config.apiresponse.ApiUtils;
 import com.oldandsea.pcb.config.exception.NotAuthenticatedException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import javax.validation.UnexpectedTypeException;
+import java.rmi.UnexpectedException;
+
 @RestControllerAdvice
 public class GlobalExcepionHandler {
     @ExceptionHandler(NullPointerException.class)
@@ -24,6 +29,14 @@ public class GlobalExcepionHandler {
 
     @ExceptionHandler(DataAccessException.class)
     public ApiResult<?> handlerDataAccessException(DataAccessException e) {
+        return ApiUtils.error(e.getMessage(),HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(UnexpectedTypeException.class)
+    public ApiResult<?> handlerUnexpectedTypeException(UnexpectedTypeException e) {
+        return ApiUtils.error(e.getMessage(),HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ApiResult<?> handlerMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         return ApiUtils.error(e.getMessage(),HttpStatus.BAD_REQUEST);
     }
 }
