@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -52,7 +53,8 @@ public class MyPageService {
     }
     private List<Board> boardListFindByMemberId(Long memberId) {
         List<Board> boardList =  boardRepository.findByMemberMemberId(memberId);
-        if(boardList.isEmpty()) {
+        boolean containsNull = boardList.stream().anyMatch(Objects::isNull);
+        if(containsNull) {
             throw new IllegalArgumentException("Board doens't exsist");
         }
         return boardList;

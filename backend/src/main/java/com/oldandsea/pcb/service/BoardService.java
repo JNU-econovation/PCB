@@ -6,7 +6,9 @@ import com.oldandsea.pcb.domain.dto.response.BoardCreateResponseDTO;
 import com.oldandsea.pcb.domain.dto.response.BoardListResponseDTO;
 import com.oldandsea.pcb.domain.dto.response.BoardToPostItResponseDTO;
 import com.oldandsea.pcb.domain.dto.response.BoardUpdateResponseDTO;
-import com.oldandsea.pcb.domain.entity.*;
+import com.oldandsea.pcb.domain.entity.Board;
+import com.oldandsea.pcb.domain.entity.Member;
+import com.oldandsea.pcb.domain.entity.Tag;
 import com.oldandsea.pcb.domain.repository.BoardTagRepository;
 import com.oldandsea.pcb.domain.repository.MemberRepository;
 import com.oldandsea.pcb.domain.repository.boardrepository.BoardRepository;
@@ -53,7 +55,6 @@ public class BoardService {
         //반복문을 통해 생성하고 저장한 Board Entity와 List<Tag>들의 tag들을 받아와 BoardTag 생성(연관 맺어주기)
         boardTagService.createBoardTag(tags,savedBoard);
 
-        //Board를 BoardTag생성 전에 이미 persist 해놓았기 때문에 수정사항이 있으면 알아서 flush 시에(commit시에) DirtyChekcing 되서 수정될것이다.
         return BoardCreateResponseDTO.builder()
                 .boardId(savedBoard.getBoardId())
                 .title(savedBoard.getTitle())
@@ -65,16 +66,9 @@ public class BoardService {
     public BoardUpdateResponseDTO updateBoard(BoardUpdateRequestDTO boardUpdateRequestDto, Long boardId) {
         Board board = boardFindById(boardId);
         board.updateBoard(boardUpdateRequestDto.getTitle(),boardUpdateRequestDto.getContent());
-
+        boardTagRepository.deleteByBoardId(boardId);
         List<Tag> tags = tagService.stringToTagTags(boardUpdateRequestDto.getBoardTagList());
-        List<BoardTag> boardTag = boardTagRepository.findByBoardId(boardId);
-        if(boardTag.isEmpty()) {
-            throw new IllegalArgumentException("boardId에 해당하는 board가 존재하지 않습니다(게시글 수정)");
-        }
-
-        for(BoardTag boardTags : boardTag) {
-            boardTagService.updateBoardTag(tags, boardTags);
-        }
+        boardTagService.createBoardTag(tags,board);
         return BoardUpdateResponseDTO.builder()
                 .boardId(board.getBoardId())
                 .title(board.getTitle())

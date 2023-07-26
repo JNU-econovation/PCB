@@ -44,12 +44,9 @@ public class MemberService {
     }
 
     public LoginDTO login(MemberLoginRequestDTO memberLoginRequestDto) {
-        Optional<Member> byMemberUid = memberRepository.findByUid(memberLoginRequestDto.getUid());
-        if (byMemberUid.isEmpty()) {
-            throw new IllegalArgumentException("아이디를 다시 입력해주세요");
-        } else {
-            Member member = byMemberUid.get();
-
+        Member member = memberRepository.findByUid(memberLoginRequestDto.getUid()).orElseThrow(
+                () -> new IllegalArgumentException("아이디를 다시 입력해주세요")
+        );
             if (passwordEncoder.matches(memberLoginRequestDto.getPwd(),member.getPwd())) {
                 return LoginDTO.builder()
                         .memberId(member.getMemberId())
@@ -59,15 +56,13 @@ public class MemberService {
             } else
                 throw new IllegalArgumentException("비밀번호를 다시 입력해주세요");
         }
-    }
 
     @Transactional
     public void delete(Long memberId) {
-        Optional<Member> member = memberRepository.findByMemberIdFetch(memberId);
-        if(member.isEmpty()) {
-            throw new NullPointerException("memberId에 해당하는 member가 존재하지 않습니다(탈퇴)");
-        }
-        memberRepository.delete(member.get());
+       Member member = memberRepository.findByMemberIdFetch(memberId).orElseThrow(
+               () -> new IllegalArgumentException("memberId에 해당하는 member가 존재하지 않습니다(탈퇴)")
+       );
+        memberRepository.delete(member);
     }
 
     @Transactional
