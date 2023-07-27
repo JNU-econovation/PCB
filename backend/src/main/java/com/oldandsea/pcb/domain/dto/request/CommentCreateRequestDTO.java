@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CommentCreateRequestDTO {
-    @NotEmpty
+    @NotNull
     private Long boardId;
     @NotNull
     private String content;

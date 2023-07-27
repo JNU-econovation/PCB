@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
@@ -14,7 +15,7 @@ import java.util.List;
 public class CommentUpdatePositionReqeustDTO {
     @NotEmpty
     private List<CommentUpdatePositionList> updatePositionList;
-    @NotEmpty
+    @NotNull
     private Long boardId;
     
     @Builder

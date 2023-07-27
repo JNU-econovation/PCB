@@ -16,6 +16,7 @@ public class BoardUpdateRequestDTO {
     private String title;
     @NotEmpty
     private String content;
+    @NotEmpty
     private List<String> boardTagList;
 
     @Builder
