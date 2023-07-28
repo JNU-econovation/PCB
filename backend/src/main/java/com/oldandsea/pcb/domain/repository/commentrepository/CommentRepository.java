@@ -16,4 +16,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     Optional<Comment> findByCommentIdAndMemberMemberId(@Param("commentId") Long commentId, @Param("memberId") Long memberId);
     @Query("select c FROM Comment c where c.commentId = :commentId AND c.position = :position")
     Optional<Comment> findByIdAndPosition(@Param("commentId") Long commentId, @Param("position") String position);
+
+    @Query("select c FROM Comment c where c.commentId = :commentId AND c.board.boardId = :boardId")
+    Optional<Comment> findByCommentIdAndBoardBoardId(@Param("commentId") Long commentId, @Param("boardId") Long boarId);
 }

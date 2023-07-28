@@ -153,8 +153,8 @@ public class CommentService {
         }else
             throw new IllegalArgumentException("after에 해당하는 Id를 가진 comment가 같은 게시글에 있지 않습니다");
     }
-    private Comment findByCommentIdAndBoardId(Long commentId, Long memberId) {
-            return commentRepository.findByCommentIdAndMemberMemberId(commentId, memberId).orElseThrow(
+    private Comment findByCommentIdAndBoardId(Long commentId, Long boardId) {
+            return commentRepository.findByCommentIdAndBoardBoardId(commentId, boardId).orElseThrow(
                     () -> new IllegalArgumentException("Comment doesn't exsist")
             );
         }
