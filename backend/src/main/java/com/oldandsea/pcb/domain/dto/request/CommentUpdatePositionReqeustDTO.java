@@ -13,7 +13,6 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CommentUpdatePositionReqeustDTO {
-    @NotEmpty
     private List<CommentUpdatePositionList> updatePositionList;
     @NotNull
     private Long boardId;

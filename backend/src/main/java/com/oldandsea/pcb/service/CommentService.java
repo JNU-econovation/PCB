@@ -160,10 +160,10 @@ public class CommentService {
         }
 
     @Transactional
-    public CommentUpdatePositionResponseDTO deleteCommnet(List<CommentUpdatePositionList> requestDTO, Long memberId, Long commentId) {
+    public CommentUpdatePositionResponseDTO deleteCommnet(List<CommentUpdatePositionList> requestDTO, Long memberId, Long commentId, Long boardId) {
         if(checkCommentCreator(commentId,memberId)) {
             commentRepository.deleteById(commentId);
-            return updatePosition(requestDTO,memberId);
+            return updatePosition(requestDTO,boardId);
         }
         throw new IllegalArgumentException("댓글 작성자만 댓글을 삭제 할 수 있습니다");
     }

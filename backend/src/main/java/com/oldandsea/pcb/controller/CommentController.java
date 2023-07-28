@@ -53,7 +53,8 @@ public class CommentController {
     public ApiResult<?> deleteComment(@RequestBody @Valid CommentUpdatePositionReqeustDTO reqeustDTO,
                                       @Login Long memberId, @PathVariable Long commentId) {
         List<CommentUpdatePositionList> updatePositionList = reqeustDTO.getUpdatePositionList();
-            CommentUpdatePositionResponseDTO responseDTO = commentService.deleteCommnet(updatePositionList, memberId, commentId);
+        Long boardId = reqeustDTO.getBoardId();
+            CommentUpdatePositionResponseDTO responseDTO = commentService.deleteCommnet(updatePositionList,memberId,commentId,boardId);
             return ApiUtils.success(responseDTO);
     }
 }
