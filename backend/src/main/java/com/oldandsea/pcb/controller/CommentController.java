@@ -36,7 +36,7 @@ public class CommentController {
         List<CommentUpdatePositionList> updatePositionList = requestDTO.getUpdatePositionList();
         Long boardId = requestDTO.getBoardId();
         if (commentService.checkBoardCreator(boardId, memberId)) {
-            CommentUpdatePositionResponseDTO responseDTO = commentService.updatePosition(updatePositionList, memberId);
+            CommentUpdatePositionResponseDTO responseDTO = commentService.updatePosition(updatePositionList, boardId);
             return ApiUtils.success(responseDTO);
         } else throw new IllegalArgumentException("게시글 작성자만 댓글 위치를 수정할 수 있습니다");
     }

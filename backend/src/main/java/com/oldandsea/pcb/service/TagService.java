@@ -57,7 +57,7 @@ public class TagService {
 
     private List<Tag> findByBoardId(Long boardId) {
         List<Tag> tagList = tagRepository.findByBoardTagFetch(boardId);
-        boolean containsNull = tagList.stream().anyMatch(Objects::isNull);
+        boolean containsNull = tagList.isEmpty() ||tagList.stream().anyMatch(Objects::isNull);
         if(containsNull) {
             throw new IllegalArgumentException("Tag doens't exsist");
         }

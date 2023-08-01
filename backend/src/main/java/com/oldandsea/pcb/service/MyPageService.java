@@ -53,7 +53,7 @@ public class MyPageService {
     }
     private List<Board> boardListFindByMemberId(Long memberId) {
         List<Board> boardList =  boardRepository.findByMemberMemberId(memberId);
-        boolean containsNull = boardList.stream().anyMatch(Objects::isNull);
+        boolean containsNull = boardList.isEmpty() || boardList.stream().anyMatch(Objects::isNull);
         if(containsNull) {
             throw new IllegalArgumentException("Board doens't exsist");
         }
